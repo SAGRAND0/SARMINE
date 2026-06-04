@@ -1,0 +1,1568 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SARMINE — Minecraft Сервер</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #080808;
+            color: #c0c0c0;
+            font-family: 'Segoe UI', 'Arial', sans-serif;
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(ellipse at 50% 0%, #1a1a1a 0%, #080808 60%),
+                repeating-linear-gradient(0deg, transparent, transparent 2px, #0c0c0c 2px, #0c0c0c 4px);
+            background-size: 100% 100%, 100% 100%;
+        }
+
+        /* ===== ШАПКА ===== */
+        header {
+            background: linear-gradient(180deg, #141414 0%, #0f0f0f 100%);
+            border-bottom: 2px solid #ff6a00;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 25px rgba(255, 106, 0, 0.12);
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            color: #fff;
+            text-transform: uppercase;
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: #ff6a00;
+        }
+
+        nav {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        nav button {
+            background: none;
+            border: none;
+            color: #999;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            padding: 6px 0;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        nav button:hover,
+        nav button.active {
+            color: #ff6a00;
+            border-bottom-color: #ff6a00;
+        }
+
+        .btn-donate {
+            background: #ff6a00;
+            color: #0a0a0a !important;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            transition: all 0.3s;
+        }
+
+        .btn-donate:hover {
+            background: #ff8533;
+            box-shadow: 0 0 25px rgba(255, 106, 0, 0.4);
+            border-bottom: none !important;
+        }
+
+        /* ===== СЕКЦИИ ===== */
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        /* ===== ГЕРОЙ ===== */
+        .hero {
+            text-align: center;
+            padding: 60px 20px 50px;
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            font-weight: 900;
+            letter-spacing: 4px;
+            color: #fff;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .hero h1 span {
+            color: #ff6a00;
+        }
+
+        .hero .subtitle {
+            font-size: 13px;
+            color: #666;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 35px;
+        }
+
+        .server-info {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+
+        .info-card {
+            background: linear-gradient(135deg, #111 0%, #0e0e0e 100%);
+            border: 1px solid #1e1e1e;
+            border-radius: 14px;
+            padding: 18px 22px;
+            text-align: center;
+            min-width: 130px;
+            transition: all 0.3s;
+        }
+
+        .info-card:hover {
+            border-color: #333;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .info-card .value {
+            font-size: 22px;
+            font-weight: 700;
+            color: #ff6a00;
+            display: block;
+        }
+
+        .info-card .label {
+            font-size: 10px;
+            letter-spacing: 2px;
+            color: #666;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+
+        .online-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #4CAF50;
+            border-radius: 50%;
+            margin-right: 6px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7); }
+            50% { box-shadow: 0 0 0 8px rgba(76, 175, 80, 0); }
+        }
+
+        .btn-play {
+            display: inline-block;
+            background: #ff6a00;
+            color: #0a0a0a;
+            padding: 12px 35px;
+            border-radius: 22px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 13px;
+        }
+
+        .btn-play:hover {
+            background: #ff8533;
+            box-shadow: 0 0 30px rgba(255, 106, 0, 0.4);
+        }
+
+        /* ===== РЕЖИМЫ ===== */
+        .modes-section {
+            padding: 20px 20px 60px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #fff;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .section-title span {
+            color: #ff6a00;
+        }
+
+        .section-desc {
+            text-align: center;
+            color: #666;
+            letter-spacing: 1px;
+            margin-bottom: 35px;
+            font-size: 12px;
+        }
+
+        .modes-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 18px;
+        }
+
+        @media (min-width: 768px) {
+            .modes-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .mode-card {
+            background: linear-gradient(135deg, #111 0%, #0e0e0e 100%);
+            border: 1px solid #1e1e1e;
+            border-radius: 14px;
+            padding: 30px 25px;
+            text-align: center;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mode-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #ff6a00;
+            transform: scaleX(0);
+            transition: transform 0.3s;
+            border-radius: 0 0 3px 3px;
+        }
+
+        .mode-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .mode-card:hover {
+            border-color: #2a2a2a;
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .mode-card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #fff;
+            margin: 12px 0;
+        }
+
+        .mode-card p {
+            color: #888;
+            font-size: 12px;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .mode-tag {
+            display: inline-block;
+            padding: 5px 14px;
+            border-radius: 18px;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .tag-anarchy { background: rgba(244,67,54,0.1); color: #f44336; border: 1px solid rgba(244,67,54,0.2); }
+        .tag-survival { background: rgba(76,175,80,0.1); color: #4CAF50; border: 1px solid rgba(76,175,80,0.2); }
+        .tag-polit { background: rgba(255,106,0,0.1); color: #ff6a00; border: 1px solid rgba(255,106,0,0.2); }
+
+        /* ===== ПРАВИЛА ===== */
+        .rules-container {
+            max-width: 800px;
+            margin: 0 auto 60px;
+            padding: 0 20px;
+        }
+
+        .rules-block {
+            background: linear-gradient(135deg, #111 0%, #0e0e0e 100%);
+            border: 1px solid #1e1e1e;
+            border-radius: 14px;
+            padding: 30px 25px;
+            margin-bottom: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .rules-block::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 3px;
+            height: 100%;
+            background: #ff6a00;
+            border-radius: 0 3px 3px 0;
+        }
+
+        .rules-block h2 {
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #ff6a00;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .rule-item {
+            background: #0d0d0d;
+            border: 1px solid #1a1a1a;
+            border-radius: 10px;
+            padding: 14px 18px;
+            margin-bottom: 10px;
+            transition: all 0.3s;
+        }
+
+        .rule-item:hover {
+            border-color: #333;
+            background: #101010;
+        }
+
+        .rule-number {
+            display: inline-block;
+            background: #1a1a1a;
+            color: #ff6a00;
+            font-weight: 900;
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 8px;
+            margin-right: 10px;
+        }
+
+        .rule-item:hover .rule-number {
+            background: #ff6a00;
+            color: #0a0a0a;
+        }
+
+        .rule-text {
+            display: inline;
+        }
+
+        .rule-text .title {
+            font-weight: 700;
+            color: #e0e0e0;
+            font-size: 13px;
+        }
+
+        .rule-text .desc {
+            font-size: 11px;
+            color: #777;
+            margin-top: 3px;
+            line-height: 1.4;
+        }
+
+        .punishment {
+            display: inline-block;
+            margin-top: 5px;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 9px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .punish-warn { background: rgba(255,193,7,0.1); color: #ffc107; border: 1px solid rgba(255,193,7,0.2); }
+        .punish-mute { background: rgba(255,152,0,0.1); color: #ff9800; border: 1px solid rgba(255,152,0,0.2); }
+        .punish-ban { background: rgba(244,67,54,0.1); color: #f44336; border: 1px solid rgba(244,67,54,0.2); }
+        .punish-perm { background: rgba(156,39,176,0.1); color: #9c27b0; border: 1px solid rgba(156,39,176,0.2); }
+
+        /* ===== КАРТА ===== */
+        .map-wrapper {
+            position: relative;
+            width: 100%;
+            height: 80vh;
+            min-height: 500px;
+            background: #0d0d0d;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid #1e1e1e;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .map-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .map-fallback {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #0d0d0d;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+            padding: 20px;
+            z-index: 2;
+        }
+
+        .map-fallback.visible {
+            display: flex;
+        }
+
+        .map-fallback .icon {
+            margin-bottom: 20px;
+        }
+
+        .map-fallback h3 {
+            color: #fff;
+            font-size: 20px;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .map-fallback p {
+            color: #666;
+            font-size: 13px;
+            max-width: 400px;
+            line-height: 1.5;
+        }
+
+        .map-fallback .retry-btn {
+            display: inline-block;
+            margin-top: 20px;
+            background: transparent;
+            border: 1px solid #ff6a00;
+            color: #ff6a00;
+            padding: 10px 25px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 11px;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .map-fallback .retry-btn:hover {
+            background: #ff6a00;
+            color: #0a0a0a;
+        }
+
+        .map-controls {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .map-controls a {
+            display: inline-block;
+            color: #ff6a00;
+            text-decoration: none;
+            font-size: 12px;
+            letter-spacing: 1px;
+            padding: 8px 20px;
+            border: 1px solid #222;
+            border-radius: 20px;
+            transition: all 0.3s;
+        }
+
+        .map-controls a:hover {
+            border-color: #ff6a00;
+            background: rgba(255,106,0,0.05);
+        }
+
+        /* ===== СТРАНИЦЫ-ЗАГЛУШКИ ===== */
+        .placeholder {
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        .placeholder h2 {
+            font-size: 28px;
+            color: #fff;
+            margin-bottom: 15px;
+        }
+
+        .placeholder h2 span {
+            color: #ff6a00;
+        }
+
+        .placeholder p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* ===== ДОНАТ-МАГАЗИН ===== */
+        .donate-container {
+            max-width: 1000px;
+            margin: 0 auto 60px;
+            padding: 0 20px;
+        }
+
+        .donate-container.hidden {
+            display: none;
+        }
+
+        .donate-modes-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        @media (min-width: 768px) {
+            .donate-modes-grid {
+                grid-template-columns: repeat(3, 1fr);
+                max-width: 900px;
+            }
+        }
+
+        .donate-mode-card {
+            background: linear-gradient(135deg, #111 0%, #0e0e0e 100%);
+            border: 1px solid #1e1e1e;
+            border-radius: 16px;
+            padding: 35px 25px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .donate-mode-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #ff6a00;
+            transform: scaleX(0);
+            transition: transform 0.3s;
+            border-radius: 0 0 3px 3px;
+        }
+
+        .donate-mode-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .donate-mode-card:hover {
+            border-color: #2a2a2a;
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.5);
+        }
+
+        .donate-mode-card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+            margin: 15px 0 8px;
+        }
+
+        .donate-mode-card p {
+            color: #777;
+            font-size: 12px;
+            margin-bottom: 15px;
+        }
+
+        .back-btn {
+            background: none;
+            border: 1px solid #333;
+            color: #999;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 12px;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            margin-bottom: 25px;
+            display: inline-block;
+        }
+
+        .back-btn:hover {
+            border-color: #ff6a00;
+            color: #ff6a00;
+        }
+
+        .donate-mode-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .donate-mode-title span {
+            color: #ff6a00;
+        }
+
+        .donate-category {
+            margin-bottom: 40px;
+        }
+
+        .donate-category h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #ff6a00;
+            letter-spacing: 1px;
+            margin-bottom: 18px;
+            text-transform: uppercase;
+        }
+
+        .donate-items-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        @media (min-width: 600px) {
+            .donate-items-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 900px) {
+            .donate-items-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .donate-item {
+            background: #0d0d0d;
+            border: 1px solid #1a1a1a;
+            border-radius: 14px;
+            padding: 25px 20px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .donate-item:hover {
+            border-color: #333;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+            transform: translateY(-2px);
+        }
+
+        .item-icon {
+            margin-bottom: 15px;
+        }
+
+        .donate-item h4 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 5px;
+        }
+
+        .donate-item .rate {
+            font-size: 11px;
+            color: #ff6a00;
+            margin-bottom: 12px;
+        }
+
+        .donate-item .desc {
+            font-size: 11px;
+            color: #777;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .amount-btns {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .amount {
+            display: inline-block;
+            background: #1a1a1a;
+            color: #ccc;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid #222;
+        }
+
+        .amount:hover {
+            background: #ff6a00;
+            color: #0a0a0a;
+            border-color: #ff6a00;
+        }
+
+        .price {
+            display: inline-block;
+            background: #ff6a00;
+            color: #0a0a0a;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 14px;
+            margin-top: 5px;
+            letter-spacing: 1px;
+        }
+
+        .donate-unavailable {
+            background: #0d0d0d;
+            border: 1px dashed #333;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .donate-unavailable p {
+            color: #555;
+            font-size: 13px;
+        }
+
+        /* ===== ПРИВИЛЕГИИ ===== */
+        .privileges-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        @media (min-width: 600px) {
+            .privileges-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 900px) {
+            .privileges-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .privilege-card {
+            background: #0d0d0d;
+            border: 1px solid #1a1a1a;
+            border-radius: 14px;
+            padding: 25px 20px;
+            text-align: center;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .privilege-card:hover {
+            border-color: #333;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+            transform: translateY(-3px);
+        }
+
+        .privilege-special {
+            border-color: #ff6a00;
+            box-shadow: 0 0 20px rgba(255,106,0,0.08);
+        }
+
+        .privilege-special:hover {
+            border-color: #ff8533;
+            box-shadow: 0 0 30px rgba(255,106,0,0.2);
+        }
+
+        .priv-rank {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 14px;
+            margin: 0 auto 12px;
+            transition: all 0.3s;
+        }
+
+        .rank-1 { background: #1a1a1a; color: #8d6e63; border: 1px solid #8d6e63; }
+        .rank-2 { background: #1a1a1a; color: #78909c; border: 1px solid #78909c; }
+        .rank-3 { background: #1a1a1a; color: #9e9e9e; border: 1px solid #9e9e9e; }
+        .rank-4 { background: #1a1a1a; color: #ffc107; border: 1px solid #ffc107; }
+        .rank-5 { background: #1a1a1a; color: #ff6a00; border: 1px solid #ff6a00; }
+        .rank-6 { background: #ff6a00; color: #0a0a0a; border: 1px solid #ff8533; box-shadow: 0 0 15px rgba(255,106,0,0.3); }
+
+        .privilege-card h4 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .priv-desc {
+            font-size: 11px;
+            color: #777;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        /* ===== ФУТЕР ===== */
+        footer {
+            background: #0d0d0d;
+            border-top: 1px solid #1a1a1a;
+            text-align: center;
+            padding: 20px;
+            color: #555;
+            font-size: 10px;
+            letter-spacing: 1px;
+        }
+
+        footer span {
+            color: #ff6a00;
+        }
+
+        /* ===== АДАПТИВ ===== */
+        @media (max-width: 600px) {
+            header {
+                height: auto;
+                padding: 12px 15px;
+                gap: 10px;
+                flex-wrap: wrap;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .section-title {
+                font-size: 22px;
+            }
+
+            .map-wrapper {
+                height: 60vh;
+                min-height: 350px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== ШАПКА ===== -->
+    <header>
+        <div class="logo">S<span>ARMINE</span></div>
+        <nav>
+            <button onclick="showSection('home')" class="active" id="nav-home">Главная</button>
+            <button onclick="showSection('map')" id="nav-map">Карта</button>
+            <button onclick="showSection('rules')" id="nav-rules">Правила</button>
+            <button onclick="showSection('wiki')" id="nav-wiki">Вики</button>
+            <button onclick="showSection('donate')" class="btn-donate" id="nav-donate">Донат</button>
+        </nav>
+    </header>
+
+    <!-- ===== ГЛАВНАЯ ===== -->
+    <div class="section active" id="section-home">
+        <div class="hero">
+            <h1>S<span>ARMINE</span></h1>
+            <p class="subtitle">Политика • Анархия • Выживание</p>
+
+            <div class="server-info">
+                <div class="info-card">
+                    <span class="value"><span class="online-dot"></span>0</span>
+                    <span class="label">Онлайн</span>
+                </div>
+                <div class="info-card">
+                    <span class="value">1.19–1.21</span>
+                    <span class="label">Версии</span>
+                </div>
+                <div class="info-card">
+                    <span class="value">sarmine.fun</span>
+                    <span class="label">IP-Адрес</span>
+                </div>
+            </div>
+
+            <a href="#" class="btn-play">Подключиться</a>
+        </div>
+
+        <div class="modes-section">
+            <h2 class="section-title">Выбери <span>Режим</span></h2>
+            <p class="section-desc">Три уникальных мира с разными правилами и возможностями</p>
+
+            <div class="modes-grid">
+                <div class="mode-card">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#f44336" stroke-width="1.5">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="12" y1="7" x2="12" y2="13"/>
+                        <line x1="12" y1="16" x2="12.01" y2="16"/>
+                        <line x1="7" y1="7" x2="17" y2="17"/>
+                    </svg>
+                    <h3>Анархия</h3>
+                    <p>Полная свобода без правил. Гриф, читы, PvP — разрешено всё. Выживает сильнейший.</p>
+                    <span class="mode-tag tag-anarchy">Хардкор</span>
+                </div>
+
+                <div class="mode-card">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#4CAF50" stroke-width="1.5">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                        <polyline points="9 22 9 12 15 12 15 22"/>
+                    </svg>
+                    <h3>Выживание</h3>
+                    <p>Классическое выживание с экономикой и плагинами. Строй города, торгуй, создавай кланы.</p>
+                    <span class="mode-tag tag-survival">Классика</span>
+                </div>
+
+                <div class="mode-card">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#ff6a00" stroke-width="1.5">
+                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                        <path d="M2 17l10 5 10-5"/>
+                        <path d="M2 12l10 5 10-5"/>
+                    </svg>
+                    <h3>Политика</h3>
+                    <p>Города, нации, войны и захват территорий. Политическая карта в реальном времени.</p>
+                    <span class="mode-tag tag-polit">RP / PvP</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== КАРТА ===== -->
+    <div class="section" id="section-map">
+        <div class="hero">
+            <h1>Карта <span>Сервера</span></h1>
+            <p class="subtitle">Политическая карта в реальном времени</p>
+        </div>
+
+        <div class="map-wrapper" id="mapWrapper">
+            <iframe 
+                id="mapFrame"
+                src="http://sarmine.fun:8123" 
+                allowfullscreen
+                loading="lazy"
+                title="Карта сервера SARMINE"
+                onerror="showMapFallback()"
+                onload="hideMapFallback()">
+            </iframe>
+
+            <div class="map-fallback" id="mapFallback">
+                <div class="icon">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#ff6a00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M2 12h20"/>
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                    </svg>
+                </div>
+                <h3>Карта временно недоступна</h3>
+                <p>Сервер может быть выключен или плагин Dynmap ещё не настроен. Попробуйте позже или откройте карту в отдельной вкладке.</p>
+                <button class="retry-btn" onclick="reloadMap()">Обновить карту</button>
+            </div>
+        </div>
+
+        <div class="map-controls">
+            <a href="http://sarmine.fun:8123" target="_blank" rel="noopener">Открыть в отдельной вкладке</a>
+        </div>
+    </div>
+
+    <!-- ===== ПРАВИЛА ===== -->
+    <div class="section" id="section-rules">
+        <div class="hero">
+            <h1>П<span>равила</span></h1>
+            <p class="subtitle">Общие положения сервера SARMINE</p>
+        </div>
+
+        <div class="rules-container">
+
+            <div class="rules-block">
+                <h2>Основные правила</h2>
+
+                <div class="rule-item">
+                    <span class="rule-number">1.1</span>
+                    <div class="rule-text">
+                        <span class="title">Будьте адекватны</span>
+                        <div class="desc">Уважайте других игроков. Оскорбления, дискриминация, токсичное поведение и провокации запрещены.</div>
+                        <span class="punishment punish-mute">Мут / Бан</span>
+                    </div>
+                </div>
+
+                <div class="rule-item">
+                    <span class="rule-number">1.2</span>
+                    <div class="rule-text">
+                        <span class="title">Запрещены читы и модификации</span>
+                        <div class="desc">X-Ray, Fly, KillAura, автокликеры, макросы и прочее ПО, дающее преимущество.</div>
+                        <span class="punishment punish-ban">Бан</span>
+                    </div>
+                </div>
+
+                <div class="rule-item">
+                    <span class="rule-number">1.3</span>
+                    <div class="rule-text">
+                        <span class="title">Запрещена реклама</span>
+                        <div class="desc">Реклама сторонних серверов, сайтов, услуг в чате, на табличках и в постройках.</div>
+                        <span class="punishment punish-perm">Перманентный бан</span>
+                    </div>
+                </div>
+
+                <div class="rule-item">
+                    <span class="rule-number">1.4</span>
+                    <div class="rule-text">
+                        <span class="title">Запрещён спам и флуд</span>
+                        <div class="desc">Многократные повторы, бессмысленный набор символов, Caps Lock, засорение чата.</div>
+                        <span class="punishment punish-warn">Предупреждение / Мут</span>
+                    </div>
+                </div>
+
+                <div class="rule-item">
+                    <span class="rule-number">1.5</span>
+                    <div class="rule-text">
+                        <span class="title">Запрещено мошенничество</span>
+                        <div class="desc">Обман игроков с целью получения ресурсов, предметов или денег.</div>
+                        <span class="punishment punish-ban">Бан</span>
+                    </div>
+                </div>
+
+                <div class="rule-item">
+                    <span class="rule-number">1.6</span>
+                    <div class="rule-text">
+                        <span class="title">Запрещены дюпы и баги</span>
+                        <div class="desc">Использование багов сервера. О найденных багах сообщайте администрации.</div>
+                        <span class="punishment punish-ban">Бан / Сброс</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rules-block">
+                <h2>Правила общения</h2>
+
+                <div class="rule-item">
+                    <span class="rule-number">2.1</span>
+                    <div class="rule-text">
+                        <span class="title">Русский язык в общем чате</span>
+                        <div class="desc">Основной язык — русский. Английский допускается в ЛС и кланах.</div>
+                        <span class="punishment punish-warn">Предупреждение</span>
+                    </div>
+                </div>
+
+                <div class="rule-item">
+                    <span class="rule-number">2.2</span>
+                    <div class="rule-text">
+                        <span class="title">Угрозы и шантаж запрещены</span>
+                        <div class="desc">Угрозы в реальной жизни, шантаж, запугивание, преследование.</div>
+                        <span class="punishment punish-perm">Перманентный бан</span>
+                    </div>
+                </div>
+
+                <div class="rule-item">
+                    <span class="rule-number">2.3</span>
+                    <div class="rule-text">
+                        <span class="title">Неприемлемый контент запрещён</span>
+                        <div class="desc">Порнография, шок-контент, нетерпимость, призывы к насилию.</div>
+                        <span class="punishment punish-perm">Перманентный бан</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rules-block">
+                <h2>Аккаунты и администрация</h2>
+
+                <div class="rule-item">
+                    <span class="rule-number">3.1</span>
+                    <div class="rule-text">
+                        <span class="title">Один игрок — один аккаунт</span>
+                        <div class="desc">Мультиаккаунты запрещены. При общем IP — предупредите администрацию.</div>
+                        <span class="punishment punish-ban">Бан всех аккаунтов</span>
+                    </div>
+                </div>
+
+                <div class="rule-item">
+                    <span class="rule-number">3.2</span>
+                    <div class="rule-text">
+                        <span class="title">Не выдавайте себя за администрацию</span>
+                        <div class="desc">Запрещено представляться админом или модератором без соответствующих прав.</div>
+                        <span class="punishment punish-ban">Бан</span>
+                    </div>
+                </div>
+
+                <div class="rule-item">
+                    <span class="rule-number">3.3</span>
+                    <div class="rule-text">
+                        <span class="title">Администрация всегда права</span>
+                        <div class="desc">Решение администрации окончательно. Апелляции — через Вики, не в чате.</div>
+                        <span class="punishment punish-warn">Предупреждение</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ===== ВИКИ ===== -->
+    <div class="section" id="section-wiki">
+        <div class="placeholder">
+            <h2>Википедия <span>SARMINE</span></h2>
+            <p>Раздел находится в разработке. Здесь будет база знаний по серверу.</p>
+        </div>
+    </div>
+
+    <!-- ===== ДОНАТ ===== -->
+    <div class="section" id="section-donate">
+        <div class="hero">
+            <h1>Донат<span>-магазин</span></h1>
+            <p class="subtitle">Поддержи сервер и получи преимущества</p>
+        </div>
+
+        <!-- ЭКРАН ВЫБОРА РЕЖИМА -->
+        <div class="donate-container" id="donateModeSelect">
+            <div class="donate-modes-grid">
+                <!-- Анархия -->
+                <div class="donate-mode-card" onclick="selectDonateMode('anarchy')">
+                    <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#f44336" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="12" y1="7" x2="12" y2="13"/>
+                        <line x1="12" y1="16" x2="12.01" y2="16"/>
+                        <line x1="7" y1="7" x2="17" y2="17"/>
+                    </svg>
+                    <h3>Анархия</h3>
+                    <p>Валюта: Золото и Рубины</p>
+                    <span class="mode-tag tag-anarchy">Выбрать</span>
+                </div>
+
+                <!-- Выживание -->
+                <div class="donate-mode-card" onclick="selectDonateMode('survival')">
+                    <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#4CAF50" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                        <polyline points="9 22 9 12 15 12 15 22"/>
+                    </svg>
+                    <h3>Выживание</h3>
+                    <p>Валюта: Монеты и Кристаллы</p>
+                    <span class="mode-tag tag-survival">Выбрать</span>
+                </div>
+
+                <!-- Политика -->
+                <div class="donate-mode-card" onclick="selectDonateMode('polit')">
+                    <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#ff6a00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                        <path d="M2 17l10 5 10-5"/>
+                        <path d="M2 12l10 5 10-5"/>
+                    </svg>
+                    <h3>Политика</h3>
+                    <p>Валюта: Доллары и Биткоины</p>
+                    <span class="mode-tag tag-polit">Выбрать</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ТОВАРЫ АНАРХИИ -->
+        <div class="donate-container hidden" id="donateAnarchy">
+            <button class="back-btn" onclick="backToModes()">← Назад к выбору режима</button>
+            <h2 class="donate-mode-title">Анархия — <span>Товары</span></h2>
+
+            <div class="donate-category">
+                <h3>💰 Валюта</h3>
+                <div class="donate-items-grid">
+                    <div class="donate-item">
+                        <div class="item-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#ffc107" stroke-width="1.5">
+                                <circle cx="12" cy="12" r="10"/><line x1="12" y1="6" x2="12" y2="18"/>
+                                <line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="16" y2="14"/>
+                            </svg>
+                        </div>
+                        <h4>Золото</h4>
+                        <p class="rate">1 руб = 1 золото</p>
+                        <div class="amount-btns">
+                            <span class="amount">100</span>
+                            <span class="amount">500</span>
+                            <span class="amount">1000</span>
+                        </div>
+                    </div>
+                    <div class="donate-item">
+                        <div class="item-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#e91e63" stroke-width="1.5">
+                                <polygon points="12 2 15 9 22 9 16 14 18 21 12 17 6 21 8 14 2 9 9 9"/>
+                            </svg>
+                        </div>
+                        <h4>Рубины</h4>
+                        <p class="rate">1 руб = 10 рубинов</p>
+                        <div class="amount-btns">
+                            <span class="amount">100</span>
+                            <span class="amount">500</span>
+                            <span class="amount">1000</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="donate-category">
+                <h3>👑 Привилегии</h3>
+                <div class="donate-unavailable">
+                    <p>Недоступно, в разработке</p>
+                </div>
+            </div>
+
+            <div class="donate-category">
+                <h3>🎁 Донатные вещи</h3>
+                <div class="donate-items-grid">
+                    <div class="donate-item">
+                        <div class="item-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#9c27b0" stroke-width="1.5">
+                                <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/>
+                            </svg>
+                        </div>
+                        <h4>Сфера защиты</h4>
+                        <p class="desc">Неубиваемый блок на 24 часа</p>
+                        <span class="price">₽149</span>
+                    </div>
+                    <div class="donate-item">
+                        <div class="item-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#ff5722" stroke-width="1.5">
+                                <circle cx="12" cy="12" r="10"/><polygon points="12 6 14 10 18 11 15 14 16 18 12 16 8 18 9 14 6 11 10 10"/>
+                            </svg>
+                        </div>
+                        <h4>Сфера буста</h4>
+                        <p class="desc">Ускорение ×2 на 12 часов</p>
+                        <span class="price">₽99</span>
+                    </div>
+                    <div class="donate-item">
+                        <div class="item-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#00bcd4" stroke-width="1.5">
+                                <circle cx="12" cy="12" r="10"/><line x1="12" y1="6" x2="12" y2="12"/>
+                                <line x1="12" y1="12" x2="16" y2="14"/><circle cx="12" cy="12" r="1"/>
+                            </svg>
+                        </div>
+                        <h4>Сфера телепорта</h4>
+                        <p class="desc">Телепорт к точке дома</p>
+                        <span class="price">₽79</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ТОВАРЫ ВЫЖИВАНИЯ -->
+        <div class="donate-container hidden" id="donateSurvival">
+            <button class="back-btn" onclick="backToModes()">← Назад к выбору режима</button>
+            <h2 class="donate-mode-title">Выживание — <span>Товары</span></h2>
+
+            <div class="donate-category">
+                <h3>💰 Валюта</h3>
+                <div class="donate-items-grid">
+                    <div class="donate-item">
+                        <div class="item-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#ffc107" stroke-width="1.5">
+                                <circle cx="12" cy="12" r="10"/><rect x="8" y="8" width="8" height="8" rx="1"/>
+                            </svg>
+                        </div>
+                        <h4>Монеты</h4>
+                        <p class="rate">1 руб = 1 монета</p>
+                        <div class="amount-btns">
+                            <span class="amount">100</span>
+                            <span class="amount">500</span>
+                            <span class="amount">1000</span>
+                        </div>
+                    </div>
+                    <div class="donate-item">
+                        <div class="item-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" stroke-width="1.5">
+                                <polygon points="12 2 15 9 22 9 16 14 18 21 12 17 6 21 8 14 2 9 9 9"/>
+                            </svg>
+                        </div>
+                        <h4>Кристаллы</h4>
+                        <p class="rate">1 руб = 10 кристаллов</p>
+                        <div class="amount-btns">
+                            <span class="amount">100</span>
+                            <span class="amount">500</span>
+                            <span class="amount">1000</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="donate-category">
+                <h3>👑 Привилегии</h3>
+                <div class="donate-unavailable">
+                    <p>Недоступно, в разработке</p>
+                </div>
+            </div>
+
+            <div class="donate-category">
+                <h3>🎁 Донатные вещи</h3>
+                <div class="donate-items-grid">
+                    <div class="donate-item">
+                        <div class="item-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#ff9800" stroke-width="1.5">
+                                <rect x="3" y="6" width="18" height="13" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/>
+                            </svg>
+                        </div>
+                        <h4>Кирка шахтёра</h4>
+                        <p class="desc">Копает 3×3, не ломается</p>
+                        <span class="price">₽199</span>
+                    </div>
+                    <div class="donate-item">
+                        <div class="item-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#4CAF50" stroke-width="1.5">
+                                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+                                <line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/>
+                            </svg>
+                        </div>
+                        <h4>Сундук фермера</h4>
+                        <p class="desc">Авто-сбор урожая в радиусе</p>
+                        <span class="price">₽149</span>
+                    </div>
+                    <div class="donate-item">
+                        <div class="item-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="1.5">
+                                <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/>
+                                <path d="M2 12l10 5 10-5"/>
+                            </svg>
+                        </div>
+                        <h4>Топор строителя</h4>
+                        <p class="desc">Ставит блоки в радиусе 5</p>
+                        <span class="price">₽249</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ТОВАРЫ ПОЛИТИКИ -->
+        <div class="donate-container hidden" id="donatePolit">
+            <button class="back-btn" onclick="backToModes()">← Назад к выбору режима</button>
+            <h2 class="donate-mode-title">Политика — <span>Товары</span></h2>
+
+            <div class="donate-category">
+                <h3>💰 Валюта</h3>
+                <div class="donate-items-grid">
+                    <div class="donate-item">
+                        <div class="item-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#4CAF50" stroke-width="1.5">
+                                <circle cx="12" cy="12" r="10"/><line x1="12" y1="6" x2="12" y2="18"/>
+                                <line x1="8" y1="9" x2="16" y2="9"/><line x1="8" y1="15" x2="16" y2="15"/>
+                            </svg>
+                        </div>
+                        <h4>Доллары</h4>
+                        <p class="rate">1 руб = 1 доллар</p>
+                        <div class="amount-btns">
+                            <span class="amount">100</span>
+                            <span class="amount">500</span>
+                            <span class="amount">1000</span>
+                        </div>
+                    </div>
+                    <div class="donate-item">
+                        <div class="item-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#ff6a00" stroke-width="1.5">
+                                <circle cx="12" cy="12" r="10"/>
+                                <text x="7" y="16" font-size="11" fill="#ff6a00" font-weight="bold">₿</text>
+                            </svg>
+                        </div>
+                        <h4>Биткоины</h4>
+                        <p class="rate">1 руб = 10 биткоинов</p>
+                        <div class="amount-btns">
+                            <span class="amount">100</span>
+                            <span class="amount">500</span>
+                            <span class="amount">1000</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="donate-category">
+                <h3>👑 Привилегии</h3>
+                <div class="privileges-grid">
+                    <div class="privilege-card">
+                        <div class="priv-rank rank-1">1</div>
+                        <h4>Холоп</h4>
+                        <p class="priv-desc">Базовая привилегия. Доступ к созданию города.</p>
+                        <span class="price">₽49</span>
+                    </div>
+                    <div class="privilege-card">
+                        <div class="priv-rank rank-2">2</div>
+                        <h4>Новобранец</h4>
+                        <p class="priv-desc">Увеличенный лимит чанков +5. Доступ к военному чату.</p>
+                        <span class="price">₽99</span>
+                    </div>
+                    <div class="privilege-card">
+                        <div class="priv-rank rank-3">3</div>
+                        <h4>Рыцарь</h4>
+                        <p class="priv-desc">Личный герб, увеличенный урон в PvP, защита города +10%.</p>
+                        <span class="price">₽199</span>
+                    </div>
+                    <div class="privilege-card">
+                        <div class="priv-rank rank-4">4</div>
+                        <h4>Граф</h4>
+                        <p class="priv-desc">Двойной доход с городов, право голоса в совете нации.</p>
+                        <span class="price">₽399</span>
+                    </div>
+                    <div class="privilege-card">
+                        <div class="priv-rank rank-5">5</div>
+                        <h4>Царь</h4>
+                        <p class="priv-desc">Возможность создать нацию бесплатно, иммунитет от войны 7 дней.</p>
+                        <span class="price">₽799</span>
+                    </div>
+                    <div class="privilege-card privilege-special">
+                        <div class="priv-rank rank-6">6</div>
+                        <h4>Император</h4>
+                        <p class="priv-desc">Контроль над всеми нациями, доступ к ядерному оружию, финальный голос в войне.</p>
+                        <span class="price">₽1499</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="donate-category">
+                <h3>🎁 Донатные вещи</h3>
+                <div class="donate-items-grid">
+                    <div class="donate-item">
+                        <div class="item-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#ff6a00" stroke-width="1.5">
+                                <rect x="4" y="2" width="16" height="20" rx="2"/>
+                                <line x1="9" y1="6" x2="15" y2="6"/>
+                                <line x1="9" y1="10" x2="15" y2="10"/>
+                                <line x1="9" y1="14" x2="12" y2="14"/>
+                            </svg>
+                        </div>
+                        <h4>Договор о ненападении</h4>
+                        <p class="desc">Запрет атаки на твой город на 48 часов</p>
+                        <span class="price">₽299</span>
+                    </div>
+                    <div class="donate-item">
+                        <div class="item-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#f44336" stroke-width="1.5">
+                                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10"/>
+                            </svg>
+                        </div>
+                        <h4>Шпионский радар</h4>
+                        <p class="desc">Видит всех игроков вражеской нации на карте</p>
+                        <span class="price">₽349</span>
+                    </div>
+                    <div class="donate-item">
+                        <div class="item-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#ff9800" stroke-width="1.5">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="12" y1="2" x2="12" y2="22"/>
+                                <line x1="2" y1="12" x2="22" y2="12"/>
+                            </svg>
+                        </div>
+                        <h4>Сфера влияния</h4>
+                        <p class="desc">Мгновенный захват нейтрального чанка</p>
+                        <span class="price">₽199</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== ФУТЕР ===== -->
+    <footer>
+        © 2026 <span>SARMINE</span> — Minecraft сервер. IP: sarmine.fun
+    </footer>
+
+    <!-- ===== СКРИПТЫ ===== -->
+    <script>
+        // Переключение вкладок
+        function showSection(name) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById('section-' + name).classList.add('active');
+            
+            document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+            document.getElementById('nav-' + name).classList.add('active');
+            
+            window.scrollTo(0, 0);
+        }
+
+        // Обработка карты
+        var MAP_URL = 'http://sarmine.fun:8123';
+
+        function reloadMap() {
+            var wrapper = document.getElementById('mapWrapper');
+            var oldFrame = document.getElementById('mapFrame');
+            var fallback = document.getElementById('mapFallback');
+            
+            fallback.classList.remove('visible');
+            
+            var newFrame = document.createElement('iframe');
+            newFrame.id = 'mapFrame';
+            newFrame.src = MAP_URL;
+            newFrame.allowFullscreen = true;
+            newFrame.loading = 'lazy';
+            newFrame.title = 'Карта сервера SARMINE';
+            newFrame.style.cssText = 'width:100%;height:100%;border:none;';
+            newFrame.onload = hideMapFallback;
+            newFrame.onerror = showMapFallback;
+            
+            oldFrame.replaceWith(newFrame);
+        }
+
+        function showMapFallback() {
+            document.getElementById('mapFallback').classList.add('visible');
+        }
+
+        function hideMapFallback() {
+            document.getElementById('mapFallback').classList.remove('visible');
+        }
+
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                var frame = document.getElementById('mapFrame');
+                if (!frame.dataset.loaded) {
+                    // Ждём onerror
+                }
+            }, 8000);
+        });
+
+        // Донат-магазин
+        var currentDonateMode = null;
+
+        function selectDonateMode(mode) {
+            currentDonateMode = mode;
+            document.getElementById('donateModeSelect').classList.add('hidden');
+            document.getElementById('donateAnarchy').classList.add('hidden');
+            document.getElementById('donateSurvival').classList.add('hidden');
+            document.getElementById('donatePolit').classList.add('hidden');
+            
+            if (mode === 'anarchy') {
+                document.getElementById('donateAnarchy').classList.remove('hidden');
+            } else if (mode === 'survival') {
+                document.getElementById('donateSurvival').classList.remove('hidden');
+            } else if (mode === 'polit') {
+                document.getElementById('donatePolit').classList.remove('hidden');
+            }
+            
+            window.scrollTo(0, 0);
+        }
+
+        function backToModes() {
+            document.getElementById('donateAnarchy').classList.add('hidden');
+            document.getElementById('donateSurvival').classList.add('hidden');
+            document.getElementById('donatePolit').classList.add('hidden');
+            document.getElementById('donateModeSelect').classList.remove('hidden');
+            currentDonateMode = null;
+            window.scrollTo(0, 0);
+        }
+    </script>
+
+</body>
+</html>
