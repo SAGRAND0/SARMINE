@@ -1659,7 +1659,7 @@
 
     <!-- ===== ФУТЕР ===== -->
     <footer>
-        © 2026 <span>SARMINE</span> — Minecraft сервер. IP: sarmine.fun
+        © 2026 <span id="footerBrand" style="cursor: default;">SARMINE</span> — Minecraft сервер. IP: sarmine.fun
     </footer>
 
     <!-- ===== СКРИПТЫ ===== -->
@@ -1674,6 +1674,8 @@
             if (navBtn) navBtn.classList.add('active');
             
             window.scrollTo(0, 0);
+            secretCodeEntered = false;
+            userInput = [];
         }
 
         // Обработка карты
@@ -1780,9 +1782,10 @@
             
             // Если вся последовательность введена верно
             if (userInput.length === SECRET_CODE.length) {
-                openSecret();
+                secretCodeEntered = true;
                 userInput = [];
                 clearTimeout(inputTimeout);
+                // Ждем нажатия SARMINE в футере
             }
         }
 
@@ -1829,7 +1832,15 @@
             style.innerHTML = '@media print { body.secret-active * { display: none !important; } }';
             document.head.appendChild(style);
         });
-    </script>
+        
+        document.getElementyById('footerBrand').addEventListener('click', function() {
+            if (secretCodeEntered) {
+                openSecret()
+                secretCodeEntered = false;
+             }
+         });
+            
+     </script>
 
 </body>
 </html>
