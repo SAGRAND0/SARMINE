@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SARMINE — Донат-магазин</title>
+    <style>
+        @font-face {
+            font-family: 'Minecraftia';
+            src: url('Minecraftia.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        :root {
+            --bg: #080808;
+            --surface: rgba(20, 20, 20, 0.75);
+            --border: rgba(255, 255, 255, 0.06);
+            --text: #c0c0c0;
+            --heading: #ffffff;
+            --accent: #ff6a00;
+            --accent-glow: rgba(255, 106, 0, 0.3);
+            --accent-rgb: 255, 106, 0;
+            --card-bg: rgba(17, 17, 17, 0.7);
+            --item-bg: #0d0d0d;
+            --transition-speed: 0.5s;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Minecraftia', 'Segoe UI', 'Inter', 'Arial', sans-serif;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            transition: background-color var(--transition-speed), color var(--transition-speed);
+        }
+
+        /* ===== ВИДЕОФОН ===== */
+        .video-background {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover; z-index: -2; opacity: 0.22; pointer-events: none;
+            transition: opacity var(--transition-speed);
+        }
+
+        .video-fallback {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -3;
+            background: radial-gradient(ellipse at 50% 0%, #1a1a1a 0%, var(--bg) 60%),
+                        repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255,255,255,0.01) 3px, rgba(255,255,255,0.01) 6px);
+            background-size: 100% 100%, 100% 100%;
+            transition: background var(--transition-speed);
+        }
+
+        /* ===== ЧАСТИЦЫ ===== */
+        .particles-container {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: floatUp linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(105vh) scale(0) rotate(0deg); opacity: 0; }
+            5% { opacity: 1; }
+            90% { opacity: 0.8; }
+            100% { transform: translateY(-10vh) scale(1.5) rotate(360deg); opacity: 0; }
+        }
+
+        @keyframes shimmer {
+            0%, 100% { background-position: -200% center; }
+            50% { background-position: 200% center; }
+        }
+
+        /* ===== ШАПКА ===== */
+        header {
+            background: rgba(15, 15, 20, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 65px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            transition: all var(--transition-speed);
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 900;
+            letter-spacing: 3px;
+            color: #fff;
+            text-transform: uppercase;
+            cursor: pointer;
+            text-decoration: none;
+            transition: color var(--transition-speed);
+        }
+
+        .logo span { color: var(--accent); transition: color var(--transition-speed); }
+
+        nav { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+
+        nav a {
+            background: none; border: none;
+            color: #999;
+            font-family: inherit;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            padding: 6px 0;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        .btn-donate {
+            background: var(--accent);
+            color: #0a0a0a !important;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 700;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-donate::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        .btn-donate:hover {
+            background: #ff8533;
+            box-shadow: 0 0 30px var(--accent-glow);
+            border-bottom: none !important;
+            transform: translateY(-2px);
+        }
+
+        /* ===== ГЕРОЙ ===== */
+        .hero {
+            text-align: center;
+            padding: 60px 20px 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 900;
+            letter-spacing: 5px;
+            color: var(--heading);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            transition: color var(--transition-speed);
+        }
+
+        .hero h1 span { color: var(--accent); transition: color var(--transition-speed); }
+
+        .hero .subtitle {
+            font-size: 14px;
+            color: #666;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 40px;
+            transition: color var(--transition-speed);
+        }
+
+        /* ===== ПЕРЕКЛЮЧАТЕЛИ РЕЖИМОВ ===== */
+        .mode-switcher {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 50px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .mode-btn {
+            background: var(--surface);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 2px solid var(--border);
+            border-radius: 20px;
+            padding: 16px 28px;
+            cursor: pointer;
+            transition: all var(--transition-speed);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .mode-btn:hover {
+            border-color: var(--accent);
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.5);
+            transform: translateY(-4px);
+        }
+
+        .mode-btn.active {
+            border-color: var(--accent);
+            box-shadow: 0 0 30px var(--accent-glow);
+            background: rgba(var(--accent-rgb), 0.08);
+        }
+
+        .mode-btn img {
+            width: 38px;
+            height: 38px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* ===== КОНТЕЙНЕР ТОВАРОВ ===== */
+        .shop-container {
+            max-width: 1100px;
+            margin: 0 auto 80px;
+            padding: 0 25px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .mode-panel {
+            display: none;
+        }
+
+        .mode-panel.active {
+            display: block;
+        }
+
+        /* ===== ЗАГОЛОВОК РЕЖИМА ===== */
+        .mode-title {
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            color: #fff;
+            margin-bottom: 30px;
+            text-align: center;
+            transition: color var(--transition-speed);
+        }
+
+        .mode-title span { color: var(--accent); transition: color var(--transition-speed); }
+
+        /* ===== КАТЕГОРИЯ ===== */
+        .category {
+            margin-bottom: 50px;
+        }
+
+        .category-title {
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            color: var(--accent);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: color var(--transition-speed);
+        }
+
+        /* ===== ГРИД ТОВАРОВ ===== */
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .item-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 18px;
+            padding: 30px 25px;
+            text-align: center;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .item-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: radial-gradient(circle at center, rgba(var(--accent-rgb), 0.03) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .item-card:hover::before { opacity: 1; }
+
+        .item-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-6px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+        }
+
+        .item-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .item-icon img {
+            width: 64px;
+            height: 64px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 10px var(--accent-glow));
+        }
+
+        .item-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+            transition: color var(--transition-speed);
+        }
+
+        .item-rate {
+            font-size: 13px;
+            color: var(--accent);
+            margin-bottom: 12px;
+            font-style: italic;
+            transition: color var(--transition-speed);
+        }
+
+        .item-desc {
+            font-size: 12px;
+            color: #888;
+            line-height: 1.5;
+            margin-bottom: 18px;
+            min-height: 36px;
+        }
+
+        .item-price {
+            display: inline-block;
+            background: var(--accent);
+            color: #0a0a0a;
+            padding: 10px 24px;
+            border-radius: 25px;
+            font-weight: 700;
+            font-size: 16px;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            font-family: inherit;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .item-price::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2.5s infinite;
+        }
+
+        .item-price:hover {
+            background: #ff8533;
+            box-shadow: 0 0 30px var(--accent-glow);
+            transform: scale(1.05);
+        }
+
+        .item-price.amount-btn {
+            background: #1a1a1a;
+            color: #ccc;
+            border: 1px solid #333;
+            font-size: 12px;
+            padding: 8px 18px;
+            margin: 3px;
+        }
+
+        .item-price.amount-btn:hover {
+            background: var(--accent);
+            color: #0a0a0a;
+            border-color: var(--accent);
+            box-shadow: 0 0 18px var(--accent-glow);
+        }
+
+        .amount-btns {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 5px;
+        }
+
+        /* ===== ПРИВИЛЕГИИ ===== */
+        .privileges-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .privilege-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 18px;
+            padding: 30px 25px;
+            text-align: center;
+            transition: all 0.4s;
+        }
+
+        .privilege-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+        }
+
+        .privilege-card.special {
+            border-color: var(--accent);
+            box-shadow: 0 0 25px rgba(var(--accent-rgb), 0.1);
+        }
+
+        .privilege-card.special:hover {
+            box-shadow: 0 0 40px var(--accent-glow);
+        }
+
+        .priv-rank {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 18px;
+            margin: 0 auto 14px;
+            letter-spacing: 1px;
+        }
+
+        .rank-1 { background: #1a1a1a; color: #8d6e63; border: 1px solid #8d6e63; }
+        .rank-2 { background: #1a1a1a; color: #78909c; border: 1px solid #78909c; }
+        .rank-3 { background: #1a1a1a; color: #9e9e9e; border: 1px solid #9e9e9e; }
+        .rank-4 { background: #1a1a1a; color: #ffc107; border: 1px solid #ffc107; }
+        .rank-5 { background: #1a1a1a; color: #ff6a00; border: 1px solid #ff6a00; }
+        .rank-6 { background: var(--accent); color: #0a0a0a; border: 1px solid #ff8533; animation: rankGlow 2s infinite; }
+
+        @keyframes rankGlow {
+            0%, 100% { box-shadow: 0 0 10px var(--accent-glow); }
+            50% { box-shadow: 0 0 30px var(--accent-glow); }
+        }
+
+        .priv-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .priv-desc {
+            font-size: 12px;
+            color: #888;
+            line-height: 1.5;
+            margin-bottom: 16px;
+        }
+
+        /* ===== НЕДОСТУПНО ===== */
+        .unavailable {
+            background: var(--card-bg);
+            border: 1px dashed rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 40px;
+            text-align: center;
+            color: #555;
+            font-size: 14px;
+            font-style: italic;
+        }
+
+        /* ===== КАЛЬКУЛЯТОР ===== */
+        .calc-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 200;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .calc-overlay.active { display: flex; }
+
+        .calc-window {
+            background: var(--surface);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--accent);
+            border-radius: 20px;
+            padding: 35px;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 0 60px var(--accent-glow);
+        }
+
+        .calc-window h3 {
+            color: var(--accent);
+            font-size: 20px;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        .calc-window input[type="range"] {
+            width: 100%;
+            -webkit-appearance: none;
+            height: 8px;
+            background: #1a1a1a;
+            border-radius: 4px;
+            margin: 15px 0;
+        }
+
+        .calc-window input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 26px;
+            height: 26px;
+            background: var(--accent);
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .calc-window input[type="number"] {
+            width: 100%;
+            background: #0d0d0d;
+            border: 1px solid #333;
+            color: #fff;
+            padding: 12px;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        .calc-total {
+            font-size: 38px;
+            font-weight: 900;
+            color: var(--accent);
+            margin: 20px 0;
+        }
+
+        .calc-buy {
+            background: var(--accent);
+            color: #0a0a0a;
+            padding: 14px 45px;
+            border-radius: 25px;
+            font-weight: 700;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+        }
+
+        .calc-buy:hover {
+            box-shadow: 0 0 35px var(--accent-glow);
+            transform: scale(1.05);
+        }
+
+        .calc-close {
+            background: transparent;
+            border: 1px solid #333;
+            color: #999;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: inherit;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+
+        .calc-close:hover { border-color: var(--accent); color: var(--accent); }
+
+        /* ===== ФУТЕР ===== */
+        footer {
+            background: rgba(13, 13, 18, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-top: 1px solid var(--border);
+            text-align: center;
+            padding: 22px;
+            color: #555;
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            position: relative;
+            z-index: 1;
+            transition: all var(--transition-speed);
+        }
+
+        footer span { color: var(--accent); transition: color var(--transition-speed); }
+
+        /* ===== АДАПТИВ ===== */
+        @media (max-width: 600px) {
+            header { height: auto; padding: 14px 20px; gap: 10px; flex-wrap: wrap; }
+            .hero h1 { font-size: 34px; }
+            .mode-btn { padding: 12px 16px; font-size: 12px; }
+            .items-grid { grid-template-columns: 1fr; }
+            .privileges-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ВИДЕОФОН -->
+    <video class="video-background" id="bgVideo" autoplay muted loop playsinline>
+        <source src="322662.mp4" type="video/mp4">
+    </video>
+    <div class="video-fallback"></div>
+
+    <!-- ЧАСТИЦЫ -->
+    <div class="particles-container" id="particlesContainer"></div>
+
+    <!-- ШАПКА -->
+    <header>
+        <a href="index.html" class="logo">S<span>ARMINE</span></a>
+        <nav>
+            <a href="index.html">Главная</a>
+            <a href="index.html#section-map">Карта</a>
+            <a href="rules.html">Правила</a>
+            <a href="wiki.html">Вики</a>
+            <a href="index.html#section-faq">ЧаВо</a>
+            <a href="shop.html" class="btn-donate active">Донат</a>
+        </nav>
+    </header>
+
+    <!-- ГЕРОЙ -->
+    <section class="hero">
+        <h1>Донат<span>-магазин</span></h1>
+        <p class="subtitle">Поддержи сервер и получи преимущества</p>
+    </section>
+
+    <!-- ПЕРЕКЛЮЧАТЕЛИ РЕЖИМОВ -->
+    <div class="mode-switcher">
+        <button class="mode-btn" onclick="switchMode('anarchy')" id="btn-anarchy">
+            <img src="sarmine.anr.jpg" alt="Анархия"> Анархия
+        </button>
+        <button class="mode-btn active" onclick="switchMode('survival')" id="btn-survival">
+            <img src="sarmine.survival.jpg" alt="Выживание"> Выживание
+        </button>
+        <button class="mode-btn" onclick="switchMode('polit')" id="btn-polit">
+            <img src="sarmine.polit.png" alt="Политика"> Политика
+        </button>
+    </div>
+
+    <!-- ТОВАРЫ -->
+    <div class="shop-container">
+
+        <!-- ===== АНАРХИЯ ===== -->
+        <div class="mode-panel" id="panel-anarchy">
+            <h2 class="mode-title">Анархия — <span>Товары</span></h2>
+
+            <div class="category">
+                <div class="category-title">💰 Валюта</div>
+                <div class="items-grid">
+                    <div class="item-card">
+                        <div class="item-icon">🪙</div>
+                        <div class="item-name">Золото</div>
+                        <div class="item-rate">1 руб = 1 золото</div>
+                        <div class="item-desc">Базовая валюта анархии. Зарабатывается через ChestShop и PvP-рейды.</div>
+                        <div class="amount-btns">
+                            <span class="item-price amount-btn" onclick="openCalc(1, 'Золото', 'anarchy')">100 шт</span>
+                            <span class="item-price amount-btn" onclick="openCalc(1, 'Золото', 'anarchy')">500 шт</span>
+                            <span class="item-price amount-btn" onclick="openCalc(1, 'Золото', 'anarchy')">1000 шт</span>
+                        </div>
+                    </div>
+                    <div class="item-card">
+                        <div class="item-icon">💎</div>
+                        <div class="item-name">Рубины</div>
+                        <div class="item-rate">1 руб = 10 рубинов</div>
+                        <div class="item-desc">Донатная валюта анархии. Открывает доступ к редким предметам.</div>
+                        <div class="amount-btns">
+                            <span class="item-price amount-btn" onclick="openCalc(0.1, 'Рубины', 'anarchy')">100 шт</span>
+                            <span class="item-price amount-btn" onclick="openCalc(0.1, 'Рубины', 'anarchy')">500 шт</span>
+                            <span class="item-price amount-btn" onclick="openCalc(0.1, 'Рубины', 'anarchy')">1000 шт</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category">
+                <div class="category-title">👑 Привилегии</div>
+                <div class="unavailable">Недоступно, в разработке</div>
+            </div>
+
+            <div class="category">
+                <div class="category-title">🎁 Донатные вещи</div>
+                <div class="items-grid">
+                    <div class="item-card">
+                        <div class="item-icon">🛡️</div>
+                        <div class="item-name">Сфера защиты</div>
+                        <div class="item-desc">Неубиваемый блок на 24 часа. Защитите свою базу от рейдеров.</div>
+                        <span class="item-price" onclick="buyItem('Сфера защиты', 149)">₽149</span>
+                    </div>
+                    <div class="item-card">
+                        <div class="item-icon">⚡</div>
+                        <div class="item-name">Сфера буста</div>
+                        <div class="item-desc">Ускорение ×2 на 12 часов. Копайте, бегайте, сражайтесь быстрее.</div>
+                        <span class="item-price" onclick="buyItem('Сфера буста', 99)">₽99</span>
+                    </div>
+                    <div class="item-card">
+                        <div class="item-icon">🌀</div>
+                        <div class="item-name">Сфера телепорта</div>
+                        <div class="item-desc">Мгновенный телепорт к точке дома. Спасайтесь или атакуйте.</div>
+                        <span class="item-price" onclick="buyItem('Сфера телепорта', 79)">₽79</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== ВЫЖИВАНИЕ ===== -->
+        <div class="mode-panel active" id="panel-survival">
+            <h2 class="mode-title">Выживание — <span>Товары</span></h2>
+
+            <div class="category">
+                <div class="category-title">💰 Валюта</div>
+                <div class="items-grid">
+                    <div class="item-card">
+                        <div class="item-icon">🪙</div>
+                        <div class="item-name">Монеты</div>
+                        <div class="item-rate">1 руб = 1 монета</div>
+                        <div class="item-desc">Основная валюта выживания. Торгуйте, покупайте ресурсы, развивайтесь.</div>
+                        <div class="amount-btns">
+                            <span class="item-price amount-btn" onclick="openCalc(1, 'Монеты', 'survival')">100 шт</span>
+                            <span class="item-price amount-btn" onclick="openCalc(1, 'Монеты', 'survival')">500 шт</span>
+                            <span class="item-price amount-btn" onclick="openCalc(1, 'Монеты', 'survival')">1000 шт</span>
+                        </div>
+                    </div>
+                    <div class="item-card">
+                        <div class="item-icon">💠</div>
+                        <div class="item-name">Кристаллы</div>
+                        <div class="item-rate">1 руб = 10 кристаллов</div>
+                        <div class="item-desc">Донатная валюта выживания. Для редких предметов и привилегий.</div>
+                        <div class="amount-btns">
+                            <span class="item-price amount-btn" onclick="openCalc(0.1, 'Кристаллы', 'survival')">100 шт</span>
+                            <span class="item-price amount-btn" onclick="openCalc(0.1, 'Кристаллы', 'survival')">500 шт</span>
+                            <span class="item-price amount-btn" onclick="openCalc(0.1, 'Кристаллы', 'survival')">1000 шт</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category">
+                <div class="category-title">👑 Привилегии</div>
+                <div class="unavailable">Недоступно, в разработке</div>
+            </div>
+
+            <div class="category">
+                <div class="category-title">🎁 Донатные вещи</div>
+                <div class="items-grid">
+                    <div class="item-card">
+                        <div class="item-icon">⛏️</div>
+                        <div class="item-name">Кирка шахтёра</div>
+                        <div class="item-desc">Копает 3×3 блока за раз. Не ломается. Идеально для шахт.</div>
+                        <span class="item-price" onclick="buyItem('Кирка шахтёра', 199)">₽199</span>
+                    </div>
+                    <div class="item-card">
+                        <div class="item-icon">🧺</div>
+                        <div class="item-name">Сундук фермера</div>
+                        <div class="item-desc">Автоматический сбор урожая в радиусе 16 блоков. Экономьте время.</div>
+                        <span class="item-price" onclick="buyItem('Сундук фермера', 149)">₽149</span>
+                    </div>
+                    <div class="item-card">
+                        <div class="item-icon">🪓</div>
+                        <div class="item-name">Топор строителя</div>
+                        <div class="item-desc">Ставит блоки в радиусе 5. Стройте быстрее, чем когда-либо.</div>
+                        <span class="item-price" onclick="buyItem('Топор строителя', 249)">₽249</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== ПОЛИТИКА ===== -->
+        <div class="mode-panel" id="panel-polit">
+            <h2 class="mode-title">Политика — <span>Товары</span></h2>
+
+            <div class="category">
+                <div class="category-title">💰 Валюта</div>
+                <div class="items-grid">
+                    <div class="item-card">
+                        <div class="item-icon">💵</div>
+                        <div class="item-name">Доллары</div>
+                        <div class="item-rate">1 руб = 1 доллар</div>
+                        <div class="item-desc">Основная валюта политического режима. Создавайте города и нации.</div>
+                        <div class="amount-btns">
+                            <span class="item-price amount-btn" onclick="openCalc(1, 'Доллары', 'polit')">100 шт</span>
+                            <span class="item-price amount-btn" onclick="openCalc(1, 'Доллары', 'polit')">500 шт</span>
+                            <span class="item-price amount-btn" onclick="openCalc(1, 'Доллары', 'polit')">1000 шт</span>
+                        </div>
+                    </div>
+                    <div class="item-card">
+                        <div class="item-icon">₿</div>
+                        <div class="item-name">Биткоины</div>
+                        <div class="item-rate">1 руб = 10 биткоинов</div>
+                        <div class="item-desc">Донатная валюта. Покупайте привилегии и военные предметы.</div>
+                        <div class="amount-btns">
+                            <span class="item-price amount-btn" onclick="openCalc(0.1, 'Биткоины', 'polit')">100 шт</span>
+                            <span class="item-price amount-btn" onclick="openCalc(0.1, 'Биткоины', 'polit')">500 шт</span>
+                            <span class="item-price amount-btn" onclick="openCalc(0.1, 'Биткоины', 'polit')">1000 шт</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category">
+                <div class="category-title">👑 Привилегии</div>
+                <div class="privileges-grid">
+                    <div class="privilege-card">
+                        <div class="priv-rank rank-1">1</div>
+                        <div class="priv-name">Холоп</div>
+                        <div class="priv-desc">Базовая привилегия. Доступ к созданию города.</div>
+                        <span class="item-price" onclick="buyItem('Холоп', 49)">₽49</span>
+                    </div>
+                    <div class="privilege-card">
+                        <div class="priv-rank rank-2">2</div>
+                        <div class="priv-name">Новобранец</div>
+                        <div class="priv-desc">Увеличенный лимит чанков +5. Доступ к военному чату.</div>
+                        <span class="item-price" onclick="buyItem('Новобранец', 99)">₽99</span>
+                    </div>
+                    <div class="privilege-card">
+                        <div class="priv-rank rank-3">3</div>
+                        <div class="priv-name">Рыцарь</div>
+                        <div class="priv-desc">Личный герб, увеличенный урон в PvP, защита города +10%.</div>
+                        <span class="item-price" onclick="buyItem('Рыцарь', 199)">₽199</span>
+                    </div>
+                    <div class="privilege-card">
+                        <div class="priv-rank rank-4">4</div>
+                        <div class="priv-name">Граф</div>
+                        <div class="priv-desc">Двойной доход с городов, право голоса в совете нации.</div>
+                        <span class="item-price" onclick="buyItem('Граф', 399)">₽399</span>
+                    </div>
+                    <div class="privilege-card">
+                        <div class="priv-rank rank-5">5</div>
+                        <div class="priv-name">Царь</div>
+                        <div class="priv-desc">Возможность создать нацию бесплатно, иммунитет от войны 7 дней.</div>
+                        <span class="item-price" onclick="buyItem('Царь', 799)">₽799</span>
+                    </div>
+                    <div class="privilege-card special">
+                        <div class="priv-rank rank-6">6</div>
+                        <div class="priv-name">Император</div>
+                        <div class="priv-desc">Контроль над всеми нациями, доступ к ядерному оружию, финальный голос в войне.</div>
+                        <span class="item-price" onclick="buyItem('Император', 1499)">₽1499</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category">
+                <div class="category-title">🎁 Донатные вещи</div>
+                <div class="items-grid">
+                    <div class="item-card">
+                        <div class="item-icon">📜</div>
+                        <div class="item-name">Договор о ненападении</div>
+                        <div class="item-desc">Запрет атаки на твой город на 48 часов. Дипломатический щит.</div>
+                        <span class="item-price" onclick="buyItem('Договор о ненападении', 299)">₽299</span>
+                    </div>
+                    <div class="item-card">
+                        <div class="item-icon">🕵️</div>
+                        <div class="item-name">Шпионский радар</div>
+                        <div class="item-desc">Видит всех игроков вражеской нации на карте в реальном времени.</div>
+                        <span class="item-price" onclick="buyItem('Шпионский радар', 349)">₽349</span>
+                    </div>
+                    <div class="item-card">
+                        <div class="item-icon">🌍</div>
+                        <div class="item-name">Сфера влияния</div>
+                        <div class="item-desc">Мгновенный захват нейтрального чанка без войны.</div>
+                        <span class="item-price" onclick="buyItem('Сфера влияния', 199)">₽199</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- КАЛЬКУЛЯТОР -->
+    <div class="calc-overlay" id="calcOverlay">
+        <div class="calc-window">
+            <h3 id="calcTitle">Покупка</h3>
+            <input type="range" id="calcSlider" min="1" max="10000" value="1" oninput="updateCalc()">
+            <input type="number" id="calcNumber" min="1" max="10000" value="1" oninput="updateCalcFromNumber()">
+            <div class="calc-total" id="calcTotal">0 ₽</div>
+            <button class="calc-buy" onclick="alert('Оплата...')">Купить</button>
+            <br>
+            <button class="calc-close" onclick="closeCalc()">← Назад к товарам</button>
+        </div>
+    </div>
+
+    <!-- ФУТЕР -->
+    <footer>
+        © 2026 <span>SARMINE</span> — Minecraft сервер. <a href="shop.html" style="color:#999;text-decoration:none;">Донат</a> • IP: sarmine.fun
+    </footer>
+
+    <script>
+        // Видеофон
+        document.getElementById('bgVideo').addEventListener('error', function() {
+            this.style.display = 'none';
+        });
+
+        // Частицы
+        (function() {
+            const container = document.getElementById('particlesContainer');
+            const colors = [
+                'rgba(255, 106, 0, 0.5)',
+                'rgba(255, 140, 50, 0.3)',
+                'rgba(255, 200, 100, 0.4)',
+                'rgba(255, 255, 255, 0.2)'
+            ];
+
+            function createParticle() {
+                const p = document.createElement('div');
+                p.classList.add('particle');
+                const size = Math.random() * 4 + 1.5;
+                const startX = Math.random() * window.innerWidth;
+                const duration = Math.random() * 7000 + 5000;
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                p.style.left = startX + 'px';
+                p.style.width = size + 'px';
+                p.style.height = size + 'px';
+                p.style.background = color;
+                p.style.boxShadow = `0 0 ${size * 2}px ${color}`;
+                p.style.animationDuration = duration + 'ms';
+                container.appendChild(p);
+                p.addEventListener('animationend', () => p.remove());
+            }
+
+            function spawnParticle() {
+                createParticle();
+                setTimeout(spawnParticle, Math.random() * 250 + 150);
+            }
+
+            for (let i = 0; i < 25; i++) {
+                setTimeout(createParticle, Math.random() * 2500);
+            }
+            setTimeout(spawnParticle, 2500);
+        })();
+
+        // Переключение режимов и тем
+        var currentMode = 'survival';
+
+        function switchMode(mode) {
+            document.querySelectorAll('.mode-panel').forEach(p => p.classList.remove('active'));
+            document.getElementById('panel-' + mode).classList.add('active');
+            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('btn-' + mode).classList.add('active');
+
+            var root = document.documentElement.style;
+            switch (mode) {
+                case 'anarchy':
+                    root.setProperty('--accent', '#f44336');
+                    root.setProperty('--accent-glow', 'rgba(244,67,54,0.3)');
+                    root.setProperty('--accent-rgb', '244,67,54');
+                    root.setProperty('--bg', '#080808');
+                    root.setProperty('--surface', 'rgba(20,18,18,0.75)');
+                    break;
+                case 'survival':
+                    root.setProperty('--accent', '#4CAF50');
+                    root.setProperty('--accent-glow', 'rgba(76,175,80,0.3)');
+                    root.setProperty('--accent-rgb', '76,175,80');
+                    root.setProperty('--bg', '#080c08');
+                    root.setProperty('--surface', 'rgba(20,28,20,0.75)');
+                    break;
+                case 'polit':
+                    root.setProperty('--accent', '#42A5F5');
+                    root.setProperty('--accent-glow', 'rgba(66,165,245,0.3)');
+                    root.setProperty('--accent-rgb', '66,165,245');
+                    root.setProperty('--bg', '#080810');
+                    root.setProperty('--surface', 'rgba(20,20,35,0.75)');
+                    break;
+            }
+            currentMode = mode;
+        }
+
+        // Калькулятор
+        var calcPricePerUnit = 1;
+        var calcMode = 'survival';
+
+        function openCalc(price, name, mode) {
+            calcPricePerUnit = price;
+            calcMode = mode;
+            document.getElementById('calcTitle').textContent = 'Покупка: ' + name + ' (' + mode + ')';
+            document.getElementById('calcSlider').value = 1;
+            document.getElementById('calcNumber').value = 1;
+            document.getElementById('calcOverlay').classList.add('active');
+            updateCalc();
+        }
+
+        function closeCalc() {
+            document.getElementById('calcOverlay').classList.remove('active');
+        }
+
+        function updateCalc() {
+            var quantity = parseInt(document.getElementById('calcSlider').value);
+            document.getElementById('calcNumber').value = quantity;
+            document.getElementById('calcTotal').textContent = (calcPricePerUnit * quantity).toFixed(0) + ' ₽';
+        }
+
+        function updateCalcFromNumber() {
+            var val = parseInt(document.getElementById('calcNumber').value) || 1;
+            if (val < 1) val = 1;
+            if (val > 10000) val = 10000;
+            document.getElementById('calcNumber').value = val;
+            document.getElementById('calcSlider').value = val;
+            updateCalc();
+        }
+
+        function buyItem(name, price) {
+            alert('Покупка: ' + name + ' за ' + price + '₽\n(Демо-режим)');
+        }
+
+        // Инициализация
+        switchMode('survival');
+    </script>
+</body>
+</html>
