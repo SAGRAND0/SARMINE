@@ -13,155 +13,463 @@
             font-display: swap;
         }
 
+        :root {
+            --bg: #080808;
+            --surface: rgba(20, 20, 20, 0.75);
+            --border: rgba(255, 255, 255, 0.06);
+            --text: #c0c0c0;
+            --heading: #ffffff;
+            --accent: #ff6a00;
+            --accent-glow: rgba(255, 106, 0, 0.3);
+            --accent-rgb: 255, 106, 0;
+            --card-bg: rgba(17, 17, 17, 0.7);
+            --transition-speed: 0.5s;
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background-color: #080808;
-            color: #c0c0c0;
-            font-family: 'Minecraftia', 'Courier New', monospace;
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Minecraftia', 'Segoe UI', 'Inter', 'Arial', sans-serif;
             min-height: 100vh;
             position: relative;
             overflow-x: hidden;
+            transition: background-color var(--transition-speed), color var(--transition-speed);
         }
 
+        /* ===== ВИДЕОФОН ===== */
         .video-background {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            object-fit: cover; z-index: -2; opacity: 0.25; pointer-events: none;
+            object-fit: cover; z-index: -2; opacity: 0.22; pointer-events: none;
+            transition: opacity var(--transition-speed);
         }
 
         .video-fallback {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -3;
-            background-image: radial-gradient(ellipse at 50% 0%, #1a1a1a 0%, #080808 60%),
-                              repeating-linear-gradient(0deg, transparent, transparent 2px, #0c0c0c 2px, #0c0c0c 4px);
+            background: radial-gradient(ellipse at 50% 0%, #1a1a1a 0%, var(--bg) 60%),
+                        repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255,255,255,0.01) 3px, rgba(255,255,255,0.01) 6px);
             background-size: 100% 100%, 100% 100%;
+            transition: background var(--transition-speed);
         }
 
+        /* ===== ЧАСТИЦЫ ===== */
+        .particles-container {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: floatUp linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(105vh) scale(0) rotate(0deg); opacity: 0; }
+            5% { opacity: 1; }
+            90% { opacity: 0.8; }
+            100% { transform: translateY(-10vh) scale(1.5) rotate(360deg); opacity: 0; }
+        }
+
+        @keyframes shimmer {
+            0%, 100% { background-position: -200% center; }
+            50% { background-position: 200% center; }
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        /* ===== ШАПКА ===== */
         header {
-            background: rgba(20,20,20,0.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-            border-bottom: 2px solid #ff6a00; padding: 0 20px; display: flex;
-            justify-content: space-between; align-items: center; height: 60px;
-            position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 25px rgba(255,106,0,0.12);
+            background: rgba(15, 15, 20, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 65px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            transition: all var(--transition-speed);
         }
 
         .logo {
-            font-family: 'Minecraftia', monospace; font-size: 20px; font-weight: 900;
-            letter-spacing: 2px; color: #fff; text-transform: uppercase; cursor: pointer;
+            font-size: 22px;
+            font-weight: 900;
+            letter-spacing: 3px;
+            color: #fff;
+            text-transform: uppercase;
+            cursor: pointer;
             text-decoration: none;
+            transition: color var(--transition-speed);
         }
-        .logo span { color: #ff6a00; }
 
-        nav { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+        .logo span { color: var(--accent); transition: color var(--transition-speed); }
+
+        nav { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+
         nav a {
-            background: none; border: none; color: #999; font-family: 'Minecraftia', monospace;
-            font-size: 11px; font-weight: 400; letter-spacing: 1px; text-transform: uppercase;
-            cursor: pointer; padding: 6px 0; border-bottom: 2px solid transparent; transition: all 0.3s;
+            background: none; border: none;
+            color: #999;
+            font-family: inherit;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            padding: 6px 0;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s;
             text-decoration: none;
         }
-        nav a:hover, nav a.active { color: #ff6a00; border-bottom-color: #ff6a00; }
+
+        nav a:hover, nav a.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
 
         .btn-home {
-            background: #ff6a00; color: #0a0a0a !important; padding: 8px 16px;
-            border-radius: 4px; font-weight: 700; transition: all 0.3s;
+            background: var(--accent);
+            color: #0a0a0a !important;
+            padding: 8px 18px;
+            border-radius: 25px;
+            font-weight: 700;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
         }
-        .btn-home:hover { background: #ff8533; box-shadow: 0 0 25px rgba(255,106,0,0.4); border-bottom: none !important; }
 
-        .hero { text-align: center; padding: 60px 20px 30px; }
-        .hero h1 { font-family: 'Minecraftia', monospace; font-size: 42px; font-weight: 900; letter-spacing: 4px; color: #fff; text-transform: uppercase; margin-bottom: 8px; }
-        .hero h1 span { color: #ff6a00; }
-        .hero .subtitle { font-family: 'Minecraftia', monospace; font-size: 13px; color: #666; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 35px; }
+        .btn-home::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: shimmer 3s infinite;
+        }
 
-        .wiki-search { max-width: 700px; margin: 0 auto 30px; padding: 0 20px; }
+        .btn-home:hover {
+            background: #ff8533;
+            box-shadow: 0 0 25px var(--accent-glow);
+            border-bottom: none !important;
+            transform: translateY(-2px);
+        }
+
+        /* ===== ГЕРОЙ ===== */
+        .hero {
+            text-align: center;
+            padding: 60px 20px 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 900;
+            letter-spacing: 5px;
+            background: linear-gradient(135deg, var(--accent), #fff, var(--accent));
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 4s ease infinite;
+        }
+
+        .hero .subtitle {
+            font-size: 14px;
+            color: #666;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin: 10px 0 25px;
+        }
+
+        /* ===== ПЕРЕКЛЮЧАТЕЛИ РЕЖИМОВ ===== */
+        .mode-switcher {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .mode-btn {
+            background: var(--surface);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 2px solid var(--border);
+            border-radius: 20px;
+            padding: 16px 28px;
+            cursor: pointer;
+            transition: all var(--transition-speed);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .mode-btn:hover {
+            border-color: var(--accent);
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.5);
+            transform: translateY(-4px);
+        }
+
+        .mode-btn.active {
+            border-color: var(--accent);
+            box-shadow: 0 0 30px var(--accent-glow);
+            background: rgba(var(--accent-rgb), 0.08);
+        }
+
+        .mode-btn img {
+            width: 38px;
+            height: 38px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* ===== ПОИСК ===== */
+        .wiki-search {
+            max-width: 700px;
+            margin: 0 auto 40px;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+
         .wiki-search input {
-            width: 100%; background: #0d0d0d; border: 1px solid #1e1e1e; border-radius: 10px;
-            padding: 14px 20px; color: #fff; font-family: 'Minecraftia', monospace; font-size: 14px;
-            letter-spacing: 1px; transition: all 0.3s;
+            width: 100%;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 16px 24px;
+            color: #fff;
+            font-family: inherit;
+            font-size: 15px;
+            letter-spacing: 1px;
+            transition: all 0.3s;
         }
-        .wiki-search input:focus { outline: none; border-color: #ff6a00; box-shadow: 0 0 15px rgba(255,106,0,0.15); }
+
+        .wiki-search input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
         .wiki-search input::placeholder { color: #555; }
 
-        .wiki-container { max-width: 850px; margin: 0 auto 60px; padding: 0 20px; }
+        /* ===== КОНТЕЙНЕР ВИКИ ===== */
+        .wiki-container {
+            max-width: 900px;
+            margin: 0 auto 80px;
+            padding: 0 25px;
+            position: relative;
+            z-index: 1;
+        }
 
         .wiki-section {
-            background: rgba(17,17,17,0.7); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
-            border: 1px solid #1e1e1e; border-radius: 14px; padding: 30px 25px;
-            margin-bottom: 25px; position: relative; overflow: hidden; transition: all 0.3s;
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 35px 30px;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: all var(--transition-speed);
         }
+
         .wiki-section.hidden-section { display: none; }
+
         .wiki-section::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%;
-            background: #ff6a00; border-radius: 0 3px 3px 0;
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 4px; height: 100%;
+            background: var(--accent);
+            border-radius: 0 4px 4px 0;
+            transition: background var(--transition-speed);
         }
 
         .wiki-section h2 {
-            font-family: 'Minecraftia', monospace; font-size: 20px; font-weight: 700;
-            letter-spacing: 1px; color: #ff6a00; margin-bottom: 15px; text-transform: uppercase;
-            display: flex; align-items: center; gap: 12px;
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            color: var(--accent);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            transition: color var(--transition-speed);
         }
-        .wiki-section h2 img { width: 32px; height: 32px; object-fit: cover; border-radius: 6px; }
+
+        .wiki-section h2 img {
+            width: 36px;
+            height: 36px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
 
         .wiki-content {
-            color: #bbb; font-size: 13px; line-height: 1.7; letter-spacing: 0.5px;
+            color: #bbb;
+            font-size: 13px;
+            line-height: 1.8;
+            letter-spacing: 0.5px;
         }
+
         .wiki-content h3 {
-            font-family: 'Minecraftia', monospace; font-size: 16px; color: #fff;
-            margin: 20px 0 10px; padding-bottom: 5px; border-bottom: 1px solid #1a1a1a;
+            font-size: 17px;
+            font-weight: 700;
+            color: #fff;
+            margin: 25px 0 12px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            letter-spacing: 0.5px;
         }
-        .wiki-content p { margin-bottom: 12px; }
+
+        .wiki-content p { margin-bottom: 14px; }
+
         .wiki-content .cmd {
-            display: inline-block; background: #0d0d0d; border: 1px solid #333;
-            padding: 4px 10px; border-radius: 4px; font-family: 'Minecraftia', monospace;
-            color: #ff6a00; font-size: 12px; margin: 2px 0;
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-family: inherit;
+            color: var(--accent);
+            font-size: 13px;
+            margin: 2px 0;
+            transition: all 0.3s;
         }
-        .wiki-content ul { margin: 10px 0 15px 20px; list-style-type: none; }
-        .wiki-content ul li { margin-bottom: 6px; position: relative; padding-left: 16px; }
-        .wiki-content ul li::before { content: '›'; position: absolute; left: 0; color: #ff6a00; font-weight: bold; }
+
+        .wiki-content ul {
+            margin: 12px 0 18px 20px;
+            list-style-type: none;
+        }
+
+        .wiki-content ul li {
+            margin-bottom: 8px;
+            position: relative;
+            padding-left: 18px;
+        }
+
+        .wiki-content ul li::before {
+            content: '›';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+            font-size: 18px;
+        }
+
         .wiki-content .note {
-            background: rgba(255,106,0,0.08); border: 1px solid rgba(255,106,0,0.2);
-            border-radius: 8px; padding: 12px 16px; margin: 15px 0; font-size: 12px; color: #ccc;
+            background: rgba(var(--accent-rgb), 0.06);
+            border: 1px solid rgba(var(--accent-rgb), 0.15);
+            border-radius: 12px;
+            padding: 14px 20px;
+            margin: 18px 0;
+            font-size: 12px;
+            color: #ccc;
+            line-height: 1.6;
         }
 
+        /* ===== ФУТЕР ===== */
         footer {
-            background: rgba(13,13,13,0.8); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
-            border-top: 1px solid #1a1a1a; text-align: center; padding: 20px;
-            color: #555; font-size: 10px; letter-spacing: 1px; position: relative; z-index: 1;
+            background: rgba(13, 13, 18, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-top: 1px solid var(--border);
+            text-align: center;
+            padding: 22px;
+            color: #555;
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            position: relative;
+            z-index: 1;
+            transition: all var(--transition-speed);
         }
-        footer span { color: #ff6a00; }
 
-        @media(max-width:600px){
-            header{height:auto;padding:12px 15px;gap:10px;flex-wrap:wrap}
-            .hero h1{font-size:32px} .wiki-section{padding:20px 18px}
+        footer span { color: var(--accent); transition: color var(--transition-speed); }
+
+        /* ===== АДАПТИВ ===== */
+        @media (max-width: 600px) {
+            header { height: auto; padding: 14px 20px; gap: 10px; flex-wrap: wrap; }
+            .hero h1 { font-size: 34px; }
+            .wiki-section { padding: 22px 18px; }
         }
     </style>
 </head>
 <body>
-    <video class="video-background" autoplay muted loop playsinline>
+    <video class="video-background" id="bgVideo" autoplay muted loop playsinline>
         <source src="322662.mp4" type="video/mp4">
     </video>
     <div class="video-fallback"></div>
+
+    <div class="particles-container" id="particlesContainer"></div>
 
     <header>
         <a href="index.html" class="logo">S<span>ARMINE</span></a>
         <nav>
             <a href="index.html">Главная</a>
             <a href="index.html#section-map">Карта</a>
-            <a href="index.html#section-rules">Правила</a>
+            <a href="rules.html">Правила</a>
             <a href="wiki.html" class="active">Вики</a>
-            <a href="index.html#section-donate" class="btn-home">Донат</a>
+            <a href="shop.html" class="btn-home">Донат</a>
         </nav>
     </header>
 
-    <div class="hero">
-        <h1>Вики <span>SARMINE</span></h1>
+    <section class="hero">
+        <h1>В И К И</h1>
         <p class="subtitle">Гайды, механики и описание режимов</p>
+    </section>
+
+    <!-- Переключатели разделов вики -->
+    <div class="mode-switcher">
+        <button class="mode-btn active" onclick="switchWikiMode('general')" id="btn-general">
+            📋 Основное
+        </button>
+        <button class="mode-btn" onclick="switchWikiMode('survival')" id="btn-survival">
+            <img src="sarmine.survival.jpg" alt="Выживание"> Выживание
+        </button>
+        <button class="mode-btn" onclick="switchWikiMode('polit')" id="btn-polit">
+            <img src="sarmine.polit.png" alt="Политика"> Политика
+        </button>
+        <button class="mode-btn" onclick="switchWikiMode('anarchy')" id="btn-anarchy">
+            <img src="sarmine.anr.jpg" alt="Анархия"> Анархия
+        </button>
     </div>
 
+    <!-- Поиск -->
     <div class="wiki-search">
         <input type="text" id="wikiSearch" placeholder="Поиск по вики..." oninput="filterWiki()">
     </div>
 
+    <!-- Контент -->
     <div class="wiki-container">
 
-        <div class="wiki-section" id="sec-general">
+        <!-- ===== ОСНОВНОЕ ===== -->
+        <div class="wiki-section" id="wiki-general">
             <h2>📋 Основное (все режимы)</h2>
             <div class="wiki-content">
                 <h3>Экономика и валюта</h3>
@@ -199,7 +507,29 @@
             </div>
         </div>
 
-        <div class="wiki-section" id="sec-polit">
+        <!-- ===== ВЫЖИВАНИЕ ===== -->
+        <div class="wiki-section" id="wiki-survival" style="display:none;">
+            <h2><img src="sarmine.survival.jpg" alt="Выживание"> Выживание</h2>
+            <div class="wiki-content">
+                <h3>Классический режим</h3>
+                <p>Выживание — это классический Minecraft с экономикой, приватами и плагинами. Здесь ты можешь строить, развиваться, торговать и объединяться в кланы. В отличие от анархии, твоя база защищена.</p>
+                <h3>Приват территории</h3>
+                <p>Для защиты постройки используй WorldEdit и WorldGuard:</p>
+                <p><span class="cmd">//wand</span> — получить инструмент для выделения территории (деревянный топор).</p>
+                <p>Левый клик — первая точка, правый клик — вторая точка.</p>
+                <p><span class="cmd">//expand vert</span> — расширить регион от коренной породы до неба.</p>
+                <p><span class="cmd">/rg claim Название</span> — создать приватный регион.</p>
+                <p><span class="cmd">/rg addmember Название Ник</span> — добавить друга в регион.</p>
+                <div class="note">Совет: всегда используй <span class="cmd">//expand vert</span> перед созданием региона. Иначе злоумышленник может прокопать сверху или снизу.</div>
+                <h3>Экономика и торговля</h3>
+                <p>Валюта выживания — монеты и кристаллы. Монеты зарабатываются продажей ресурсов через ChestShop. Кристаллы покупаются через донат.</p>
+                <h3>Кланы и объединения</h3>
+                <p>Объединяйся с другими игроками для совместного строительства и защиты. Кланы могут владеть общими территориями, торговать и защищать друг друга.</p>
+            </div>
+        </div>
+
+        <!-- ===== ПОЛИТИКА ===== -->
+        <div class="wiki-section" id="wiki-polit" style="display:none;">
             <h2><img src="sarmine.polit.png" alt="Политика"> Политический режим</h2>
             <div class="wiki-content">
                 <h3>Что такое Towny</h3>
@@ -210,93 +540,154 @@
                 <p><span class="cmd">/town claim</span> — расширить территорию города на один чанк.</p>
                 <p><span class="cmd">/town deposit Сумма</span> — пополнить казну города.</p>
                 <p><span class="cmd">/town set taxes Сумма</span> — установить налог для жителей.</p>
-                <p>Город автоматически защищает территорию от посторонних. Жители могут строить, а враги — нет.</p>
 
                 <h3>Как создать нацию</h3>
                 <p><span class="cmd">/nation new Название</span> — создать нацию (стоимость: 1000 долларов).</p>
                 <p><span class="cmd">/nation invite Город</span> — пригласить город в нацию.</p>
                 <p><span class="cmd">/nation deposit Сумма</span> — пополнить казну нации.</p>
-                <p>Нация может объявлять войны, захватывать чужие города и устанавливать дипломатические отношения.</p>
 
-                <h3>Siege War — осады и войны</h3>
-                <p>Siege War — это плагин для военных действий между нациями. Вот как это работает:</p>
+                <h3>Военная система SARMINE-War</h3>
+                <p>На сервере используется собственный плагин <span class="cmd">SARMINE-War</span>, заменяющий SiegeWar. Войны между городами и нациями ведутся через нашу кастомную механику:</p>
                 <ul>
-                    <li><span class="cmd">/nation enemy add Нация</span> — объявить нацию врагом.</li>
-                    <li><span class="cmd">/town toggle war</span> — включить режим войны для города.</li>
-                    <li>Осада начинается, когда одна нация атакует город другой нации.</li>
-                    <li>Во время осады чанки города могут быть захвачены. Победитель получает контроль над территорией.</li>
-                    <li>Захват длится определённое время. Защитники должны отбить атаку до истечения таймера.</li>
+                    <li><span class="cmd">/t war</span> — объявить войну городу. Начинается через 24 часа.</li>
+                    <li><span class="cmd">/n war</span> — объявить войну нации.</li>
+                    <li>Боевые действия: с 16:00 до 22:00 МСК.</li>
+                    <li>Очки войны: города — 600, нации — 1000.</li>
+                    <li>Флаг захвата — крафт: 2 красной шерсти + 2 палки.</li>
+                    <li>Флаг капитуляции — секретный крафт: 2 зелёной шерсти + 2 золотых блока.</li>
+                    <li>Военная бомба — крафт: 4 пороха + 1 TNT.</li>
                 </ul>
 
-                <h3>Захват территорий</h3>
-                <p>При успешной осаде победившая нация получает контроль над вражескими чанками. Жители побеждённого города становятся подданными новой нации. Территории можно отбить обратно через новую войну.</p>
-
-                <h3>Налоги и экономика</h3>
-                <p>Мэр устанавливает налог для жителей города. Король нации — налог для городов. Деньги из казны идут на расширение территорий, ведение войн и развитие инфраструктуры. Двойной доход доступен с привилегией «Граф» и выше.</p>
+                <h3>Гранаты (только в Политике)</h3>
+                <p>Система гранат доступна только на политическом режиме через команду <span class="cmd">/gr</span>:</p>
+                <ul>
+                    <li><b>Дымовая</b> — 500$. Радиус: 10 блоков, слепота и замедление.</li>
+                    <li><b>Молотов</b> — 1000$. Радиус: 15 блоков, 2 HP/с, поджигает.</li>
+                    <li><b>Осколочная</b> — 1100$. Радиус: 5 блоков, 10 HP урона.</li>
+                    <li><b>Обычная</b> — 1500$. Радиус: 6 блоков, разрушает блоки.</li>
+                </ul>
 
                 <h3>Дипломатия</h3>
                 <p>Нации могут быть в состоянии:</p>
                 <ul>
-                    <li><b>Союзники</b> — помогают друг другу в войнах (<span class="cmd">/nation ally add Нация</span>).</li>
-                    <li><b>Враги</b> — могут атаковать друг друга (<span class="cmd">/nation enemy add Нация</span>).</li>
+                    <li><b>Союзники</b> — <span class="cmd">/nation ally add Нация</span></li>
+                    <li><b>Враги</b> — <span class="cmd">/nation enemy add Нация</span></li>
                     <li><b>Нейтралитет</b> — стандартное состояние.</li>
                 </ul>
-                <p>Союзники автоматически вступают в войну на стороне друг друга.</p>
-                <div class="note">Совет: Всегда держите казну города и нации пополненной. Во время войны деньги списываются автоматически. Если казна опустеет — город или нация могут быть распущены.</div>
+                <div class="note">Совет: всегда держите казну города и нации пополненной. Во время войны деньги списываются автоматически. Если казна опустеет — город или нация могут быть распущены.</div>
             </div>
         </div>
 
-        <div class="wiki-section" id="sec-anarchy">
+        <!-- ===== АНАРХИЯ ===== -->
+        <div class="wiki-section" id="wiki-anarchy" style="display:none;">
             <h2><img src="sarmine.anr.jpg" alt="Анархия"> Анархия</h2>
             <div class="wiki-content">
                 <h3>Полная свобода</h3>
-                <p>На анархии нет приватов, нет защиты территорий, нет правил (кроме общих). Любой игрок может найти твою базу и уничтожить её. Выживает сильнейший. Это хардкорный режим для тех, кто любит риск.</p>
+                <p>На анархии нет приватов, нет защиты территорий, нет правил (кроме общих). Любой игрок может найти твою базу и уничтожить её. Выживает сильнейший.</p>
                 <h3>Рейды и защита</h3>
-                <p>Рейды — главная механика анархии. Игроки ищут чужие базы, взламывают их и забирают ресурсы. Защита зависит только от твоей хитрости. Советы по защите:</p>
+                <p>Рейды — главная механика анархии. Игроки ищут чужие базы, взламывают их и забирают ресурсы. Советы по защите:</p>
                 <ul>
-                    <li>Строй базу далеко от спавна — чем дальше, тем меньше шансов, что найдут.</li>
+                    <li>Строй базу далеко от спавна.</li>
                     <li>Прячь вход под землёй, за водопадами, в пещерах.</li>
-                    <li>Используй обсидиан для стен — его сложнее сломать.</li>
+                    <li>Используй обсидиан для стен.</li>
                     <li>Ставь ловушки: ямы с лавой, нажимные плиты с TNT.</li>
-                    <li>Не свети координатами в чате.</li>
-                    <li>Храни ценные вещи в эндер-сундуках — их содержимое индивидуально для каждого игрока.</li>
+                    <li>Храни ценные вещи в эндер-сундуках.</li>
                 </ul>
                 <div class="note">Важно: даже если твою базу разгромили — не сдавайся. Собери ресурсы заново, найди обидчика и отомсти. Это дух анархии.</div>
                 <h3>PvP и оружие</h3>
-                <p>PvP разрешено везде и всегда. Готовься к бою в любой момент. Используй гранаты (доступны через донат или команду <span class="cmd">/gr</span>). Улучшай броню до прочности III и остроту меча до V. Зелья невидимости и скорости помогут сбежать или напасть неожиданно.</p>
+                <p>PvP разрешено везде и всегда. Готовься к бою в любой момент. Улучшай броню и оружие. Зелья невидимости и скорости помогут сбежать или напасть неожиданно.</p>
                 <h3>Ресурсы и экономика</h3>
-                <p>На анархии работает ChestShop. Ты можешь торговать с другими игроками, но будь осторожен — никто не гарантирует честность сделки. Заработать золото можно продажей алмазов, древних обломков и других редких ресурсов.</p>
-            </div>
-        </div>
-
-        <div class="wiki-section" id="sec-survival">
-            <h2><img src="sarmine.survival.jpg" alt="Выживание"> Выживание</h2>
-            <div class="wiki-content">
-                <h3>Классический режим</h3>
-                <p>Выживание — это классический Minecraft с экономикой, приватами и плагинами. Здесь ты можешь строить, развиваться, торговать и объединяться в кланы. В отличие от анархии, твоя база защищена.</p>
-                <h3>Приват территории</h3>
-                <p>Для защиты постройки используй WorldEdit и WorldGuard:</p>
-                <p><span class="cmd">//wand</span> — получить инструмент для выделения территории (деревянный топор).</p>
-                <p>Левый клик — первая точка, правый клик — вторая точка.</p>
-                <p><span class="cmd">//expand vert</span> — расширить регион от коренной породы до неба (защита от копания сверху и снизу).</p>
-                <p><span class="cmd">/rg claim Название</span> — создать приватный регион.</p>
-                <p><span class="cmd">/rg addmember Название Ник</span> — добавить друга в регион.</p>
-                <div class="note">Совет: всегда используй <span class="cmd">//expand vert</span> перед созданием региона. Иначе злоумышленник может прокопать сверху или снизу.</div>
-                <h3>Строительство и развитие</h3>
-                <p>Строй дома, фермы, замки и города. Используй ChestShop для торговли с другими игроками. Развивай инфраструктуру: строй дороги, мосты и фермы. Чем больше твой регион — тем больше возможностей для заработка.</p>
-                <h3>Экономика и торговля</h3>
-                <p>Валюта выживания — монеты и кристаллы. Монеты зарабатываются продажей ресурсов через ChestShop. Кристаллы покупаются через донат. На монеты можно покупать редкие предметы у других игроков, улучшать базу и нанимать рабочих.</p>
-                <h3>Кланы и объединения</h3>
-                <p>Объединяйся с другими игроками для совместного строительства и защиты. Создавай кланы через договорённости или используй плагины для групповых регионов. Кланы могут владеть общими территориями, торговать и защищать друг друга от врагов.</p>
-                <div class="note">Совет: создай клан с друзьями, разделите обязанности: один строит, другой добывает ресурсы, третий торгует. Вместе выживать легче.</div>
+                <p>На анархии работает ChestShop. Ты можешь торговать с другими игроками, но будь осторожен — никто не гарантирует честность сделки.</p>
             </div>
         </div>
 
     </div>
 
-    <footer>© 2026 <span>SARMINE</span> — Minecraft сервер. <a href="index.html" style="color:#777;text-decoration:none;">На главную</a></footer>
+    <footer>
+        © 2026 <span>SARMINE</span> — Minecraft сервер. <a href="index.html" style="color:#999;text-decoration:none;">На главную</a>
+    </footer>
 
     <script>
+        // Видеофон
+        document.getElementById('bgVideo').addEventListener('error', function() {
+            this.style.display = 'none';
+        });
+
+        // Частицы
+        (function() {
+            const container = document.getElementById('particlesContainer');
+            const colors = [
+                'rgba(255, 106, 0, 0.5)',
+                'rgba(255, 140, 50, 0.3)',
+                'rgba(255, 200, 100, 0.4)',
+                'rgba(255, 255, 255, 0.2)'
+            ];
+
+            function createParticle() {
+                const p = document.createElement('div');
+                p.classList.add('particle');
+                const size = Math.random() * 4 + 1.5;
+                const startX = Math.random() * window.innerWidth;
+                const duration = Math.random() * 7000 + 5000;
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                p.style.left = startX + 'px';
+                p.style.width = size + 'px';
+                p.style.height = size + 'px';
+                p.style.background = color;
+                p.style.boxShadow = `0 0 ${size * 2}px ${color}`;
+                p.style.animationDuration = duration + 'ms';
+                container.appendChild(p);
+                p.addEventListener('animationend', () => p.remove());
+            }
+
+            function spawnParticle() {
+                createParticle();
+                setTimeout(spawnParticle, Math.random() * 250 + 150);
+            }
+
+            for (let i = 0; i < 25; i++) {
+                setTimeout(createParticle, Math.random() * 2500);
+            }
+            setTimeout(spawnParticle, 2500);
+        })();
+
+        // Переключение разделов вики
+        function switchWikiMode(mode) {
+            document.querySelectorAll('.wiki-section').forEach(s => s.style.display = 'none');
+            document.getElementById('wiki-' + mode).style.display = 'block';
+            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('btn-' + mode).classList.add('active');
+
+            var root = document.documentElement.style;
+            switch (mode) {
+                case 'general':
+                    root.setProperty('--accent', '#ff6a00');
+                    root.setProperty('--accent-glow', 'rgba(255,106,0,0.3)');
+                    root.setProperty('--accent-rgb', '255,106,0');
+                    root.setProperty('--bg', '#080808');
+                    break;
+                case 'survival':
+                    root.setProperty('--accent', '#4CAF50');
+                    root.setProperty('--accent-glow', 'rgba(76,175,80,0.3)');
+                    root.setProperty('--accent-rgb', '76,175,80');
+                    root.setProperty('--bg', '#080c08');
+                    break;
+                case 'polit':
+                    root.setProperty('--accent', '#42A5F5');
+                    root.setProperty('--accent-glow', 'rgba(66,165,245,0.3)');
+                    root.setProperty('--accent-rgb', '66,165,245');
+                    root.setProperty('--bg', '#080810');
+                    break;
+                case 'anarchy':
+                    root.setProperty('--accent', '#9e9e9e');
+                    root.setProperty('--accent-glow', 'rgba(158,158,158,0.3)');
+                    root.setProperty('--accent-rgb', '158,158,158');
+                    root.setProperty('--bg', '#0a0a0a');
+                    break;
+            }
+        }
+
+        // Поиск
         function filterWiki() {
             var query = document.getElementById('wikiSearch').value.toLowerCase().trim();
             document.querySelectorAll('.wiki-section').forEach(function(section) {
