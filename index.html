@@ -11,6 +11,7 @@
             font-weight: normal;
             font-style: normal;
             font-display: swap;
+            unicode-range: U+0041-005A, U+0061-007A, U+0030-0039, U+0021, U+003F;
         }
 
         :root {
@@ -24,7 +25,8 @@
             --accent-rgb: 255, 106, 0;
             --card-bg: rgba(17, 17, 17, 0.7);
             --transition-speed: 0.5s;
-            --font-main: 'Minecraftia', 'Segoe UI', 'Inter', 'Arial', sans-serif;
+            --font-game: 'Minecraftia', monospace;
+            --font-ui: 'Segoe UI', 'Inter', 'Arial', sans-serif;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -32,18 +34,16 @@
         body {
             background-color: var(--bg);
             color: var(--text);
-            font-family: var(--font-main);
+            font-family: var(--font-game);
             min-height: 100vh;
             position: relative;
             overflow-x: hidden;
             transition: background-color var(--transition-speed), color var(--transition-speed);
         }
 
-        /* ===== ВИДЕОФОН ===== */
         .video-background {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             object-fit: cover; z-index: -2; opacity: 0.22; pointer-events: none;
-            transition: opacity var(--transition-speed);
         }
 
         .video-fallback {
@@ -51,10 +51,8 @@
             background: radial-gradient(ellipse at 50% 0%, #1a1a1a 0%, var(--bg) 60%),
                         repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255,255,255,0.01) 3px, rgba(255,255,255,0.01) 6px);
             background-size: 100% 100%, 100% 100%;
-            transition: background var(--transition-speed);
         }
 
-        /* ===== ЧАСТИЦЫ ===== */
         .particles-container {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none; z-index: -1;
@@ -66,10 +64,10 @@
         }
 
         @keyframes floatUp {
-            0% { transform: translateY(105vh) scale(0) rotate(0deg); opacity: 0; }
-            5% { opacity: 1; }
+            0% { transform: translateY(105vh) scale(0); opacity: 0; }
+            10% { opacity: 1; }
             90% { opacity: 0.8; }
-            100% { transform: translateY(-10vh) scale(1.5) rotate(360deg); opacity: 0; }
+            100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
         }
 
         @keyframes shimmer {
@@ -82,48 +80,49 @@
             50% { background-position: 100% 50%; }
         }
 
-        /* ===== ШАПКА ===== */
         header {
             background: rgba(15, 15, 20, 0.7);
             backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border);
-            padding: 0 30px;
+            padding: 0 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            height: 60px;
+            height: 52px;
             position: sticky; top: 0; z-index: 100;
             transition: all var(--transition-speed);
         }
 
         .logo {
-            font-size: 20px; font-weight: 900; letter-spacing: 3px;
+            font-family: var(--font-game);
+            font-size: 18px; font-weight: 900; letter-spacing: 2px;
             color: #fff; text-transform: uppercase; cursor: pointer;
             text-decoration: none; transition: color var(--transition-speed);
-            display: flex; align-items: center; gap: 8px;
+            display: flex; align-items: center; gap: 6px;
         }
 
-        .logo span { color: var(--accent); transition: color var(--transition-speed); }
+        .logo span { color: var(--accent); }
 
         nav {
-            display: flex; gap: 6px; align-items: center; flex-wrap: wrap;
+            display: flex; gap: 4px; align-items: center; flex-wrap: wrap;
             justify-content: flex-end; background: rgba(255,255,255,0.02);
-            border-radius: 30px; padding: 4px;
+            border-radius: 25px; padding: 3px;
         }
 
         nav a {
             background: none; border: none; color: #999;
-            font-family: inherit; font-size: 11px; font-weight: 600;
-            letter-spacing: 1px; text-transform: uppercase; cursor: pointer;
-            padding: 8px 14px; border-radius: 25px; transition: all 0.3s;
+            font-family: var(--font-ui);
+            font-size: 10px; font-weight: 600;
+            letter-spacing: 0.8px; text-transform: uppercase; cursor: pointer;
+            padding: 6px 11px; border-radius: 20px; transition: all 0.3s;
             text-decoration: none; white-space: nowrap;
-            display: flex; align-items: center; gap: 6px;
+            display: flex; align-items: center; gap: 4px;
         }
 
         nav a:hover { color: #fff; background: rgba(255,255,255,0.05); }
         nav a.active {
             color: #fff; background: var(--accent);
-            box-shadow: 0 0 15px var(--accent-glow);
+            box-shadow: 0 0 12px var(--accent-glow);
         }
 
         .btn-donate {
@@ -138,20 +137,14 @@
             animation: shimmer 3s infinite;
         }
 
-        .btn-donate:hover {
-            background: #ff8533 !important; box-shadow: 0 0 25px var(--accent-glow);
-            transform: translateY(-1px);
-        }
-
-        /* ===== СЕКЦИИ ===== */
         .section { display: none; position: relative; z-index: 1; }
         .section.active { display: block; }
 
-        /* ===== ГЕРОЙ ===== */
-        .hero { text-align: center; padding: 50px 20px 25px; }
+        .hero { text-align: center; padding: 40px 20px 20px; }
 
         .hero h1 {
-            font-size: 48px; font-weight: 900; letter-spacing: 6px;
+            font-family: var(--font-game);
+            font-size: 40px; font-weight: 900; letter-spacing: 5px;
             background: linear-gradient(135deg, var(--accent), #fff, var(--accent));
             background-size: 200% 100%;
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
@@ -159,71 +152,76 @@
         }
 
         .hero .subtitle {
-            font-size: 14px; color: #666; letter-spacing: 5px;
-            text-transform: uppercase; margin: 8px 0 20px;
+            font-family: var(--font-ui);
+            font-size: 12px; color: #666; letter-spacing: 4px;
+            text-transform: uppercase; margin: 6px 0 18px;
         }
 
         .social-links {
-            display: flex; justify-content: center; gap: 15px;
-            margin-bottom: 30px; flex-wrap: wrap;
+            display: flex; justify-content: center; gap: 12px;
+            margin-bottom: 25px; flex-wrap: wrap;
         }
 
         .social-btn {
-            display: flex; align-items: center; gap: 8px;
+            display: flex; align-items: center; gap: 6px;
             background: var(--card-bg); backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px); border: 1px solid var(--border);
-            border-radius: 12px; padding: 12px 20px; text-decoration: none;
-            color: var(--text); font-family: inherit; font-size: 13px;
-            letter-spacing: 1px; transition: all 0.3s;
+            border-radius: 10px; padding: 10px 16px; text-decoration: none;
+            color: var(--text); font-family: var(--font-ui); font-size: 12px;
+            letter-spacing: 0.8px; transition: all 0.3s;
         }
 
         .social-btn:hover {
-            border-color: var(--accent); box-shadow: 0 0 20px var(--accent-glow);
+            border-color: var(--accent); box-shadow: 0 0 18px var(--accent-glow);
             color: var(--accent); transform: translateY(-2px);
         }
 
-        .social-btn img { width: 22px; height: 22px; flex-shrink: 0; }
+        .social-btn img { width: 20px; height: 20px; flex-shrink: 0; }
 
-        /* ===== ИНФО-КАРТОЧКИ ===== */
         .server-info {
-            display: flex; justify-content: center; gap: 15px;
-            flex-wrap: wrap; margin-bottom: 25px;
+            display: flex; justify-content: center; gap: 12px;
+            flex-wrap: wrap; margin-bottom: 20px;
         }
 
         .info-card {
             background: var(--card-bg); backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px); border: 1px solid var(--border);
-            border-radius: 16px; padding: 16px 24px; text-align: center;
-            min-width: 120px; transition: all 0.3s;
+            border-radius: 14px; padding: 14px 20px; text-align: center;
+            min-width: 100px; transition: all 0.3s;
         }
 
         .info-card:hover {
-            border-color: var(--accent); box-shadow: 0 8px 25px rgba(0,0,0,0.5);
-            transform: translateY(-3px);
+            border-color: var(--accent); box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+            transform: translateY(-2px);
         }
 
-        .info-card .value { font-size: 24px; font-weight: 900; color: var(--accent); display: block; }
+        .info-card .value {
+            font-family: var(--font-game);
+            font-size: 22px; font-weight: 900; color: var(--accent); display: block;
+        }
         .info-card .label {
-            font-size: 10px; letter-spacing: 2px; color: #666;
-            text-transform: uppercase; margin-top: 4px;
+            font-family: var(--font-ui);
+            font-size: 9px; letter-spacing: 2px; color: #666;
+            text-transform: uppercase; margin-top: 3px;
         }
 
         .online-dot {
-            display: inline-block; width: 8px; height: 8px;
-            background: #4CAF50; border-radius: 50%; margin-right: 5px;
+            display: inline-block; width: 7px; height: 7px;
+            background: #4CAF50; border-radius: 50%; margin-right: 4px;
             animation: pulse 2s infinite;
         }
 
         @keyframes pulse {
             0%, 100% { box-shadow: 0 0 0 0 rgba(76,175,80,0.7); }
-            50% { box-shadow: 0 0 0 8px rgba(76,175,80,0); }
+            50% { box-shadow: 0 0 0 6px rgba(76,175,80,0); }
         }
 
         .btn-play {
             display: inline-block; background: var(--accent); color: #0a0a0a;
-            padding: 12px 40px; border-radius: 30px; font-weight: 700;
-            text-transform: uppercase; letter-spacing: 2px; text-decoration: none;
-            transition: all 0.3s; font-size: 14px; position: relative; overflow: hidden;
+            padding: 10px 35px; border-radius: 25px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 1.5px; text-decoration: none;
+            transition: all 0.3s; font-size: 12px; position: relative; overflow: hidden;
+            font-family: var(--font-ui);
         }
 
         .btn-play::before {
@@ -234,66 +232,64 @@
         }
 
         .btn-play:hover {
-            background: #ff8533; box-shadow: 0 0 30px var(--accent-glow);
+            background: #ff8533; box-shadow: 0 0 25px var(--accent-glow);
             transform: scale(1.03);
         }
 
-        /* ===== РЕЖИМЫ ===== */
         .modes-section {
-            padding: 10px 20px 40px; max-width: 900px; margin: 0 auto;
+            padding: 5px 20px 35px; max-width: 800px; margin: 0 auto;
             position: relative; z-index: 1;
         }
 
         .section-title {
-            text-align: center; font-size: 22px; font-weight: 900;
-            letter-spacing: 2px; color: #fff; margin-bottom: 20px;
-            text-transform: uppercase;
+            text-align: center; font-size: 20px; font-weight: 900;
+            letter-spacing: 1.5px; color: #fff; margin-bottom: 16px;
+            text-transform: uppercase; font-family: var(--font-game);
         }
 
         .section-title span { color: var(--accent); }
 
-        .modes-grid { display: grid; grid-template-columns: 1fr; gap: 15px; }
+        .modes-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
         @media(min-width:768px){.modes-grid{grid-template-columns:repeat(3,1fr)}}
 
         .mode-card {
             background: var(--card-bg); backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px); border: 2px solid var(--border);
-            border-radius: 18px; padding: 28px 20px; text-align: center;
+            border-radius: 16px; padding: 24px 16px; text-align: center;
             cursor: pointer; transition: all 0.4s; position: relative; overflow: hidden;
         }
 
-        .mode-card::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at center, rgba(var(--accent-rgb), 0.05) 0%, transparent 70%);
-            opacity: 0; transition: opacity 0.4s;
-        }
-
-        .mode-card:hover::before { opacity: 1; }
         .mode-card:hover {
-            border-color: var(--accent); transform: translateY(-4px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+            border-color: var(--accent); transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.6);
         }
 
         .mode-card img.mode-img {
-            width: 80px; height: 80px; object-fit: cover; border-radius: 12px;
-            margin-bottom: 14px; border: 2px solid rgba(255,255,255,0.08);
+            width: 60px; height: 60px; object-fit: cover; border-radius: 10px;
+            margin-bottom: 10px; border: 2px solid rgba(255,255,255,0.08);
             transition: border-color 0.3s;
         }
 
         .mode-card:hover img.mode-img { border-color: var(--accent); }
-        .mode-card h3 { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 4px; }
-        .mode-card p { color: #888; font-size: 12px; line-height: 1.4; }
+        .mode-card h3 {
+            font-family: var(--font-game);
+            font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 3px;
+        }
+        .mode-card p {
+            font-family: var(--font-ui);
+            color: #888; font-size: 11px; line-height: 1.4;
+        }
 
-        /* ===== ТОП ИГРОКОВ ===== */
         .top-players-section {
-            max-width: 550px; margin: 0 auto 40px; padding: 0 20px;
+            max-width: 480px; margin: 0 auto 35px; padding: 0 20px;
             position: relative; z-index: 1;
         }
 
         .top-players-section h2 {
-            font-size: 20px; font-weight: 900; color: #fff;
-            text-align: center; margin-bottom: 18px; text-transform: uppercase;
-            letter-spacing: 2px;
+            font-family: var(--font-game);
+            font-size: 18px; font-weight: 900; color: #fff;
+            text-align: center; margin-bottom: 14px; text-transform: uppercase;
+            letter-spacing: 1.5px;
         }
 
         .top-players-section h2 span { color: var(--accent); }
@@ -301,35 +297,43 @@
         .top-list {
             background: var(--card-bg); backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px); border: 1px solid var(--border);
-            border-radius: 14px; overflow: hidden;
+            border-radius: 12px; overflow: hidden;
         }
 
         .top-item {
             display: flex; align-items: center; justify-content: space-between;
-            padding: 12px 20px; border-bottom: 1px solid rgba(255,255,255,0.04);
+            padding: 10px 16px; border-bottom: 1px solid rgba(255,255,255,0.04);
             transition: all 0.3s;
         }
 
         .top-item:last-child { border-bottom: none; }
-        .top-item:hover { background: rgba(255,255,255,0.02); }
 
-        .top-rank { font-size: 18px; font-weight: 900; width: 35px; text-align: center; }
+        .top-rank {
+            font-family: var(--font-game);
+            font-size: 16px; font-weight: 900; width: 30px; text-align: center;
+        }
         .rank-1st { color: #ffc107; }
         .rank-2nd { color: #9e9e9e; }
         .rank-3rd { color: #8d6e63; }
         .rank-other { color: #555; }
 
-        .top-name { flex: 1; margin-left: 12px; font-weight: 600; color: #e0e0e0; font-size: 14px; }
-        .top-score { color: var(--accent); font-weight: 900; font-size: 14px; }
+        .top-name {
+            font-family: var(--font-game);
+            flex: 1; margin-left: 10px; font-weight: 600; color: #e0e0e0; font-size: 13px;
+        }
+        .top-score {
+            font-family: var(--font-game);
+            color: var(--accent); font-weight: 900; font-size: 13px;
+        }
 
-        /* ===== ГЕНЕРАТОР НИКА ===== */
         .nick-gen-section {
-            max-width: 450px; margin: 0 auto 50px; padding: 0 20px;
+            max-width: 400px; margin: 0 auto 45px; padding: 0 20px;
             text-align: center; position: relative; z-index: 1;
         }
 
         .nick-gen-section h3 {
-            font-size: 18px; color: #fff; margin-bottom: 12px;
+            font-family: var(--font-game);
+            font-size: 16px; color: #fff; margin-bottom: 10px;
             text-transform: uppercase; letter-spacing: 1px;
         }
 
@@ -338,31 +342,32 @@
         .nick-display {
             background: var(--card-bg); backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px); border: 1px solid var(--border);
-            border-radius: 12px; padding: 14px 20px; font-size: 16px;
-            color: var(--accent); margin-bottom: 12px; letter-spacing: 1px;
-            word-break: break-all; min-height: 44px;
+            border-radius: 10px; padding: 12px 18px; font-size: 15px;
+            color: var(--accent); margin-bottom: 10px; letter-spacing: 1px;
+            word-break: break-all; min-height: 38px;
             display: flex; align-items: center; justify-content: center;
+            font-family: var(--font-game);
         }
 
         .btn-generate {
             background: var(--accent); color: #0a0a0a; border: none;
-            padding: 10px 28px; border-radius: 25px; font-weight: 700;
+            padding: 8px 24px; border-radius: 20px; font-weight: 700;
             text-transform: uppercase; cursor: pointer; transition: all 0.3s;
-            letter-spacing: 1px; font-size: 12px; font-family: inherit;
+            letter-spacing: 1px; font-size: 11px;
+            font-family: var(--font-ui);
         }
 
         .btn-generate:hover {
-            background: #ff8533; box-shadow: 0 0 20px var(--accent-glow);
+            background: #ff8533; box-shadow: 0 0 18px var(--accent-glow);
             transform: scale(1.04);
         }
 
-        /* ===== КАРТА ===== */
-        .map-section { padding: 20px 20px 50px; position: relative; z-index: 1; }
+        .map-section { padding: 15px 20px 45px; position: relative; z-index: 1; }
 
         .map-wrapper {
-            position: relative; width: 100%; height: 70vh; min-height: 400px;
-            background: #0d0d0d; border-radius: 16px; overflow: hidden;
-            border: 1px solid var(--border); max-width: 900px; margin: 0 auto;
+            position: relative; width: 100%; height: 65vh; min-height: 350px;
+            background: #0d0d0d; border-radius: 14px; overflow: hidden;
+            border: 1px solid var(--border); max-width: 800px; margin: 0 auto;
         }
 
         .map-wrapper iframe { width: 100%; height: 100%; border: none; }
@@ -374,54 +379,64 @@
         }
 
         .map-fallback.visible { display: flex; }
-        .map-fallback h3 { color: #fff; font-size: 18px; margin-bottom: 8px; }
-        .map-fallback p { color: #666; font-size: 12px; }
+        .map-fallback h3 {
+            font-family: var(--font-game);
+            color: #fff; font-size: 16px; margin-bottom: 6px;
+        }
+        .map-fallback p {
+            font-family: var(--font-ui);
+            color: #666; font-size: 11px;
+        }
         .map-fallback .retry-btn {
-            margin-top: 15px; background: transparent; border: 1px solid var(--accent);
-            color: var(--accent); padding: 8px 20px; border-radius: 20px;
-            cursor: pointer; font-family: inherit; font-size: 11px;
+            margin-top: 12px; background: transparent; border: 1px solid var(--accent);
+            color: var(--accent); padding: 7px 18px; border-radius: 18px;
+            cursor: pointer; font-family: var(--font-ui); font-size: 10px;
             text-transform: uppercase; transition: all 0.3s;
         }
         .map-fallback .retry-btn:hover { background: var(--accent); color: #0a0a0a; }
-        .map-controls { text-align: center; margin-top: 12px; }
+        .map-controls { text-align: center; margin-top: 10px; }
         .map-controls a {
-            color: var(--accent); text-decoration: none; font-size: 11px;
-            padding: 7px 16px; border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 20px; transition: all 0.3s;
+            font-family: var(--font-ui);
+            color: var(--accent); text-decoration: none; font-size: 10px;
+            padding: 6px 14px; border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 18px; transition: all 0.3s;
         }
         .map-controls a:hover { border-color: var(--accent); background: rgba(var(--accent-rgb), 0.05); }
 
-        /* ===== ЧАВО ===== */
-        .faq-section { padding: 20px 20px 50px; position: relative; z-index: 1; }
+        .faq-section { padding: 15px 20px 45px; position: relative; z-index: 1; }
 
-        .faq-container { max-width: 650px; margin: 0 auto; }
+        .faq-container { max-width: 580px; margin: 0 auto; }
 
         .faq-item {
             background: var(--card-bg); backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px); border: 1px solid var(--border);
-            border-radius: 12px; margin-bottom: 10px; overflow: hidden;
+            border-radius: 10px; margin-bottom: 8px; overflow: hidden;
             transition: all 0.3s;
         }
 
         .faq-question {
-            padding: 16px 20px; cursor: pointer; display: flex;
+            padding: 14px 18px; cursor: pointer; display: flex;
             justify-content: space-between; align-items: center;
-            font-weight: 700; color: #e0e0e0; font-size: 14px; transition: all 0.3s;
+            font-weight: 700; color: #e0e0e0; font-size: 13px; transition: all 0.3s;
+            font-family: var(--font-game);
         }
 
         .faq-question:hover { color: var(--accent); }
-        .faq-arrow { transition: transform 0.3s; font-size: 18px; color: var(--accent); }
+        .faq-arrow {
+            font-family: var(--font-ui);
+            transition: transform 0.3s; font-size: 16px; color: var(--accent);
+        }
         .faq-item.open .faq-arrow { transform: rotate(180deg); }
 
         .faq-answer {
             max-height: 0; overflow: hidden;
             transition: max-height 0.4s ease, padding 0.4s ease;
-            padding: 0 20px; color: #999; font-size: 12px; line-height: 1.6;
+            padding: 0 18px; color: #999; font-size: 11px; line-height: 1.6;
+            font-family: var(--font-ui);
         }
 
-        .faq-item.open .faq-answer { max-height: 400px; padding: 0 20px 16px; }
+        .faq-item.open .faq-answer { max-height: 350px; padding: 0 18px 14px; }
 
-        /* ===== ОШИБКА ЗАГРУЗКИ ===== */
         .error-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.9); z-index: 9999;
@@ -434,38 +449,41 @@
         .error-box {
             background: var(--surface); backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px); border: 1px solid var(--accent);
-            border-radius: 20px; padding: 40px; max-width: 500px;
-            box-shadow: 0 0 50px var(--accent-glow);
+            border-radius: 16px; padding: 35px; max-width: 450px;
+            box-shadow: 0 0 40px var(--accent-glow);
         }
 
-        .error-box h2 { color: var(--accent); font-size: 24px; margin-bottom: 15px; }
-        .error-box p { color: #ccc; font-size: 13px; margin-bottom: 10px; line-height: 1.6; }
+        .error-box h2 {
+            font-family: var(--font-game);
+            color: var(--accent); font-size: 20px; margin-bottom: 12px;
+        }
+        .error-box p {
+            font-family: var(--font-ui);
+            color: #ccc; font-size: 12px; margin-bottom: 8px; line-height: 1.5;
+        }
         .error-box .retry-btn {
-            margin-top: 15px; background: var(--accent); color: #0a0a0a;
-            border: none; padding: 12px 30px; border-radius: 25px;
-            font-weight: 700; cursor: pointer; font-family: inherit;
-            font-size: 13px; transition: all 0.3s;
+            margin-top: 12px; background: var(--accent); color: #0a0a0a;
+            border: none; padding: 10px 25px; border-radius: 20px;
+            font-weight: 700; cursor: pointer; font-family: var(--font-ui);
+            font-size: 12px; transition: all 0.3s;
         }
-        .error-box .retry-btn:hover { background: #ff8533; box-shadow: 0 0 25px var(--accent-glow); }
 
-        /* ===== ФУТЕР ===== */
         footer {
             background: rgba(13, 13, 18, 0.7); backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px); border-top: 1px solid var(--border);
-            text-align: center; padding: 18px; color: #555; font-size: 10px;
-            letter-spacing: 1.5px; position: relative; z-index: 1;
-            transition: all var(--transition-speed);
+            text-align: center; padding: 15px; color: #555; font-size: 9px;
+            letter-spacing: 1.2px; position: relative; z-index: 1;
+            font-family: var(--font-ui);
         }
 
         footer span { color: var(--accent); }
 
-        /* ===== АДАПТИВ ===== */
         @media (max-width: 600px) {
-            header { height: auto; padding: 10px 15px; gap: 8px; flex-wrap: wrap; }
-            nav { gap: 3px; padding: 3px; }
-            nav a { font-size: 10px; padding: 6px 10px; }
-            .hero h1 { font-size: 30px; }
-            .map-wrapper { height: 50vh; min-height: 300px; }
+            header { height: auto; padding: 8px 12px; gap: 6px; flex-wrap: wrap; }
+            nav { gap: 2px; padding: 2px; }
+            nav a { font-size: 9px; padding: 5px 8px; }
+            .hero h1 { font-size: 28px; }
+            .map-wrapper { height: 45vh; min-height: 280px; }
         }
     </style>
 </head>
@@ -476,13 +494,12 @@
     <div class="video-fallback"></div>
     <div class="particles-container" id="particlesContainer"></div>
 
-    <!-- Ошибка загрузки -->
     <div class="error-overlay" id="errorOverlay">
         <div class="error-box">
-            <h2>⚠ Ошибка загрузки</h2>
+            <h2>Ошибка загрузки</h2>
             <p>Не удалось загрузить запрошенную страницу.</p>
             <p>Возможные причины:</p>
-            <p>• Отсутствует подключение к интернету<br>• Файл не найден на сервере<br>• Блокировка браузером или антивирусом</p>
+            <p>- Отсутствует подключение к интернету<br>- Файл не найден на сервере<br>- Блокировка браузером или антивирусом</p>
             <p>Попробуйте обновить страницу (F5) или вернитесь на главную.</p>
             <button class="retry-btn" onclick="closeError()">На главную</button>
         </div>
@@ -496,16 +513,15 @@
             <a href="rules.html" class="nav-link">⚑ Правила</a>
             <a href="wiki.html" class="nav-link">◆ Вики</a>
             <a href="war.html" class="nav-link">⚔ Войны</a>
-            <a href="#" onclick="showSection('faq')" id="nav-faq">？ ЧаВо</a>
-            <a href="shop.html" class="btn-donate">₽ Донат</a>
+            <a href="#" onclick="showSection('faq')" id="nav-faq">? ЧаВо</a>
+            <a href="shop.html" class="btn-donate">Донат</a>
         </nav>
     </header>
 
-    <!-- ГЛАВНАЯ -->
     <div class="section active" id="section-home">
         <div class="hero">
             <h1>S A R M I N E</h1>
-            <p class="subtitle">Политика • Анархия • Выживание</p>
+            <p class="subtitle">Политика · Анархия · Выживание</p>
 
             <div class="social-links">
                 <a href="https://t.me/sarmine_tg" target="_blank" rel="noopener" class="social-btn">
@@ -534,7 +550,6 @@
             <a href="#" class="btn-play">Подключиться</a>
         </div>
 
-        <!-- Режимы -->
         <div class="modes-section">
             <h2 class="section-title">Выбери <span>Режим</span></h2>
             <div class="modes-grid">
@@ -556,7 +571,6 @@
             </div>
         </div>
 
-        <!-- Топ игроков -->
         <div class="top-players-section">
             <h2>Топ <span>Игроков</span></h2>
             <div class="top-list">
@@ -568,7 +582,6 @@
             </div>
         </div>
 
-        <!-- Генератор ника -->
         <div class="nick-gen-section">
             <h3>Генератор <span>Ника</span></h3>
             <div class="nick-display" id="nickDisplay">Нажми «Сгенерировать»</div>
@@ -576,7 +589,6 @@
         </div>
     </div>
 
-    <!-- КАРТА -->
     <div class="section" id="section-map">
         <div class="hero"><h1>Карта <span>Сервера</span></h1><p class="subtitle">Политическая карта в реальном времени</p></div>
         <div class="map-section" style="padding-top:0;">
@@ -592,29 +604,28 @@
         </div>
     </div>
 
-    <!-- ЧАВО -->
     <div class="section" id="section-faq">
         <div class="hero"><h1>Часто <span>Задаваемые</span> Вопросы</h1><p class="subtitle">Ответы на популярные вопросы</p></div>
         <div class="faq-section" style="padding-top:0;">
             <div class="faq-container">
                 <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)"><span>Как зайти на сервер?</span><span class="faq-arrow">▼</span></div>
+                    <div class="faq-question" onclick="toggleFaq(this)"><span>Как зайти на сервер?</span><span class="faq-arrow">V</span></div>
                     <div class="faq-answer">Открой Minecraft (1.19–1.21), «Сетевая игра», «Добавить сервер», IP: <b>sarmine.fun</b>.</div>
                 </div>
                 <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)"><span>Как приватить территорию?</span><span class="faq-arrow">▼</span></div>
+                    <div class="faq-question" onclick="toggleFaq(this)"><span>Как приватить территорию?</span><span class="faq-arrow">V</span></div>
                     <div class="faq-answer"><b>Анархия:</b> Никак.<br><b>Выживание:</b> //wand, выделить, //expand vert, /rg claim Название.<br><b>Политика:</b> /town new Название.</div>
                 </div>
                 <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)"><span>Как купить донат?</span><span class="faq-arrow">▼</span></div>
+                    <div class="faq-question" onclick="toggleFaq(this)"><span>Как купить донат?</span><span class="faq-arrow">V</span></div>
                     <div class="faq-answer">Перейди в «Донат» на сайте, выбери режим, товар и количество.</div>
                 </div>
                 <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)"><span>Как создать нацию в Политике?</span><span class="faq-arrow">▼</span></div>
+                    <div class="faq-question" onclick="toggleFaq(this)"><span>Как создать нацию в Политике?</span><span class="faq-arrow">V</span></div>
                     <div class="faq-answer">/town new Название, накопи 1000$, затем /nation new Название.</div>
                 </div>
                 <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)"><span>Можно ли играть с телефона?</span><span class="faq-arrow">▼</span></div>
+                    <div class="faq-question" onclick="toggleFaq(this)"><span>Можно ли играть с телефона?</span><span class="faq-arrow">V</span></div>
                     <div class="faq-answer">Сервер Java Edition. С Bedrock нельзя. Используй PojavLauncher (Java на телефоне).</div>
                 </div>
             </div>
@@ -625,14 +636,12 @@
         © 2026 <span>SARMINE</span> — Minecraft сервер. IP: sarmine.fun
     </footer>
 
-    <!-- Аудио -->
     <audio id="soundSurvival" src="survivalsound.mp3" loop preload="auto"></audio>
     <audio id="soundAnarchy" src="anarhiasound.mp3" loop preload="auto"></audio>
     <audio id="soundPolit" src="politsound.mp3" loop preload="auto"></audio>
     <audio id="soundUI" src="lowbattery.mp3" preload="auto"></audio>
 
     <script>
-        // Тема
         var currentTheme = 'general';
         var currentMusic = null;
 
@@ -645,7 +654,7 @@
             try { localStorage.setItem('sarmine_theme', theme); } catch(e) {}
         }
 
-        function applyTheme(theme, animate) {
+        function applyTheme(theme) {
             var root = document.documentElement.style;
             switch (theme) {
                 case 'anarchy':
@@ -679,18 +688,15 @@
         }
 
         function switchMusic(theme) {
-            // Останавливаем текущую музыку
             if (currentMusic) {
                 currentMusic.pause();
                 currentMusic.currentTime = 0;
                 currentMusic = null;
             }
-
             var musicId = null;
             if (theme === 'survival') musicId = 'soundSurvival';
             else if (theme === 'anarchy') musicId = 'soundAnarchy';
             else if (theme === 'polit') musicId = 'soundPolit';
-
             if (musicId) {
                 currentMusic = document.getElementById(musicId);
                 if (currentMusic) {
@@ -701,7 +707,6 @@
         }
 
         function switchMode(mode) {
-            // UI-звук при переключении (если меняем с одной темы на другую)
             if (currentTheme !== 'general' && mode !== currentTheme) {
                 var uiSound = document.getElementById('soundUI');
                 if (uiSound) {
@@ -713,58 +718,45 @@
             applyTheme(mode);
         }
 
-        // Восстановление темы при загрузке
-        applyTheme(getSavedTheme(), false);
+        applyTheme(getSavedTheme());
 
-        // Если URL содержит хеш — открываем соответствующую секцию
         function checkHash() {
             var hash = window.location.hash.replace('#', '');
-            if (hash === 'map' || hash === 'faq') {
-                showSection(hash);
-            }
+            if (hash === 'map' || hash === 'faq') showSection(hash);
         }
         window.addEventListener('load', checkHash);
         window.addEventListener('hashchange', checkHash);
 
-        // Частицы
         (function() {
             const container = document.getElementById('particlesContainer');
             const colors = [
                 'rgba(255, 106, 0, 0.5)', 'rgba(255, 140, 50, 0.3)',
                 'rgba(255, 200, 100, 0.4)', 'rgba(255, 255, 255, 0.2)'
             ];
-
             function createParticle() {
                 const p = document.createElement('div');
                 p.classList.add('particle');
                 const size = Math.random() * 3 + 1;
-                const startX = Math.random() * window.innerWidth;
-                const duration = Math.random() * 6000 + 4000;
-                const color = colors[Math.floor(Math.random() * colors.length)];
-                p.style.left = startX + 'px';
+                p.style.left = Math.random() * window.innerWidth + 'px';
                 p.style.width = size + 'px'; p.style.height = size + 'px';
-                p.style.background = color;
-                p.style.boxShadow = `0 0 ${size * 2}px ${color}`;
-                p.style.animationDuration = duration + 'ms';
+                p.style.background = colors[Math.floor(Math.random() * colors.length)];
+                p.style.boxShadow = `0 0 ${size * 2}px ${p.style.background}`;
+                p.style.animationDuration = (Math.random() * 6000 + 4000) + 'ms';
                 container.appendChild(p);
                 p.addEventListener('animationend', () => p.remove());
             }
-
             function spawnParticle() {
                 createParticle();
                 setTimeout(spawnParticle, Math.random() * 300 + 200);
             }
-
             for (let i = 0; i < 20; i++) setTimeout(createParticle, Math.random() * 2000);
             setTimeout(spawnParticle, 2000);
         })();
 
-        // Видеофон
         document.getElementById('bgVideo').addEventListener('error', function() {
             this.style.display = 'none';
         });
 
-        // Переключение разделов
         function showSection(name) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             var target = document.getElementById('section-' + name);
@@ -776,24 +768,15 @@
             window.location.hash = name;
         }
 
-        // Обработка кликов по внешним ссылкам (перехват ошибок)
         document.querySelectorAll('a.nav-link, a.btn-donate').forEach(function(link) {
             link.addEventListener('click', function(e) {
                 var href = link.getAttribute('href');
                 if (!href || href === '#') return;
-
-                // Пробуем загрузить через fetch для проверки доступности
                 fetch(href, { method: 'HEAD', cache: 'no-cache' })
                     .then(function(response) {
-                        if (!response.ok) {
-                            e.preventDefault();
-                            showError(href);
-                        }
+                        if (!response.ok) { e.preventDefault(); showError(href); }
                     })
-                    .catch(function() {
-                        e.preventDefault();
-                        showError(href);
-                    });
+                    .catch(function() { e.preventDefault(); showError(href); });
             });
         });
 
@@ -804,23 +787,10 @@
         }
 
         function closeError() {
-            var overlay = document.getElementById('errorOverlay');
-            overlay.classList.remove('active');
+            document.getElementById('errorOverlay').classList.remove('active');
             showSection('home');
         }
 
-        window.addEventListener('load', function() {
-            // Проверяем загрузку iframe карты
-            var mapFrame = document.getElementById('mapFrame');
-            if (mapFrame) {
-                mapFrame.addEventListener('error', function() {
-                    var fallback = document.getElementById('mapFallback');
-                    if (fallback) fallback.classList.add('visible');
-                });
-            }
-        });
-
-        // Карта
         function reloadMap() {
             var oldFrame = document.getElementById('mapFrame');
             var fallback = document.getElementById('mapFallback');
@@ -835,10 +805,8 @@
             oldFrame.replaceWith(newFrame);
         }
 
-        // ЧаВо
         function toggleFaq(el) { el.parentElement.classList.toggle('open'); }
 
-        // Генератор ника
         const prefixes = [
             "Sr","Senior","Ms","Pro","Greef","Typ","Xxx_","Zzz_","Www","UwU","Bomb","none",
             "Lord","Sir","Mr","OG","Dark","Fire","Ice","Shadow","Storm","Blade","Wolf","Ghost",
