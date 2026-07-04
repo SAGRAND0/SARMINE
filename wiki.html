@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SARMINE — Вики</title>
+    <title>SARMINE - Вики</title>
     <style>
         @font-face {
             font-family: 'Minecraftia';
@@ -16,7 +16,7 @@
         :root {
             --bg: #080808;
             --surface: rgba(20, 20, 20, 0.75);
-            --border: rgba(255, 255, 255, 0.06);
+            --border: rgba(255, 255, 255, 0.05);
             --text: #c0c0c0;
             --heading: #ffffff;
             --accent: #ff6a00;
@@ -24,6 +24,8 @@
             --accent-rgb: 255, 106, 0;
             --card-bg: rgba(17, 17, 17, 0.7);
             --transition-speed: 0.5s;
+            --font-game: 'Minecraftia', monospace;
+            --font-ui: 'Segoe UI', 'Inter', 'Arial', sans-serif;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -31,18 +33,16 @@
         body {
             background-color: var(--bg);
             color: var(--text);
-            font-family: 'Minecraftia', 'Segoe UI', 'Inter', 'Arial', sans-serif;
+            font-family: var(--font-game);
             min-height: 100vh;
             position: relative;
             overflow-x: hidden;
             transition: background-color var(--transition-speed), color var(--transition-speed);
         }
 
-        /* ===== ВИДЕОФОН ===== */
         .video-background {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             object-fit: cover; z-index: -2; opacity: 0.22; pointer-events: none;
-            transition: opacity var(--transition-speed);
         }
 
         .video-fallback {
@@ -50,30 +50,23 @@
             background: radial-gradient(ellipse at 50% 0%, #1a1a1a 0%, var(--bg) 60%),
                         repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255,255,255,0.01) 3px, rgba(255,255,255,0.01) 6px);
             background-size: 100% 100%, 100% 100%;
-            transition: background var(--transition-speed);
         }
 
-        /* ===== ЧАСТИЦЫ ===== */
         .particles-container {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: -1;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: -1;
         }
 
         .particle {
-            position: absolute;
-            border-radius: 50%;
-            pointer-events: none;
+            position: absolute; border-radius: 50%; pointer-events: none;
             animation: floatUp linear infinite;
         }
 
         @keyframes floatUp {
-            0% { transform: translateY(105vh) scale(0) rotate(0deg); opacity: 0; }
-            5% { opacity: 1; }
+            0% { transform: translateY(105vh) scale(0); opacity: 0; }
+            10% { opacity: 1; }
             90% { opacity: 0.8; }
-            100% { transform: translateY(-10vh) scale(1.5) rotate(360deg); opacity: 0; }
+            100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
         }
 
         @keyframes shimmer {
@@ -86,337 +79,204 @@
             50% { background-position: 100% 50%; }
         }
 
-        /* ===== ШАПКА ===== */
         header {
             background: rgba(15, 15, 20, 0.7);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border);
-            padding: 0 40px;
+            padding: 0 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            height: 65px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            height: 46px;
+            position: sticky; top: 0; z-index: 100;
             transition: all var(--transition-speed);
         }
 
         .logo {
-            font-size: 22px;
-            font-weight: 900;
-            letter-spacing: 3px;
-            color: #fff;
-            text-transform: uppercase;
-            cursor: pointer;
-            text-decoration: none;
-            transition: color var(--transition-speed);
+            font-size: 16px; font-weight: 900; letter-spacing: 2px;
+            color: #fff; text-transform: uppercase; cursor: pointer;
+            text-decoration: none; transition: color var(--transition-speed);
+            display: flex; align-items: center; gap: 4px;
         }
 
-        .logo span { color: var(--accent); transition: color var(--transition-speed); }
+        .logo span { color: var(--accent); }
 
-        nav { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+        nav {
+            display: flex; gap: 3px; align-items: center; flex-wrap: wrap;
+            justify-content: flex-end; background: rgba(255,255,255,0.02);
+            border-radius: 20px; padding: 2px;
+        }
 
         nav a {
-            background: none; border: none;
-            color: #999;
-            font-family: inherit;
-            font-size: 11px;
-            font-weight: 600;
-            letter-spacing: 1.2px;
-            text-transform: uppercase;
-            cursor: pointer;
-            padding: 6px 0;
-            border-bottom: 2px solid transparent;
-            transition: all 0.3s;
-            text-decoration: none;
+            background: none; border: none; color: #999;
+            font-family: var(--font-ui);
+            font-size: 9px; font-weight: 600;
+            letter-spacing: 0.6px; text-transform: uppercase; cursor: pointer;
+            padding: 5px 9px; border-radius: 16px; transition: all 0.3s;
+            text-decoration: none; white-space: nowrap;
+            display: flex; align-items: center; gap: 3px;
         }
 
-        nav a:hover, nav a.active {
-            color: var(--accent);
-            border-bottom-color: var(--accent);
+        nav a:hover { color: #fff; background: rgba(255,255,255,0.05); }
+        nav a.active {
+            color: #fff; background: var(--accent);
+            box-shadow: 0 0 10px var(--accent-glow);
         }
 
         .btn-home {
-            background: var(--accent);
-            color: #0a0a0a !important;
-            padding: 8px 18px;
-            border-radius: 25px;
-            font-weight: 700;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
+            background: var(--accent) !important; color: #0a0a0a !important;
+            font-weight: 700; position: relative; overflow: hidden;
         }
 
         .btn-home::before {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
+            content: ''; position: absolute; top: 0; left: -100%;
             width: 100%; height: 100%;
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
             animation: shimmer 3s infinite;
         }
 
-        .btn-home:hover {
-            background: #ff8533;
-            box-shadow: 0 0 25px var(--accent-glow);
-            border-bottom: none !important;
-            transform: translateY(-2px);
-        }
-
-        /* ===== ГЕРОЙ ===== */
-        .hero {
-            text-align: center;
-            padding: 60px 20px 30px;
-            position: relative;
-            z-index: 1;
-        }
+        .hero { text-align: center; padding: 28px 16px 16px; position: relative; z-index: 1; }
 
         .hero h1 {
-            font-size: 48px;
-            font-weight: 900;
-            letter-spacing: 5px;
+            font-size: 32px; font-weight: 900; letter-spacing: 4px;
             background: linear-gradient(135deg, var(--accent), #fff, var(--accent));
             background-size: 200% 100%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: gradientShift 4s ease infinite;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; animation: gradientShift 4s ease infinite;
         }
 
         .hero .subtitle {
-            font-size: 14px;
-            color: #666;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            margin: 10px 0 25px;
+            font-size: 10px; color: #666; letter-spacing: 2px;
+            text-transform: uppercase; margin: 4px 0 20px;
         }
 
-        /* ===== ПЕРЕКЛЮЧАТЕЛИ РЕЖИМОВ ===== */
         .mode-switcher {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-            margin-bottom: 40px;
-            position: relative;
-            z-index: 1;
+            display: flex; justify-content: center; gap: 10px;
+            flex-wrap: wrap; margin-bottom: 28px;
+            position: relative; z-index: 1;
         }
 
         .mode-btn {
-            background: var(--surface);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 2px solid var(--border);
-            border-radius: 20px;
-            padding: 16px 28px;
-            cursor: pointer;
-            transition: all var(--transition-speed);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            color: var(--text);
-            font-family: inherit;
-            font-size: 14px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
+            background: var(--surface); backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px); border: 1px solid var(--border);
+            border-radius: 12px; padding: 10px 16px; cursor: pointer;
+            transition: all var(--transition-speed); display: flex;
+            align-items: center; gap: 6px; color: var(--text);
+            font-size: 11px; font-weight: 700;
+            letter-spacing: 0.6px; text-transform: uppercase;
         }
 
         .mode-btn:hover {
-            border-color: var(--accent);
-            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.5);
-            transform: translateY(-4px);
+            border-color: var(--accent); box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+            transform: translateY(-1px);
         }
 
         .mode-btn.active {
-            border-color: var(--accent);
-            box-shadow: 0 0 30px var(--accent-glow);
+            border-color: var(--accent); box-shadow: 0 0 15px var(--accent-glow);
             background: rgba(var(--accent-rgb), 0.08);
         }
 
-        .mode-btn img {
-            width: 38px;
-            height: 38px;
-            object-fit: cover;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
+        .mode-btn img { width: 24px; height: 24px; object-fit: cover; border-radius: 5px; }
 
-        /* ===== ПОИСК ===== */
         .wiki-search {
-            max-width: 700px;
-            margin: 0 auto 40px;
-            padding: 0 20px;
-            position: relative;
-            z-index: 1;
+            max-width: 600px; margin: 0 auto 28px; padding: 0 16px;
+            position: relative; z-index: 1;
         }
 
         .wiki-search input {
             width: 100%;
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 16px 24px;
-            color: #fff;
-            font-family: inherit;
-            font-size: 15px;
-            letter-spacing: 1px;
-            transition: all 0.3s;
+            background: var(--card-bg); backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px); border: 1px solid var(--border);
+            border-radius: 12px; padding: 12px 18px;
+            color: #fff; font-family: var(--font-game); font-size: 13px;
+            letter-spacing: 0.6px; transition: all 0.3s;
         }
 
         .wiki-search input:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 20px var(--accent-glow);
+            outline: none; border-color: var(--accent);
+            box-shadow: 0 0 15px var(--accent-glow);
         }
 
         .wiki-search input::placeholder { color: #555; }
 
-        /* ===== КОНТЕЙНЕР ВИКИ ===== */
         .wiki-container {
-            max-width: 900px;
-            margin: 0 auto 80px;
-            padding: 0 25px;
-            position: relative;
-            z-index: 1;
+            max-width: 780px; margin: 0 auto 50px; padding: 0 16px;
+            position: relative; z-index: 1;
         }
 
         .wiki-section {
-            background: var(--card-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 35px 30px;
-            margin-bottom: 30px;
-            position: relative;
-            overflow: hidden;
-            transition: all var(--transition-speed);
+            background: var(--surface); backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px); border: 1px solid var(--border);
+            border-radius: 14px; padding: 22px 20px; margin-bottom: 22px;
+            position: relative; overflow: hidden; transition: all var(--transition-speed);
         }
 
         .wiki-section.hidden-section { display: none; }
 
         .wiki-section::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0;
-            width: 4px; height: 100%;
-            background: var(--accent);
-            border-radius: 0 4px 4px 0;
-            transition: background var(--transition-speed);
+            content: ''; position: absolute; top: 0; left: 0;
+            width: 3px; height: 100%; background: var(--accent);
+            border-radius: 0 3px 3px 0; transition: background var(--transition-speed);
         }
 
         .wiki-section h2 {
-            font-size: 22px;
-            font-weight: 800;
-            letter-spacing: 1.5px;
-            color: var(--accent);
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            transition: color var(--transition-speed);
+            font-size: 16px; font-weight: 800; letter-spacing: 0.8px;
+            color: var(--accent); margin-bottom: 16px; text-transform: uppercase;
+            display: flex; align-items: center; gap: 10px;
         }
 
         .wiki-section h2 img {
-            width: 36px;
-            height: 36px;
-            object-fit: cover;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 28px; height: 28px; object-fit: cover;
+            border-radius: 6px; border: 1px solid rgba(255,255,255,0.1);
         }
 
         .wiki-content {
-            color: #bbb;
-            font-size: 13px;
-            line-height: 1.8;
-            letter-spacing: 0.5px;
+            color: #bbb; font-size: 11px; line-height: 1.55;
+            letter-spacing: 0.3px;
         }
 
         .wiki-content h3 {
-            font-size: 17px;
-            font-weight: 700;
-            color: #fff;
-            margin: 25px 0 12px;
-            padding-bottom: 6px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            letter-spacing: 0.5px;
+            font-size: 14px; font-weight: 700; color: #fff;
+            margin: 20px 0 10px; padding-bottom: 4px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
 
-        .wiki-content p { margin-bottom: 14px; }
+        .wiki-content p { margin-bottom: 10px; }
 
         .wiki-content .cmd {
             display: inline-block;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 5px 12px;
-            border-radius: 6px;
-            font-family: inherit;
-            color: var(--accent);
-            font-size: 13px;
-            margin: 2px 0;
-            transition: all 0.3s;
+            background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+            padding: 3px 10px; border-radius: 5px;
+            color: var(--accent); font-size: 11px; margin: 1px 0;
         }
 
-        .wiki-content ul {
-            margin: 12px 0 18px 20px;
-            list-style-type: none;
-        }
-
-        .wiki-content ul li {
-            margin-bottom: 8px;
-            position: relative;
-            padding-left: 18px;
-        }
-
+        .wiki-content ul { margin: 10px 0 14px 16px; list-style-type: none; }
+        .wiki-content ul li { margin-bottom: 5px; position: relative; padding-left: 14px; }
         .wiki-content ul li::before {
-            content: '›';
-            position: absolute;
-            left: 0;
-            color: var(--accent);
-            font-weight: bold;
-            font-size: 18px;
+            content: '>'; position: absolute; left: 0;
+            color: var(--accent); font-weight: bold; font-size: 12px;
         }
 
         .wiki-content .note {
             background: rgba(var(--accent-rgb), 0.06);
             border: 1px solid rgba(var(--accent-rgb), 0.15);
-            border-radius: 12px;
-            padding: 14px 20px;
-            margin: 18px 0;
-            font-size: 12px;
-            color: #ccc;
-            line-height: 1.6;
+            border-radius: 10px; padding: 10px 16px; margin: 14px 0;
+            font-size: 10px; color: #ccc; line-height: 1.5;
         }
 
-        /* ===== ФУТЕР ===== */
         footer {
-            background: rgba(13, 13, 18, 0.7);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-top: 1px solid var(--border);
-            text-align: center;
-            padding: 22px;
-            color: #555;
-            font-size: 11px;
-            letter-spacing: 1.5px;
-            position: relative;
-            z-index: 1;
-            transition: all var(--transition-speed);
+            background: rgba(13, 13, 18, 0.7); backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px); border-top: 1px solid var(--border);
+            text-align: center; padding: 12px; color: #555; font-size: 8px;
+            letter-spacing: 1px; position: relative; z-index: 1;
         }
 
-        footer span { color: var(--accent); transition: color var(--transition-speed); }
+        footer span { color: var(--accent); }
 
-        /* ===== АДАПТИВ ===== */
         @media (max-width: 600px) {
-            header { height: auto; padding: 14px 20px; gap: 10px; flex-wrap: wrap; }
-            .hero h1 { font-size: 34px; }
-            .wiki-section { padding: 22px 18px; }
+            header { height: auto; padding: 6px 10px; gap: 4px; flex-wrap: wrap; }
+            .hero h1 { font-size: 24px; }
+            .wiki-section { padding: 16px 14px; }
         }
     </style>
 </head>
@@ -425,16 +285,17 @@
         <source src="322662.mp4" type="video/mp4">
     </video>
     <div class="video-fallback"></div>
-
     <div class="particles-container" id="particlesContainer"></div>
 
     <header>
         <a href="index.html" class="logo">S<span>ARMINE</span></a>
         <nav>
-            <a href="index.html">Главная</a>
-            <a href="index.html#section-map">Карта</a>
-            <a href="rules.html">Правила</a>
-            <a href="wiki.html" class="active">Вики</a>
+            <a href="index.html">⌂ Главная</a>
+            <a href="index.html#map">◉ Карта</a>
+            <a href="rules.html">⚑ Правила</a>
+            <a href="wiki.html" class="active">◆ Вики</a>
+            <a href="war.html">⚔ Войны</a>
+            <a href="index.html#faq">? ЧаВо</a>
             <a href="shop.html" class="btn-home">Донат</a>
         </nav>
     </header>
@@ -444,11 +305,8 @@
         <p class="subtitle">Гайды, механики и описание режимов</p>
     </section>
 
-    <!-- Переключатели разделов вики -->
     <div class="mode-switcher">
-        <button class="mode-btn active" onclick="switchWikiMode('general')" id="btn-general">
-            📋 Основное
-        </button>
+        <button class="mode-btn active" onclick="switchWikiMode('general')" id="btn-general">Основное</button>
         <button class="mode-btn" onclick="switchWikiMode('survival')" id="btn-survival">
             <img src="sarmine.survival.jpg" alt="Выживание"> Выживание
         </button>
@@ -460,17 +318,15 @@
         </button>
     </div>
 
-    <!-- Поиск -->
     <div class="wiki-search">
         <input type="text" id="wikiSearch" placeholder="Поиск по вики..." oninput="filterWiki()">
     </div>
 
-    <!-- Контент -->
     <div class="wiki-container">
 
-        <!-- ===== ОСНОВНОЕ ===== -->
+        <!-- ОСНОВНОЕ -->
         <div class="wiki-section" id="wiki-general">
-            <h2>📋 Основное (все режимы)</h2>
+            <h2>Основное (все режимы)</h2>
             <div class="wiki-content">
                 <h3>Экономика и валюта</h3>
                 <p>На сервере используется экономика на базе <span class="cmd">Vault</span> и <span class="cmd">ChestShop</span>. В каждом режиме своя валюта:</p>
@@ -487,105 +343,105 @@
                 <h3>Администрация и модерация</h3>
                 <p>На сервере действуют общие правила. Администраторы следят за порядком, рассматривают жалобы и наказывают нарушителей. Решение администрации окончательно. Апелляции подаются через Discord. Выдача себя за администратора карается баном.</p>
 
-                <h3>ChestShop — торговля</h3>
+                <h3>ChestShop - торговля</h3>
                 <p>Для создания магазина поставь сундук и табличку рядом. На табличке напиши:</p>
                 <p><span class="cmd">Первая строка:</span> своё имя (или оставь пустым)</p>
                 <p><span class="cmd">Вторая строка:</span> количество товара за одну сделку</p>
                 <p><span class="cmd">Третья строка:</span> цена покупки и продажи (например, B 10:5 S)</p>
                 <p><span class="cmd">Четвёртая строка:</span> ID предмета (можно написать <span class="cmd">?</span> и ударить по сундуку предметом)</p>
-                <p>Готово — твой магазин работает. Игроки могут покупать товары, кликая по табличке.</p>
+                <p>Готово - твой магазин работает. Игроки могут покупать товары, кликая по табличке.</p>
 
                 <h3>Чат и каналы (TownyChat)</h3>
                 <p>На сервере есть несколько чат-каналов:</p>
                 <ul>
-                    <li><span class="cmd">/g</span> — глобальный чат (все игроки)</li>
-                    <li><span class="cmd">/tc</span> — чат города (только жители твоего города)</li>
-                    <li><span class="cmd">/nc</span> — чат нации (только члены твоей нации)</li>
-                    <li><span class="cmd">/msg Ник</span> — личное сообщение</li>
+                    <li><span class="cmd">/g</span> - глобальный чат (все игроки)</li>
+                    <li><span class="cmd">/tc</span> - чат города (только жители твоего города)</li>
+                    <li><span class="cmd">/nc</span> - чат нации (только члены твоей нации)</li>
+                    <li><span class="cmd">/msg Ник</span> - личное сообщение</li>
                 </ul>
                 <p>Переключение между каналами происходит автоматически или через команды. В политическом режиме чат нации используется для дипломатии и координации.</p>
             </div>
         </div>
 
-        <!-- ===== ВЫЖИВАНИЕ ===== -->
+        <!-- ВЫЖИВАНИЕ -->
         <div class="wiki-section" id="wiki-survival" style="display:none;">
             <h2><img src="sarmine.survival.jpg" alt="Выживание"> Выживание</h2>
             <div class="wiki-content">
                 <h3>Классический режим</h3>
-                <p>Выживание — это классический Minecraft с экономикой, приватами и плагинами. Здесь ты можешь строить, развиваться, торговать и объединяться в кланы. В отличие от анархии, твоя база защищена.</p>
+                <p>Выживание - это классический Minecraft с экономикой, приватами и плагинами. Здесь ты можешь строить, развиваться, торговать и объединяться в кланы. В отличие от анархии, твоя база защищена.</p>
                 <h3>Приват территории</h3>
                 <p>Для защиты постройки используй WorldEdit и WorldGuard:</p>
-                <p><span class="cmd">//wand</span> — получить инструмент для выделения территории (деревянный топор).</p>
-                <p>Левый клик — первая точка, правый клик — вторая точка.</p>
-                <p><span class="cmd">//expand vert</span> — расширить регион от коренной породы до неба.</p>
-                <p><span class="cmd">/rg claim Название</span> — создать приватный регион.</p>
-                <p><span class="cmd">/rg addmember Название Ник</span> — добавить друга в регион.</p>
+                <p><span class="cmd">//wand</span> - получить инструмент для выделения территории (деревянный топор).</p>
+                <p>Левый клик - первая точка, правый клик - вторая точка.</p>
+                <p><span class="cmd">//expand vert</span> - расширить регион от коренной породы до неба.</p>
+                <p><span class="cmd">/rg claim Название</span> - создать приватный регион.</p>
+                <p><span class="cmd">/rg addmember Название Ник</span> - добавить друга в регион.</p>
                 <div class="note">Совет: всегда используй <span class="cmd">//expand vert</span> перед созданием региона. Иначе злоумышленник может прокопать сверху или снизу.</div>
                 <h3>Экономика и торговля</h3>
-                <p>Валюта выживания — монеты и кристаллы. Монеты зарабатываются продажей ресурсов через ChestShop. Кристаллы покупаются через донат.</p>
+                <p>Валюта выживания - монеты и кристаллы. Монеты зарабатываются продажей ресурсов через ChestShop. Кристаллы покупаются через донат.</p>
                 <h3>Кланы и объединения</h3>
                 <p>Объединяйся с другими игроками для совместного строительства и защиты. Кланы могут владеть общими территориями, торговать и защищать друг друга.</p>
             </div>
         </div>
 
-        <!-- ===== ПОЛИТИКА ===== -->
+        <!-- ПОЛИТИКА -->
         <div class="wiki-section" id="wiki-polit" style="display:none;">
             <h2><img src="sarmine.polit.png" alt="Политика"> Политический режим</h2>
             <div class="wiki-content">
                 <h3>Что такое Towny</h3>
-                <p>Towny — это плагин, превращающий сервер в политическую песочницу. Игроки создают города, объединяют их в нации, захватывают территории и воюют. Каждый город имеет мэра, жителей и территорию. Каждая нация — короля и совет.</p>
+                <p>Towny - это плагин, превращающий сервер в политическую песочницу. Игроки создают города, объединяют их в нации, захватывают территории и воюют. Каждый город имеет мэра, жителей и территорию. Каждая нация - короля и совет.</p>
 
                 <h3>Как создать город</h3>
-                <p><span class="cmd">/town new Название</span> — создать город (стоимость: 250 долларов).</p>
-                <p><span class="cmd">/town claim</span> — расширить территорию города на один чанк.</p>
-                <p><span class="cmd">/town deposit Сумма</span> — пополнить казну города.</p>
-                <p><span class="cmd">/town set taxes Сумма</span> — установить налог для жителей.</p>
+                <p><span class="cmd">/town new Название</span> - создать город (стоимость: 250 долларов).</p>
+                <p><span class="cmd">/town claim</span> - расширить территорию города на один чанк.</p>
+                <p><span class="cmd">/town deposit Сумма</span> - пополнить казну города.</p>
+                <p><span class="cmd">/town set taxes Сумма</span> - установить налог для жителей.</p>
 
                 <h3>Как создать нацию</h3>
-                <p><span class="cmd">/nation new Название</span> — создать нацию (стоимость: 1000 долларов).</p>
-                <p><span class="cmd">/nation invite Город</span> — пригласить город в нацию.</p>
-                <p><span class="cmd">/nation deposit Сумма</span> — пополнить казну нации.</p>
+                <p><span class="cmd">/nation new Название</span> - создать нацию (стоимость: 1000 долларов).</p>
+                <p><span class="cmd">/nation invite Город</span> - пригласить город в нацию.</p>
+                <p><span class="cmd">/nation deposit Сумма</span> - пополнить казну нации.</p>
 
                 <h3>Военная система SARMINE-War</h3>
-                <p>На сервере используется собственный плагин <span class="cmd">SARMINE-War</span>, заменяющий SiegeWar. Войны между городами и нациями ведутся через нашу кастомную механику:</p>
+                <p>На сервере используется собственный плагин <span class="cmd">SARMINE-War</span>. Войны между городами и нациями ведутся через нашу кастомную механику:</p>
                 <ul>
-                    <li><span class="cmd">/t war</span> — объявить войну городу. Начинается через 24 часа.</li>
-                    <li><span class="cmd">/n war</span> — объявить войну нации.</li>
+                    <li><span class="cmd">/t war</span> - объявить войну городу. Начинается через 24 часа.</li>
+                    <li><span class="cmd">/n war</span> - объявить войну нации.</li>
                     <li>Боевые действия: с 16:00 до 22:00 МСК.</li>
-                    <li>Очки войны: города — 600, нации — 1000.</li>
-                    <li>Флаг захвата — крафт: 2 красной шерсти + 2 палки.</li>
-                    <li>Флаг капитуляции — секретный крафт: 2 зелёной шерсти + 2 золотых блока.</li>
-                    <li>Военная бомба — крафт: 4 пороха + 1 TNT.</li>
+                    <li>Очки войны: города - 600, нации - 1000.</li>
+                    <li>Флаг захвата - крафт: 2 красной шерсти + 2 палки.</li>
+                    <li>Флаг капитуляции - секретный крафт: 2 зелёной шерсти + 2 золотых блока.</li>
+                    <li>Военная бомба - крафт: 4 пороха + 1 TNT.</li>
                 </ul>
 
                 <h3>Гранаты (только в Политике)</h3>
                 <p>Система гранат доступна только на политическом режиме через команду <span class="cmd">/gr</span>:</p>
                 <ul>
-                    <li><b>Дымовая</b> — 500$. Радиус: 10 блоков, слепота и замедление.</li>
-                    <li><b>Молотов</b> — 1000$. Радиус: 15 блоков, 2 HP/с, поджигает.</li>
-                    <li><b>Осколочная</b> — 1100$. Радиус: 5 блоков, 10 HP урона.</li>
-                    <li><b>Обычная</b> — 1500$. Радиус: 6 блоков, разрушает блоки.</li>
+                    <li><b>Дымовая</b> - 500$. Радиус: 10 блоков, слепота и замедление.</li>
+                    <li><b>Молотов</b> - 1000$. Радиус: 15 блоков, 2 HP/с, поджигает.</li>
+                    <li><b>Осколочная</b> - 1100$. Радиус: 5 блоков, 10 HP урона.</li>
+                    <li><b>Обычная</b> - 1500$. Радиус: 6 блоков, разрушает блоки.</li>
                 </ul>
 
                 <h3>Дипломатия</h3>
                 <p>Нации могут быть в состоянии:</p>
                 <ul>
-                    <li><b>Союзники</b> — <span class="cmd">/nation ally add Нация</span></li>
-                    <li><b>Враги</b> — <span class="cmd">/nation enemy add Нация</span></li>
-                    <li><b>Нейтралитет</b> — стандартное состояние.</li>
+                    <li><b>Союзники</b> - <span class="cmd">/nation ally add Нация</span></li>
+                    <li><b>Враги</b> - <span class="cmd">/nation enemy add Нация</span></li>
+                    <li><b>Нейтралитет</b> - стандартное состояние.</li>
                 </ul>
-                <div class="note">Совет: всегда держите казну города и нации пополненной. Во время войны деньги списываются автоматически. Если казна опустеет — город или нация могут быть распущены.</div>
+                <div class="note">Совет: всегда держите казну города и нации пополненной. Во время войны деньги списываются автоматически. Если казна опустеет - город или нация могут быть распущены.</div>
             </div>
         </div>
 
-        <!-- ===== АНАРХИЯ ===== -->
+        <!-- АНАРХИЯ -->
         <div class="wiki-section" id="wiki-anarchy" style="display:none;">
             <h2><img src="sarmine.anr.jpg" alt="Анархия"> Анархия</h2>
             <div class="wiki-content">
                 <h3>Полная свобода</h3>
                 <p>На анархии нет приватов, нет защиты территорий, нет правил (кроме общих). Любой игрок может найти твою базу и уничтожить её. Выживает сильнейший.</p>
                 <h3>Рейды и защита</h3>
-                <p>Рейды — главная механика анархии. Игроки ищут чужие базы, взламывают их и забирают ресурсы. Советы по защите:</p>
+                <p>Рейды - главная механика анархии. Игроки ищут чужие базы, взламывают их и забирают ресурсы. Советы по защите:</p>
                 <ul>
                     <li>Строй базу далеко от спавна.</li>
                     <li>Прячь вход под землёй, за водопадами, в пещерах.</li>
@@ -593,65 +449,45 @@
                     <li>Ставь ловушки: ямы с лавой, нажимные плиты с TNT.</li>
                     <li>Храни ценные вещи в эндер-сундуках.</li>
                 </ul>
-                <div class="note">Важно: даже если твою базу разгромили — не сдавайся. Собери ресурсы заново, найди обидчика и отомсти. Это дух анархии.</div>
+                <div class="note">Важно: даже если твою базу разгромили - не сдавайся. Собери ресурсы заново, найди обидчика и отомсти. Это дух анархии.</div>
                 <h3>PvP и оружие</h3>
                 <p>PvP разрешено везде и всегда. Готовься к бою в любой момент. Улучшай броню и оружие. Зелья невидимости и скорости помогут сбежать или напасть неожиданно.</p>
                 <h3>Ресурсы и экономика</h3>
-                <p>На анархии работает ChestShop. Ты можешь торговать с другими игроками, но будь осторожен — никто не гарантирует честность сделки.</p>
+                <p>На анархии работает ChestShop. Ты можешь торговать с другими игроками, но будь осторожен - никто не гарантирует честность сделки.</p>
             </div>
         </div>
 
     </div>
 
     <footer>
-        © 2026 <span>SARMINE</span> — Minecraft сервер. <a href="index.html" style="color:#999;text-decoration:none;">На главную</a>
+        © 2026 <span>SARMINE</span> - Minecraft сервер. IP: sarmine.fun
     </footer>
 
     <script>
-        // Видеофон
-        document.getElementById('bgVideo').addEventListener('error', function() {
-            this.style.display = 'none';
-        });
+        document.getElementById('bgVideo').addEventListener('error', function() { this.style.display = 'none'; });
 
-        // Частицы
         (function() {
             const container = document.getElementById('particlesContainer');
             const colors = [
-                'rgba(255, 106, 0, 0.5)',
-                'rgba(255, 140, 50, 0.3)',
-                'rgba(255, 200, 100, 0.4)',
-                'rgba(255, 255, 255, 0.2)'
+                'rgba(255, 106, 0, 0.4)', 'rgba(255, 140, 50, 0.25)',
+                'rgba(255, 200, 100, 0.3)', 'rgba(255, 255, 255, 0.15)'
             ];
-
             function createParticle() {
-                const p = document.createElement('div');
-                p.classList.add('particle');
-                const size = Math.random() * 4 + 1.5;
-                const startX = Math.random() * window.innerWidth;
-                const duration = Math.random() * 7000 + 5000;
-                const color = colors[Math.floor(Math.random() * colors.length)];
-                p.style.left = startX + 'px';
-                p.style.width = size + 'px';
-                p.style.height = size + 'px';
-                p.style.background = color;
-                p.style.boxShadow = `0 0 ${size * 2}px ${color}`;
-                p.style.animationDuration = duration + 'ms';
+                const p = document.createElement('div'); p.classList.add('particle');
+                const size = Math.random() * 2.5 + 1;
+                p.style.left = Math.random() * window.innerWidth + 'px';
+                p.style.width = size + 'px'; p.style.height = size + 'px';
+                p.style.background = colors[Math.floor(Math.random() * colors.length)];
+                p.style.boxShadow = `0 0 ${size * 2}px ${p.style.background}`;
+                p.style.animationDuration = (Math.random() * 5000 + 3500) + 'ms';
                 container.appendChild(p);
                 p.addEventListener('animationend', () => p.remove());
             }
-
-            function spawnParticle() {
-                createParticle();
-                setTimeout(spawnParticle, Math.random() * 250 + 150);
-            }
-
-            for (let i = 0; i < 25; i++) {
-                setTimeout(createParticle, Math.random() * 2500);
-            }
-            setTimeout(spawnParticle, 2500);
+            function spawnParticle() { createParticle(); setTimeout(spawnParticle, Math.random() * 350 + 250); }
+            for (let i = 0; i < 15; i++) setTimeout(createParticle, Math.random() * 2000);
+            setTimeout(spawnParticle, 2000);
         })();
 
-        // Переключение разделов вики
         function switchWikiMode(mode) {
             document.querySelectorAll('.wiki-section').forEach(s => s.style.display = 'none');
             document.getElementById('wiki-' + mode).style.display = 'block';
@@ -687,7 +523,6 @@
             }
         }
 
-        // Поиск
         function filterWiki() {
             var query = document.getElementById('wikiSearch').value.toLowerCase().trim();
             document.querySelectorAll('.wiki-section').forEach(function(section) {
