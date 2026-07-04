@@ -199,6 +199,17 @@
             font-family: var(--font-game);
             font-size: 22px; font-weight: 900; color: var(--accent); display: block;
         }
+
+        .info-card.ip-card .value {
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .info-card.ip-card .value:hover {
+            color: #fff;
+            text-shadow: 0 0 10px var(--accent-glow);
+        }
+
         .info-card .label {
             font-family: var(--font-ui);
             font-size: 9px; letter-spacing: 2px; color: #666;
@@ -541,9 +552,9 @@
                     <span class="value">1.19–1.21</span>
                     <span class="label">Версии</span>
                 </div>
-                <div class="info-card">
-                    <span class="value">sarmine.fun</span>
-                    <span class="label">IP-Адрес</span>
+                <div class="info-card ip-card">
+                    <span class="value" onclick="copyIP()" title="Нажми, чтобы скопировать IP">sarmine.fun</span>
+                    <span class="label">IP-Адрес (нажми)</span>
                 </div>
             </div>
 
@@ -756,6 +767,46 @@
         document.getElementById('bgVideo').addEventListener('error', function() {
             this.style.display = 'none';
         });
+
+        function copyIP() {
+            var ip = 'sarmine.fun';
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(ip).then(function() {
+                    showCopyToast('IP скопирован: ' + ip);
+                }).catch(function() {
+                    fallbackCopy(ip);
+                });
+            } else {
+                fallbackCopy(ip);
+            }
+        }
+
+        function fallbackCopy(text) {
+            var textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.left = '-9999px';
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                showCopyToast('IP скопирован: ' + text);
+            } catch(e) {
+                showCopyToast('Не удалось скопировать IP');
+            }
+            document.body.removeChild(textarea);
+        }
+
+        function showCopyToast(msg) {
+            var toast = document.createElement('div');
+            toast.textContent = msg;
+            toast.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--accent);color:#0a0a0a;padding:10px 20px;border-radius:20px;font-family:var(--font-ui);font-size:11px;font-weight:700;z-index:9999;pointer-events:none;transition:opacity 0.4s;opacity:1;';
+            document.body.appendChild(toast);
+            setTimeout(function() {
+                toast.style.opacity = '0';
+                setTimeout(function() { document.body.removeChild(toast); }, 400);
+            }, 1500);
+        }
 
         function showSection(name) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));

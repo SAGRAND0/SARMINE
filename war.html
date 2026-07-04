@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SARMINE — Военный архив</title>
+    <style>
+        @font-face {
+            font-family: 'Minecraftia';
+            src: url('Minecraftia.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+            unicode-range: U+0041-005A, U+0061-007A, U+0030-0039, U+0021, U+003F;
+        }
+
+        :root {
+            --bg: #080810;
+            --surface: rgba(20, 20, 35, 0.75);
+            --border: rgba(255, 255, 255, 0.06);
+            --text: #c0c0c0;
+            --heading: #ffffff;
+            --accent: #42A5F5;
+            --accent-glow: rgba(66, 165, 245, 0.3);
+            --accent-rgb: 66, 165, 245;
+            --card-bg: rgba(17, 17, 28, 0.7);
+            --transition-speed: 0.5s;
+            --font-game: 'Minecraftia', monospace;
+            --font-ui: 'Segoe UI', 'Inter', 'Arial', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: var(--font-game);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            transition: background-color var(--transition-speed), color var(--transition-speed);
+            font-size: 14px;
+        }
+
+        .video-background {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover; z-index: -2; opacity: 0.18; pointer-events: none;
+        }
+
+        .video-fallback {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -3;
+            background: radial-gradient(ellipse at 50% 0%, #1a1a2a 0%, var(--bg) 60%),
+                        repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255,255,255,0.01) 3px, rgba(255,255,255,0.01) 6px);
+            background-size: 100% 100%, 100% 100%;
+        }
+
+        .particles-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: -1;
+        }
+
+        .particle {
+            position: absolute; border-radius: 50%; pointer-events: none;
+            animation: floatUp linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(105vh) scale(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 0.8; }
+            100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+        }
+
+        @keyframes shimmer {
+            0%, 100% { background-position: -200% center; }
+            50% { background-position: 200% center; }
+        }
+
+        header {
+            background: rgba(15, 15, 25, 0.7);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 46px;
+            position: sticky; top: 0; z-index: 100;
+            transition: all var(--transition-speed);
+        }
+
+        .logo {
+            font-family: var(--font-game);
+            font-size: 16px; font-weight: 900; letter-spacing: 2px;
+            color: #fff; text-transform: uppercase; cursor: pointer;
+            text-decoration: none; transition: color var(--transition-speed);
+            display: flex; align-items: center; gap: 4px;
+        }
+
+        .logo span { color: var(--accent); }
+
+        nav {
+            display: flex; gap: 3px; align-items: center; flex-wrap: wrap;
+            justify-content: flex-end; background: rgba(255,255,255,0.02);
+            border-radius: 20px; padding: 2px;
+        }
+
+        nav a {
+            background: none; border: none; color: #999;
+            font-family: var(--font-ui);
+            font-size: 9px; font-weight: 600;
+            letter-spacing: 0.6px; text-transform: uppercase; cursor: pointer;
+            padding: 5px 9px; border-radius: 16px; transition: all 0.3s;
+            text-decoration: none; white-space: nowrap;
+            display: flex; align-items: center; gap: 3px;
+        }
+
+        nav a:hover { color: #fff; background: rgba(255,255,255,0.05); }
+        nav a.active {
+            color: #fff; background: var(--accent);
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .btn-home {
+            background: var(--accent) !important; color: #0a0a0a !important;
+            font-weight: 700; position: relative; overflow: hidden;
+        }
+
+        .btn-home::before {
+            content: ''; position: absolute; top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        .hero { text-align: center; padding: 28px 16px 20px; position: relative; z-index: 1; }
+
+        .hero h1 {
+            font-family: var(--font-game);
+            font-size: 32px; font-weight: 900; letter-spacing: 4px;
+            color: var(--heading); text-transform: uppercase; margin-bottom: 4px;
+        }
+
+        .hero h1 span { color: var(--accent); }
+        .hero .subtitle {
+            font-family: var(--font-ui);
+            font-size: 10px; color: #666; letter-spacing: 2px;
+            text-transform: uppercase; margin-bottom: 24px;
+        }
+
+        .war-container {
+            max-width: 900px;
+            margin: 0 auto 50px;
+            padding: 0 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .war-card {
+            background: var(--surface);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+
+        .war-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+            transform: translateY(-2px);
+        }
+
+        .war-title {
+            font-family: var(--font-game);
+            font-size: 14px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+            background: rgba(66, 165, 245, 0.1);
+            padding: 8px 14px;
+            border-radius: 8px;
+            border-left: 3px solid var(--accent);
+        }
+
+        .war-title .edit-hint {
+            font-family: var(--font-ui);
+            font-size: 8px;
+            color: #666;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+
+        .war-player {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: #000;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .war-player video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: #000;
+        }
+
+        .no-wars {
+            text-align: center;
+            padding: 60px 20px;
+            background: var(--surface);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+        }
+
+        .no-wars .icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .no-wars h3 {
+            font-family: var(--font-game);
+            font-size: 16px;
+            color: #fff;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .no-wars p {
+            font-family: var(--font-ui);
+            font-size: 11px;
+            color: #888;
+            font-style: italic;
+            line-height: 1.5;
+        }
+
+        footer {
+            background: rgba(13, 13, 22, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-top: 1px solid var(--border);
+            text-align: center;
+            padding: 12px;
+            color: #555;
+            font-size: 8px;
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 1;
+            font-family: var(--font-ui);
+        }
+
+        footer span { color: var(--accent); }
+
+        @media (max-width: 600px) {
+            header { height: auto; padding: 6px 10px; gap: 4px; flex-wrap: wrap; }
+            .hero h1 { font-size: 24px; }
+            .war-card { padding: 14px; }
+            .war-title { font-size: 12px; }
+        }
+    </style>
+</head>
+<body>
+    <video class="video-background" id="bgVideo" autoplay muted loop playsinline>
+        <source src="322662.mp4" type="video/mp4">
+    </video>
+    <div class="video-fallback"></div>
+    <div class="particles-container" id="particlesContainer"></div>
+
+    <header>
+        <a href="index.html" class="logo">S<span>ARMINE</span></a>
+        <nav>
+            <a href="index.html">⌂ Главная</a>
+            <a href="index.html#map">◉ Карта</a>
+            <a href="rules.html">⚑ Правила</a>
+            <a href="wiki.html">◆ Вики</a>
+            <a href="war.html" class="active">⚔ Войны</a>
+            <a href="index.html#faq">? ЧаВо</a>
+            <a href="shop.html" class="btn-home">Донат</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Военный <span>Архив</span></h1>
+        <p class="subtitle">Записи политических сражений</p>
+    </section>
+
+    <div class="war-container" id="warContainer">
+        <!-- Войны загружаются автоматически -->
+    </div>
+
+    <footer>
+        © 2026 <span>SARMINE</span> — Minecraft сервер. IP: sarmine.fun
+    </footer>
+
+    <audio id="soundPolit" src="politsound.mp3" loop preload="auto"></audio>
+    <audio id="soundUI" src="lowbattery.mp3" preload="auto"></audio>
+
+    <script>
+        (function() {
+            const container = document.getElementById('particlesContainer');
+            const colors = [
+                'rgba(66, 165, 245, 0.4)', 'rgba(100, 180, 255, 0.25)',
+                'rgba(150, 200, 255, 0.3)', 'rgba(255, 255, 255, 0.15)'
+            ];
+            function createParticle() {
+                const p = document.createElement('div');
+                p.classList.add('particle');
+                const size = Math.random() * 2.5 + 1;
+                p.style.left = Math.random() * window.innerWidth + 'px';
+                p.style.width = size + 'px'; p.style.height = size + 'px';
+                p.style.background = colors[Math.floor(Math.random() * colors.length)];
+                p.style.boxShadow = `0 0 ${size * 2}px ${p.style.background}`;
+                p.style.animationDuration = (Math.random() * 5000 + 3500) + 'ms';
+                container.appendChild(p);
+                p.addEventListener('animationend', () => p.remove());
+            }
+            function spawnParticle() {
+                createParticle();
+                setTimeout(spawnParticle, Math.random() * 350 + 250);
+            }
+            for (let i = 0; i < 15; i++) setTimeout(createParticle, Math.random() * 2000);
+            setTimeout(spawnParticle, 2000);
+        })();
+
+        document.getElementById('bgVideo').addEventListener('error', function() {
+            this.style.display = 'none';
+        });
+
+        // === ЗАГРУЗКА ВОЙН ===
+        (function loadWars() {
+            var container = document.getElementById('warContainer');
+            var foundAny = false;
+
+            // Проверяем war1.mp4, war2.mp4, war3.mp4 и так далее
+            for (var i = 1; i <= 50; i++) {
+                (function(index) {
+                    var video = document.createElement('video');
+                    video.src = 'war' + index + '.mp4';
+                    video.preload = 'metadata';
+                    video.muted = true;
+
+                    video.addEventListener('loadeddata', function() {
+                        foundAny = true;
+                        createWarCard(index);
+                    });
+
+                    video.addEventListener('error', function() {
+                        // Файл не найден — просто пропускаем
+                    });
+                })(i);
+            }
+
+            // Если через 2 секунды ни одно видео не загрузилось — показываем заглушку
+            setTimeout(function() {
+                if (container.children.length === 0) {
+                    container.innerHTML = `
+                        <div class="no-wars">
+                            <div class="icon">🕊</div>
+                            <h3>Мир знает только спокойствие...</h3>
+                            <p>Ни одной войны ещё не прошло</p>
+                        </div>`;
+                }
+            }, 2500);
+
+            function createWarCard(index) {
+                var card = document.createElement('div');
+                card.className = 'war-card';
+
+                var title = document.createElement('div');
+                title.className = 'war-title';
+                title.innerHTML = 'Война #' + index + ' — ### <span class="edit-hint">(смени название в коде)</span>';
+
+                var player = document.createElement('div');
+                player.className = 'war-player';
+
+                var video = document.createElement('video');
+                video.src = 'war' + index + '.mp4';
+                video.controls = true;
+                video.preload = 'metadata';
+                player.appendChild(video);
+
+                card.appendChild(title);
+                card.appendChild(player);
+                container.appendChild(card);
+            }
+        })();
+
+        // Полит-тема и музыка
+        (function() {
+            var saved = 'polit';
+            try { saved = localStorage.getItem('sarmine_theme') || 'polit'; } catch(e) {}
+            if (saved === 'polit') {
+                var music = document.getElementById('soundPolit');
+                if (music) {
+                    music.volume = 0.12;
+                    music.play().catch(function(){});
+                }
+            }
+        })();
+    </script>
+</body>
+</html>

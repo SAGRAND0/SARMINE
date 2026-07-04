@@ -5,447 +5,361 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SARMINE — Правила сервера</title>
     <style>
-        /* ===== ШРИФТ ===== */
         @font-face {
             font-family: 'Minecraftia';
             src: url('Minecraftia.ttf') format('truetype');
             font-weight: normal;
             font-style: normal;
             font-display: swap;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+            unicode-range: U+0041-005A, U+0061-007A, U+0030-0039, U+0021, U+003F;
         }
 
         :root {
             --bg: #080808;
             --surface: rgba(20, 20, 20, 0.75);
-            --border: rgba(255, 255, 255, 0.06);
+            --border: rgba(255, 255, 255, 0.05);
             --text: #c0c0c0;
             --heading: #ffffff;
             --accent: #ff6a00;
             --accent-glow: rgba(255, 106, 0, 0.3);
-            --rule-bg: rgba(255, 255, 255, 0.03);
-            --rule-hover: rgba(255, 255, 255, 0.06);
+            --accent-rgb: 255, 106, 0;
+            --card-bg: rgba(17, 17, 17, 0.7);
+            --rule-bg: rgba(255, 255, 255, 0.025);
+            --rule-hover: rgba(255, 255, 255, 0.05);
             --transition-speed: 0.5s;
+            --font-game: 'Minecraftia', monospace;
+            --font-ui: 'Segoe UI', 'Inter', 'Arial', sans-serif;
         }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             background-color: var(--bg);
             color: var(--text);
-            font-family: 'Minecraftia', 'Segoe UI', 'Inter', 'Arial', sans-serif;
+            font-family: var(--font-game);
             min-height: 100vh;
             position: relative;
             overflow-x: hidden;
             transition: background-color var(--transition-speed), color var(--transition-speed);
+            font-size: 14px;
         }
 
-        /* ===== ВИДЕОФОН ===== */
         .video-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: -2;
-            opacity: 0.3;
-            pointer-events: none;
-            transition: opacity var(--transition-speed);
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover; z-index: -2; opacity: 0.22; pointer-events: none;
         }
 
         .video-fallback {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -3;
-            background: radial-gradient(ellipse at 50% 0%, #1a1a1a 0%, #080808 60%),
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -3;
+            background: radial-gradient(ellipse at 50% 0%, #1a1a1a 0%, var(--bg) 60%),
                         repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255,255,255,0.01) 3px, rgba(255,255,255,0.01) 6px);
             background-size: 100% 100%, 100% 100%;
-            transition: background var(--transition-speed);
         }
 
-        /* ===== СТЕКЛЯННАЯ ШАПКА ===== */
+        .particles-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: -1;
+        }
+
+        .particle {
+            position: absolute; border-radius: 50%; pointer-events: none;
+            animation: floatUp linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(105vh) scale(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 0.8; }
+            100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+        }
+
+        @keyframes shimmer {
+            0%, 100% { background-position: -200% center; }
+            50% { background-position: 200% center; }
+        }
+
         header {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            background: rgba(15, 15, 20, 0.65);
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
+            background: rgba(15, 15, 20, 0.7);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border);
-            padding: 0 40px;
+            padding: 0 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            height: 65px;
+            height: 46px;
+            position: sticky; top: 0; z-index: 100;
             transition: all var(--transition-speed);
         }
 
         .logo {
-            font-size: 22px;
-            font-weight: 900;
-            letter-spacing: 3px;
-            color: #fff;
-            text-transform: uppercase;
-            cursor: pointer;
-            text-decoration: none;
-            transition: color var(--transition-speed);
+            font-family: var(--font-game);
+            font-size: 16px; font-weight: 900; letter-spacing: 2px;
+            color: #fff; text-transform: uppercase; cursor: pointer;
+            text-decoration: none; transition: color var(--transition-speed);
+            display: flex; align-items: center; gap: 4px;
         }
 
-        .logo span {
-            color: var(--accent);
-            transition: color var(--transition-speed);
-        }
+        .logo span { color: var(--accent); }
 
         nav {
-            display: flex;
-            gap: 22px;
-            align-items: center;
-            flex-wrap: wrap;
-            justify-content: flex-end;
+            display: flex; gap: 3px; align-items: center; flex-wrap: wrap;
+            justify-content: flex-end; background: rgba(255,255,255,0.02);
+            border-radius: 20px; padding: 2px;
         }
 
         nav a {
-            background: none;
-            border: none;
-            color: #999;
-            font-family: inherit;
-            font-size: 11px;
-            font-weight: 600;
-            letter-spacing: 1.2px;
-            text-transform: uppercase;
-            cursor: pointer;
-            padding: 6px 0;
-            border-bottom: 2px solid transparent;
-            transition: all 0.3s;
-            text-decoration: none;
+            background: none; border: none; color: #999;
+            font-family: var(--font-ui);
+            font-size: 9px; font-weight: 600;
+            letter-spacing: 0.6px; text-transform: uppercase; cursor: pointer;
+            padding: 5px 9px; border-radius: 16px; transition: all 0.3s;
+            text-decoration: none; white-space: nowrap;
+            display: flex; align-items: center; gap: 3px;
         }
 
-        nav a:hover,
+        nav a:hover { color: #fff; background: rgba(255,255,255,0.05); }
         nav a.active {
-            color: var(--accent);
-            border-bottom-color: var(--accent);
+            color: #fff; background: var(--accent);
+            box-shadow: 0 0 10px var(--accent-glow);
         }
 
         .btn-home {
-            background: var(--accent);
-            color: #0a0a0a !important;
-            padding: 8px 18px;
-            border-radius: 22px;
-            font-weight: 700;
-            transition: all 0.3s;
+            background: var(--accent) !important; color: #0a0a0a !important;
+            font-weight: 700; position: relative; overflow: hidden;
         }
 
-        .btn-home:hover {
-            background: #ff8533;
-            box-shadow: 0 0 25px var(--accent-glow);
-            border-bottom: none !important;
+        .btn-home::before {
+            content: ''; position: absolute; top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: shimmer 3s infinite;
         }
 
-        /* ===== ГЕРОЙ ===== */
-        .hero {
-            text-align: center;
-            padding: 60px 20px 30px;
-            position: relative;
-            z-index: 1;
-        }
+        .hero { text-align: center; padding: 28px 16px 16px; position: relative; z-index: 1; }
 
         .hero h1 {
-            font-size: 44px;
-            font-weight: 900;
-            letter-spacing: 5px;
-            color: var(--heading);
-            text-transform: uppercase;
-            margin-bottom: 8px;
-            transition: color var(--transition-speed);
+            font-family: var(--font-game);
+            font-size: 32px; font-weight: 900; letter-spacing: 4px;
+            color: var(--heading); text-transform: uppercase; margin-bottom: 4px;
         }
 
-        .hero h1 span {
-            color: var(--accent);
-            transition: color var(--transition-speed);
-        }
-
+        .hero h1 span { color: var(--accent); }
         .hero .subtitle {
-            font-size: 13px;
-            color: #666;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            margin-bottom: 35px;
-            transition: color var(--transition-speed);
+            font-family: var(--font-ui);
+            font-size: 10px; color: #666; letter-spacing: 2px;
+            text-transform: uppercase; margin-bottom: 24px;
         }
 
-        /* ===== ПЕРЕКЛЮЧАТЕЛИ РЕЖИМОВ ===== */
         .mode-switcher {
-            display: flex;
-            justify-content: center;
-            gap: 25px;
-            flex-wrap: wrap;
-            margin-bottom: 50px;
-            position: relative;
-            z-index: 1;
+            display: flex; justify-content: center; gap: 10px;
+            flex-wrap: wrap; margin-bottom: 32px;
+            position: relative; z-index: 1;
         }
 
         .mode-btn {
-            background: var(--surface);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid var(--border);
-            border-radius: 18px;
-            padding: 18px 28px;
-            cursor: pointer;
-            transition: all var(--transition-speed);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            color: var(--text);
-            font-family: inherit;
-            font-size: 14px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
+            background: var(--surface); backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px); border: 1px solid var(--border);
+            border-radius: 12px; padding: 10px 16px; cursor: pointer;
+            transition: all var(--transition-speed); display: flex;
+            align-items: center; gap: 6px; color: var(--text);
+            font-family: var(--font-ui); font-size: 11px; font-weight: 700;
+            letter-spacing: 0.6px; text-transform: uppercase;
         }
 
         .mode-btn:hover {
-            border-color: var(--accent);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
-            transform: translateY(-3px);
+            border-color: var(--accent); box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+            transform: translateY(-1px);
         }
 
         .mode-btn.active {
-            border-color: var(--accent);
-            box-shadow: 0 0 25px var(--accent-glow);
-            background: rgba(255, 106, 0, 0.08);
+            border-color: var(--accent); box-shadow: 0 0 15px var(--accent-glow);
+            background: rgba(var(--accent-rgb), 0.08);
         }
 
-        .mode-btn img {
-            width: 36px;
-            height: 36px;
-            object-fit: cover;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
+        .mode-btn img { width: 24px; height: 24px; object-fit: cover; border-radius: 5px; }
 
-        /* ===== КОНТЕЙНЕР ПРАВИЛ ===== */
         .rules-container {
-            max-width: 900px;
-            margin: 0 auto 80px;
-            padding: 0 25px;
-            position: relative;
-            z-index: 1;
+            max-width: 780px; margin: 0 auto 50px; padding: 0 16px;
+            position: relative; z-index: 1;
         }
 
         .rules-block {
-            background: var(--surface);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 35px 30px;
-            margin-bottom: 35px;
-            position: relative;
-            overflow: hidden;
-            transition: all var(--transition-speed);
+            background: var(--surface); backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px); border: 1px solid var(--border);
+            border-radius: 14px; padding: 22px 20px; margin-bottom: 22px;
+            position: relative; overflow: hidden; transition: all var(--transition-speed);
         }
 
         .rules-block::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background: var(--accent);
-            border-radius: 0 4px 4px 0;
-            transition: background var(--transition-speed);
+            content: ''; position: absolute; top: 0; left: 0;
+            width: 3px; height: 100%; background: var(--accent);
+            border-radius: 0 3px 3px 0; transition: background var(--transition-speed);
         }
 
         .rules-block h2 {
-            font-size: 20px;
-            font-weight: 800;
-            letter-spacing: 1.5px;
-            color: var(--accent);
-            margin-bottom: 25px;
-            text-transform: uppercase;
-            transition: color var(--transition-speed);
+            font-family: var(--font-game);
+            font-size: 16px; font-weight: 800; letter-spacing: 0.8px;
+            color: var(--accent); margin-bottom: 16px; text-transform: uppercase;
         }
 
         .rule-item {
-            background: var(--rule-bg);
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            border-radius: 14px;
-            padding: 16px 20px;
-            margin-bottom: 10px;
-            transition: all 0.3s;
-            display: flex;
-            align-items: flex-start;
-            gap: 14px;
+            background: var(--rule-bg); border: 1px solid rgba(255,255,255,0.03);
+            border-radius: 10px; padding: 12px 14px; margin-bottom: 6px;
+            transition: all 0.3s; display: flex; align-items: flex-start; gap: 10px;
         }
 
         .rule-item:hover {
-            background: var(--rule-hover);
-            border-color: rgba(255, 255, 255, 0.1);
-            transform: translateX(3px);
+            background: var(--rule-hover); border-color: rgba(255,255,255,0.08);
+            transform: translateX(1px);
         }
 
         .rule-number {
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--accent);
-            font-weight: 900;
-            font-size: 13px;
-            min-width: 38px;
-            height: 38px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            letter-spacing: 1px;
-            flex-shrink: 0;
-            transition: all 0.3s;
+            background: rgba(255,255,255,0.04); color: var(--accent);
+            font-weight: 900; font-size: 11px; min-width: 28px; height: 28px;
+            border-radius: 7px; display: flex; align-items: center;
+            justify-content: center; letter-spacing: 0.8px; flex-shrink: 0;
+            transition: all 0.3s; cursor: pointer;
         }
 
         .rule-item:hover .rule-number {
-            background: var(--accent);
-            color: #0a0a0a;
-            box-shadow: 0 0 18px var(--accent-glow);
+            background: var(--accent); color: #0a0a0a;
+            box-shadow: 0 0 12px var(--accent-glow);
         }
 
-        .rule-text {
-            flex: 1;
-        }
-
+        .rule-text { flex: 1; }
         .rule-text .title {
-            font-weight: 700;
-            color: #e0e0e0;
-            font-size: 14px;
-            letter-spacing: 0.5px;
-            margin-bottom: 4px;
-            transition: color var(--transition-speed);
+            font-family: var(--font-game);
+            font-weight: 700; color: #e0e0e0; font-size: 12px;
+            letter-spacing: 0.2px; margin-bottom: 2px;
         }
-
         .rule-text .desc {
-            font-size: 12px;
-            color: #888;
-            line-height: 1.6;
-            transition: color var(--transition-speed);
+            font-family: var(--font-ui);
+            font-size: 10px; color: #888; line-height: 1.45;
         }
 
         .punishment {
-            display: inline-block;
-            margin-top: 8px;
-            padding: 4px 14px;
-            border-radius: 20px;
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 1.2px;
-            text-transform: uppercase;
+            display: inline-block; margin-top: 4px; padding: 2px 10px;
+            border-radius: 14px; font-size: 8px; font-weight: 700;
+            letter-spacing: 0.8px; text-transform: uppercase;
+            font-family: var(--font-ui);
         }
 
-        .punish-warn {
-            background: rgba(255, 193, 7, 0.1);
-            color: #ffc107;
-            border: 1px solid rgba(255, 193, 7, 0.2);
+        .punish-warn { background: rgba(255,193,7,0.1); color: #ffc107; border: 1px solid rgba(255,193,7,0.2); }
+        .punish-mute { background: rgba(255,152,0,0.1); color: #ff9800; border: 1px solid rgba(255,152,0,0.2); }
+        .punish-ban { background: rgba(244,67,54,0.1); color: #f44336; border: 1px solid rgba(244,67,54,0.2); }
+        .punish-perm { background: rgba(156,39,176,0.1); color: #9c27b0; border: 1px solid rgba(156,39,176,0.2); }
+
+        .secret-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.96); z-index: 9999;
+            display: none; flex-direction: column; align-items: center;
+            justify-content: center;
         }
 
-        .punish-mute {
-            background: rgba(255, 152, 0, 0.1);
-            color: #ff9800;
-            border: 1px solid rgba(255, 152, 0, 0.2);
+        .secret-overlay.active { display: flex; }
+
+        .secret-container {
+            width: 90%; max-width: 650px; height: 70vh;
+            background: #0a0a0a; border: 2px solid var(--accent);
+            border-radius: 14px; padding: 30px 24px;
+            position: relative; display: flex; flex-direction: column;
+            box-shadow: 0 0 40px var(--accent-glow);
         }
 
-        .punish-ban {
-            background: rgba(244, 67, 54, 0.1);
-            color: #f44336;
-            border: 1px solid rgba(244, 67, 54, 0.2);
+        .secret-header { text-align: center; margin-bottom: 20px; }
+        .secret-header h2 {
+            font-family: var(--font-game);
+            font-size: 22px; color: #fff; text-transform: uppercase;
+        }
+        .secret-header h2 span { color: var(--accent); }
+
+        .secret-content {
+            flex: 1; overflow-y: auto; padding-right: 10px;
+            color: #bbb; font-size: 12px; line-height: 1.7;
+            font-family: var(--font-ui);
+            scrollbar-width: thin; scrollbar-color: var(--accent) #0d0d0d;
         }
 
-        .punish-perm {
-            background: rgba(156, 39, 176, 0.1);
-            color: #9c27b0;
-            border: 1px solid rgba(156, 39, 176, 0.2);
+        .secret-content::-webkit-scrollbar { width: 4px; }
+        .secret-content::-webkit-scrollbar-track { background: #0d0d0d; }
+        .secret-content::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+        .secret-content .highlight { color: var(--accent); font-weight: 600; }
+
+        .secret-close {
+            position: absolute; top: 10px; right: 14px;
+            background: none; border: 1px solid #333; color: #999;
+            width: 28px; height: 28px; border-radius: 50%;
+            font-size: 14px; cursor: pointer; transition: all 0.3s;
+            display: flex; align-items: center; justify-content: center;
         }
 
-        /* ===== ФУТЕР ===== */
+        .secret-close:hover { border-color: var(--accent); color: var(--accent); }
+
+        .secret-watermark {
+            position: fixed; top: 50%; left: 50%;
+            transform: translate(-50%,-50%) rotate(-25deg);
+            font-family: var(--font-game); font-size: 40px; font-weight: 900;
+            color: rgba(255,255,255,0.015); pointer-events: none;
+            z-index: 0; user-select: none; white-space: nowrap;
+        }
+
         footer {
-            background: rgba(13, 13, 18, 0.7);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-top: 1px solid var(--border);
-            text-align: center;
-            padding: 22px;
-            color: #555;
-            font-size: 10px;
-            letter-spacing: 1.5px;
-            position: relative;
-            z-index: 1;
-            transition: all var(--transition-speed);
+            background: rgba(13, 13, 18, 0.7); backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px); border-top: 1px solid var(--border);
+            text-align: center; padding: 12px; color: #555; font-size: 8px;
+            letter-spacing: 1px; position: relative; z-index: 1;
+            font-family: var(--font-ui);
         }
 
-        footer span {
-            color: var(--accent);
-            transition: color var(--transition-speed);
-        }
+        footer span { color: var(--accent); cursor: default; }
 
-        /* ===== АДАПТИВ ===== */
         @media (max-width: 600px) {
-            header {
-                height: auto;
-                padding: 14px 20px;
-                gap: 10px;
-                flex-wrap: wrap;
-            }
-
-            .hero h1 {
-                font-size: 32px;
-            }
-
-            .rules-block {
-                padding: 22px 16px;
-            }
-
-            .rule-item {
-                flex-direction: column;
-                gap: 8px;
-            }
+            header { height: auto; padding: 6px 10px; gap: 4px; flex-wrap: wrap; }
+            .hero h1 { font-size: 24px; }
+            .rules-block { padding: 16px 12px; }
+            .rule-item { flex-direction: column; gap: 4px; }
         }
     </style>
 </head>
 <body>
-
-    <!-- ===== ВИДЕОФОН ===== -->
     <video class="video-background" id="bgVideo" autoplay muted loop playsinline>
         <source src="322662.mp4" type="video/mp4">
     </video>
-    <div class="video-fallback" id="videoFallback"></div>
+    <div class="video-fallback"></div>
+    <div class="particles-container" id="particlesContainer"></div>
 
-    <!-- ===== ШАПКА ===== -->
+    <div class="secret-overlay" id="secretOverlay">
+        <div class="secret-watermark" id="secretWatermark">SARMINE</div>
+        <div class="secret-container">
+            <button class="secret-close" onclick="closeSecret()">X</button>
+            <div class="secret-header"><h2>История <span>SARMINE</span></h2></div>
+            <div class="secret-content" id="secretContent">
+                <p>Здесь будет <span class="highlight">история создания</span> сервера SARMINE.</p>
+                <p>Расскажи, как всё начиналось: первая идея, первые трудности, ссоры и примирения.</p>
+            </div>
+        </div>
+    </div>
+
     <header>
         <a href="index.html" class="logo">S<span>ARMINE</span></a>
         <nav>
-            <a href="index.html">Главная</a>
-            <a href="rules.html" class="active">Правила</a>
-            <a href="wiki.html">Вики</a>
-            <a href="faq.html">ЧаВо</a>
-            <a href="donate.html" class="btn-home">Донат</a>
+            <a href="index.html">⌂ Главная</a>
+            <a href="index.html#map">◉ Карта</a>
+            <a href="rules.html" class="active">⚑ Правила</a>
+            <a href="wiki.html">◆ Вики</a>
+            <a href="war.html">⚔ Войны</a>
+            <a href="index.html#faq">? ЧаВо</a>
+            <a href="shop.html" class="btn-home">Донат</a>
         </nav>
     </header>
 
-    <!-- ===== ГЕРОЙ ===== -->
     <section class="hero">
         <h1>П<span>равила</span></h1>
         <p class="subtitle">Соблюдение обязательно для всех игроков</p>
     </section>
 
-    <!-- ===== ПЕРЕКЛЮЧАТЕЛИ РЕЖИМОВ ===== -->
     <div class="mode-switcher">
-        <button class="mode-btn active" onclick="switchMode('general')" id="btn-general">
-            📋 Основное
-        </button>
+        <button class="mode-btn active" onclick="switchMode('general')" id="btn-general">Основное</button>
         <button class="mode-btn" onclick="switchMode('survival')" id="btn-survival">
             <img src="sarmine.survival.jpg" alt="Выживание"> Выживание
         </button>
@@ -457,453 +371,461 @@
         </button>
     </div>
 
-    <!-- ===== ПРАВИЛА ===== -->
     <div class="rules-container">
 
-        <!-- ===== ОСНОВНОЕ ===== -->
+        <!-- ОСНОВНОЕ -->
         <div class="rules-block mode-content" id="mode-general">
-            <h2>📋 Основные правила сервера</h2>
+            <h2>Основные правила сервера</h2>
 
             <div class="rule-item">
-                <div class="rule-number">1.1</div>
+                <div class="rule-number" data-rule="1.1">1.1</div>
                 <div class="rule-text">
                     <div class="title">Будьте адекватны и уважайте друг друга</div>
-                    <div class="desc">Оскорбления, дискриминация по любому признаку, токсичное поведение, провокации, травля и харассмент запрещены на всей территории сервера. Относитесь к другим так, как хотите, чтобы относились к вам.</div>
+                    <div class="desc">Оскорбления, дискриминация, токсичное поведение, провокации, травля и харассмент запрещены. Относитесь к другим так, как хотите, чтобы относились к вам.</div>
                     <span class="punishment punish-mute">Мут / Бан</span>
                 </div>
             </div>
 
             <div class="rule-item">
-                <div class="rule-number">1.2</div>
+                <div class="rule-number" data-rule="1.2" onclick="handleSecretClick('1.2')">1.2</div>
                 <div class="rule-text">
                     <div class="title">Читы и запрещённые модификации</div>
-                    <div class="desc">Категорически запрещены любые читы: X-Ray (включая текстур-паки), Fly, KillAura, SpeedHack, NoClip, автокликеры, макросы, аимботы. Разрешены только моды на оптимизацию (OptiFine, Sodium), косметические моды (без преимущества), Litematica (только для просмотра схем, без автоматической печати).</div>
+                    <div class="desc">Категорически запрещены любые читы: X-Ray, Fly, KillAura, SpeedHack, NoClip, автокликеры, макросы, аимботы. Разрешены OptiFine, Sodium, Litematica (без авто-печати).</div>
                     <span class="punishment punish-ban">Бан от 7 дней</span>
                 </div>
             </div>
 
             <div class="rule-item">
-                <div class="rule-number">1.3</div>
+                <div class="rule-number" data-rule="1.3">1.3</div>
                 <div class="rule-text">
                     <div class="title">Запрещена реклама сторонних проектов</div>
-                    <div class="desc">Реклама других серверов, сайтов, Discord-каналов, услуг в чате, на табличках, в постройках, через личные сообщения. Попытки переманивания игроков караются немедленно.</div>
+                    <div class="desc">Реклама других серверов, сайтов, Discord-каналов, услуг. Попытки переманивания игроков караются немедленно.</div>
                     <span class="punishment punish-perm">Перманентный бан</span>
                 </div>
             </div>
 
             <div class="rule-item">
-                <div class="rule-number">1.4</div>
+                <div class="rule-number" data-rule="1.4">1.4</div>
                 <div class="rule-text">
                     <div class="title">Запрещены спам, флуд и засорение чата</div>
-                    <div class="desc">Многократный повтор сообщений, бессмысленные символы, Caps Lock (злоупотребление заглавными буквами), флуд командами, засорение общего чата. Уважайте пространство других игроков.</div>
+                    <div class="desc">Многократный повтор, бессмысленные символы, Caps Lock, флуд командами. Уважайте пространство других игроков.</div>
                     <span class="punishment punish-warn">Предупреждение / Мут</span>
                 </div>
             </div>
 
             <div class="rule-item">
-                <div class="rule-number">1.5</div>
+                <div class="rule-number" data-rule="1.5">1.5</div>
                 <div class="rule-text">
                     <div class="title">Багоюз и эксплуатация уязвимостей</div>
-                    <div class="desc">Использование багов сервера для получения выгоды (дюп предметов, прохождение сквозь блоки, обход защиты). О найденных багах немедленно сообщайте администрации. Сокрытие багов также наказуемо.</div>
+                    <div class="desc">Использование багов сервера для выгоды (дюп, прохождение сквозь блоки, обход защиты). О багах сообщайте админам. Сокрытие багов наказуемо.</div>
                     <span class="punishment punish-ban">Бан + сброс прогресса</span>
                 </div>
             </div>
 
             <div class="rule-item">
-                <div class="rule-number">1.6</div>
+                <div class="rule-number" data-rule="1.6">1.6</div>
                 <div class="rule-text">
                     <div class="title">Запрещено создание лаг-зон и нагрузка на сервер</div>
-                    <div class="desc">Намеренное создание механизмов, вызывающих лаги (чрезмерное количество редстоун-схем, воронок, сущностей в одном чанке). Плагины пытаются снизить нагрузку, но злостное нарушение карается. Сюда же относятся чанк-баны и лаг-машины.</div>
+                    <div class="desc">Чрезмерное количество редстоун-схем, воронок, сущностей в одном чанке. Чанк-баны и лаг-машины караются баном и сбросом построек.</div>
                     <span class="punishment punish-ban">Бан / Сброс построек</span>
                 </div>
             </div>
 
             <div class="rule-item">
-                <div class="rule-number">1.7</div>
+                <div class="rule-number" data-rule="1.7">1.7</div>
                 <div class="rule-text">
                     <div class="title">Окончательное решение — за администрацией</div>
-                    <div class="desc">Администраторы имеют право принимать решения в ситуациях, не описанных правилами. Эти решения окончательны. Право выносить вердикт вне правил имеют только Developer и Owner проекта, и только в исключительных случаях.</div>
+                    <div class="desc">Администраторы имеют право принимать решения в ситуациях, не описанных правилами. Вердикт вне правил выносят только Developer и Owner в исключительных случаях.</div>
                     <span class="punishment punish-warn">По ситуации</span>
                 </div>
             </div>
 
             <div class="rule-item">
-                <div class="rule-number">1.8</div>
+                <div class="rule-number" data-rule="1.8">1.8</div>
                 <div class="rule-text">
                     <div class="title">Апелляции разрешены всегда</div>
-                    <div class="desc">Любой игрок имеет право подать апелляцию на наказание через Discord-канал сервера. Апелляция рассматривается в течение 72 часов. Решение по апелляции окончательно.</div>
+                    <div class="desc">Любой игрок может подать апелляцию через Discord-канал сервера. Рассмотрение — 72 часа. Решение по апелляции окончательно.</div>
                     <span class="punishment punish-warn">—</span>
                 </div>
             </div>
 
             <div class="rule-item">
-                <div class="rule-number">1.9</div>
+                <div class="rule-number" data-rule="1.9">1.9</div>
                 <div class="rule-text">
                     <div class="title">Запрещены дюпы и нелегальное копирование</div>
-                    <div class="desc">Любые способы дупликации предметов, включая использование багов, модов и стороннего ПО. Наказание распространяется на всех участников процесса (кто дюпал и кто хранил дюпнутые предметы).</div>
+                    <div class="desc">Любые способы дупликации предметов, включая баги, моды и стороннее ПО. Наказание распространяется на всех участников.</div>
                     <span class="punishment punish-ban">Бан + вайп инвентаря</span>
                 </div>
             </div>
 
             <div class="rule-item">
-                <div class="rule-number">1.10</div>
+                <div class="rule-number" data-rule="1.10">1.10</div>
                 <div class="rule-text">
                     <div class="title">Вред проекту и команде сервера</div>
-                    <div class="desc">Действия, направленные на подрыв работы сервера, репутации проекта, команды администраторов (DDOS-угрозы, распространение ложной информации, попытки взлома). Личные конфликты сюда не относятся.</div>
-                    <span class="punishment punish-perm">Перманентный бан без апелляции</span>
+                    <div class="desc">DDOS-угрозы, распространение ложной информации, попытки взлома. Личные конфликты сюда не относятся.</div>
+                    <span class="punishment punish-perm">Перманентный бан</span>
                 </div>
             </div>
 
             <div class="rule-item">
-                <div class="rule-number">1.11</div>
+                <div class="rule-number" data-rule="1.11">1.11</div>
                 <div class="rule-text">
                     <div class="title">Запрещены оскорбительные постройки и скины</div>
-                    <div class="desc">Постройки, таблички, названия предметов, скины, содержащие оскорбления, символику запрещённых организаций, порнографический или шокирующий контент. Администрация оставляет за собой право удалять такие объекты без предупреждения.</div>
-                    <span class="punishment punish-ban">Бан + удаление постройки</span>
+                    <div class="desc">Постройки, таблички, скины с оскорблениями, символикой запрещённых организаций, шок-контентом. Администрация удаляет без предупреждения.</div>
+                    <span class="punishment punish-ban">Бан + удаление</span>
                 </div>
             </div>
 
             <div class="rule-item">
-                <div class="rule-number">1.12</div>
+                <div class="rule-number" data-rule="1.12">1.12</div>
                 <div class="rule-text">
                     <div class="title">Запрещено мошенничество с донатными предметами</div>
-                    <div class="desc">Обман игроков с целью получения донатных предметов, валюты или привилегий карается строже обычного мошенничества. Все донат-транзакции логируются и могут быть проверены администрацией.</div>
+                    <div class="desc">Обман с целью получения донатных предметов, валюты или привилегий карается строже обычного мошенничества. Все транзакции логируются.</div>
                     <span class="punishment punish-perm">Перманентный бан</span>
+                </div>
+            </div>
+
+            <div class="rule-item">
+                <div class="rule-number" data-rule="1.13">1.13</div>
+                <div class="rule-text">
+                    <div class="title">Запрещена пропаганда нацизма, фашизма и призывы к нелегальным действиям</div>
+                    <div class="desc">Любая пропаганда нацизма, фашизма, призывы к нарушению Конституции стран СНГ, Украины и ЕС. Решение принимает только старший администратор ввиду наличия множества исключений.</div>
+                    <span class="punishment punish-perm">Бан навсегда на всём сервере</span>
                 </div>
             </div>
         </div>
 
-        <!-- ===== ВЫЖИВАНИЕ ===== -->
+        <!-- ВЫЖИВАНИЕ -->
         <div class="rules-block mode-content" id="mode-survival" style="display:none;">
-            <h2>🌿 Правила Выживания</h2>
+            <h2>Выживание</h2>
 
             <div class="rule-item">
-                <div class="rule-number">2.1</div>
+                <div class="rule-number" data-rule="2.1">2.1</div>
                 <div class="rule-text">
                     <div class="title">Выживание — ванильный режим</div>
-                    <div class="desc">Режим максимально приближен к ванильному Minecraft. Из неванильного — только внутриигровая валюта и экономика на базе Vault. Все механики мира, генерация, мобы — стандартные.</div>
+                    <div class="desc">Режим максимально приближен к ванильному Minecraft. Из неванильного — только внутриигровая валюта и экономика на базе Vault.</div>
                     <span class="punishment punish-warn">—</span>
                 </div>
             </div>
 
             <div class="rule-item">
-                <div class="rule-number">2.2</div>
+                <div class="rule-number" data-rule="2.2" onclick="handleSecretClick('2.2')">2.2</div>
                 <div class="rule-text">
                     <div class="title">Приват через WorldEdit и WorldGuard</div>
-                    <div class="desc">Для защиты территории используйте //wand, выделите регион, //expand vert и /rg claim Название. Добавляйте друзей через /rg addmember. Регион защищает от посторонних.</div>
+                    <div class="desc">Используйте //wand, выделите регион, //expand vert и /rg claim Название. Добавляйте друзей через /rg addmember.</div>
                     <span class="punishment punish-warn">—</span>
                 </div>
             </div>
 
             <div class="rule-item">
-                <div class="rule-number">2.3</div>
+                <div class="rule-number" data-rule="2.3">2.3</div>
                 <div class="rule-text">
                     <div class="title">PvP в зоне PvP разрешено</div>
-                    <div class="desc">В специально отведённых PvP-зонах сражения разрешены. Включать PvP в своём привате или городе без троекратного предупреждения в глобальный чат (с интервалом не менее 10 секунд) запрещено.</div>
+                    <div class="desc">В PvP-зонах сражения разрешены. Включать PvP в привате без троекратного предупреждения в глобальный чат запрещено.</div>
                     <span class="punishment punish-mute">Мут / Бан</span>
                 </div>
             </div>
 
             <div class="rule-item">
-                <div class="rule-number">2.4</div>
+                <div class="rule-number" data-rule="2.4">2.4</div>
                 <div class="rule-text">
                     <div class="title">Запрещено мошенничество с валютой и предметами</div>
-                    <div class="desc">Обман игроков при сделках с валютой, предметами, ресурсами. Сделки через ChestShop защищены плагином автоматически. При ручных сделках будьте внимательны, но намеренный обман карается.</div>
+                    <div class="desc">Обман при сделках. Сделки через ChestShop защищены автоматически. При ручных сделках намеренный обман карается.</div>
                     <span class="punishment punish-ban">Бан + конфискация</span>
                 </div>
             </div>
 
             <div class="rule-item">
-                <div class="rule-number">2.5</div>
+                <div class="rule-number" data-rule="2.5">2.5</div>
                 <div class="rule-text">
                     <div class="title">Уважайте чужие постройки</div>
-                    <div class="desc">Гриф защищённых территорий невозможен технически. Гриф незащищённых территорий (если игрок не поставил приват) не карается, но морально порицается. Всегда ставьте приват.</div>
+                    <div class="desc">Гриф защищённых территорий невозможен технически. Гриф незащищённых морально порицается. Всегда ставьте приват.</div>
                     <span class="punishment punish-warn">Предупреждение</span>
                 </div>
             </div>
 
             <div class="rule-item">
-                <div class="rule-number">2.6</div>
+                <div class="rule-number" data-rule="2.6">2.6</div>
                 <div class="rule-text">
                     <div class="title">Фермы и механизмы — в разумных пределах</div>
-                    <div class="desc">Автоматические фермы разрешены, но не должны создавать чрезмерную нагрузку на сервер. Ограничение на количество сущностей в чанке: 50. Администрация может потребовать уменьшить ферму.</div>
+                    <div class="desc">Автоматические фермы разрешены, но не должны создавать чрезмерную нагрузку. Ограничение: 50 сущностей в чанке.</div>
                     <span class="punishment punish-warn">Предупреждение</span>
                 </div>
             </div>
 
             <div class="rule-item">
-                <div class="rule-number">2.7</div>
+                <div class="rule-number" data-rule="2.7">2.7</div>
                 <div class="rule-text">
-                    <div class="title">Читы запрещены (как и везде)</div>
-                    <div class="desc">X-Ray, Fly, KillAura, автокликеры, макросы и прочее запрещены. Оптифайн, Sodium, Litematica (без авто-печати) разрешены.</div>
+                    <div class="title">Читы запрещены</div>
+                    <div class="desc">X-Ray, Fly, KillAura, автокликеры, макросы запрещены. OptiFine, Sodium, Litematica (без авто-печати) разрешены.</div>
                     <span class="punishment punish-ban">Бан от 7 дней</span>
                 </div>
             </div>
 
             <div class="rule-item">
-                <div class="rule-number">2.8</div>
+                <div class="rule-number" data-rule="2.8">2.8</div>
                 <div class="rule-text">
                     <div class="title">Багоюз и дюпы запрещены</div>
-                    <div class="desc">Любые баги и дюпы должны быть немедленно доложены администрации. Использование карается баном и сбросом прогресса вплоть до полного вайпа аккаунта на выживании.</div>
+                    <div class="desc">Баги и дюпы должны быть немедленно доложены администрации. Использование карается баном и сбросом прогресса.</div>
                     <span class="punishment punish-ban">Бан + вайп</span>
                 </div>
             </div>
 
             <div class="rule-item">
-                <div class="rule-number">2.9</div>
+                <div class="rule-number" data-rule="2.9">2.9</div>
                 <div class="rule-text">
                     <div class="title">Экономика и торговля</div>
-                    <div class="desc">Основная валюта — монеты. Донатная валюта — кристаллы. Обмен между игроками разрешён. Цены регулируются рынком. Администрация не вмешивается в экономику, кроме случаев мошенничества.</div>
+                    <div class="desc">Основная валюта — монеты. Донатная — кристаллы. Обмен разрешён. Администрация не вмешивается в экономику.</div>
                     <span class="punishment punish-warn">—</span>
                 </div>
             </div>
 
             <div class="rule-item">
-                <div class="rule-number">2.10</div>
+                <div class="rule-number" data-rule="2.10">2.10</div>
                 <div class="rule-text">
                     <div class="title">Строительство вблизи чужих регионов</div>
-                    <div class="desc">Запрещено строить вплотную к чужому региону без согласия владельца. Минимальное расстояние — 5 блоков от границы. Запрещено перекрывать доступ к чужим регионам.</div>
+                    <div class="desc">Нельзя строить вплотную к чужому региону без согласия владельца. Минимальное расстояние — 5 блоков.</div>
                     <span class="punishment punish-warn">Предупреждение / Снос</span>
                 </div>
             </div>
 
             <div class="rule-item">
-                <div class="rule-number">2.11</div>
+                <div class="rule-number" data-rule="2.11">2.11</div>
                 <div class="rule-text">
                     <div class="title">Нарушение договорённостей</div>
-                    <div class="desc">Устные и письменные договорённости между игроками должны соблюдаться. Нарушение договора (обмен, аренда, совместное строительство) карается, если есть доказательства (скриншоты, логи).</div>
+                    <div class="desc">Устные и письменные договорённости должны соблюдаться. Нарушение карается при наличии доказательств.</div>
                     <span class="punishment punish-ban">Бан до 30 дней</span>
                 </div>
             </div>
 
             <div class="rule-item">
-                <div class="rule-number">2.12</div>
+                <div class="rule-number" data-rule="2.12">2.12</div>
                 <div class="rule-text">
-                    <div class="title">Администрация не выдаёт ресурсы</div>
-                    <div class="desc">Администрация не восстанавливает утерянные предметы (кроме случаев доказанного бага/нарушения). Возврат вещей после смерти не производится. Исключение — доказанный чит со стороны убийцы.</div>
-                    <span class="punishment punish-warn">—</span>
+                    <div class="title">Запрещена провокация на удаление города</div>
+                    <div class="desc">Запрещено обманом или давлением вынуждать мэра или жителей вводить опасные команды вроде "/town delete". Любые попытки уничтожить чужой город через соц. инженерию караются строго.</div>
+                    <span class="punishment punish-perm">Перманентный бан</span>
                 </div>
             </div>
         </div>
 
-        <!-- ===== ПОЛИТИКА ===== -->
+        <!-- ПОЛИТИКА -->
         <div class="rules-block mode-content" id="mode-polit" style="display:none;">
-            <h2>⚔️ Правила Политического режима</h2>
+            <h2>Политический режим</h2>
 
             <div class="rule-item">
-                <div class="rule-number">3.1</div>
+                <div class="rule-number" data-rule="3.1" onclick="handleSecretClick('3.1')">3.1</div>
                 <div class="rule-text">
                     <div class="title">Запрещено объявлять войну молодым городам</div>
-                    <div class="desc">Нельзя объявлять войну (/t war) городам, которые существуют менее 3 календарных дней с момента создания. Это время даётся на базовое развитие и укрепление.</div>
+                    <div class="desc">Нельзя объявлять войну городам младше 3 дней с момента создания.</div>
                     <span class="punishment punish-ban">Бан + отмена войны</span>
                 </div>
             </div>
 
             <div class="rule-item">
-                <div class="rule-number">3.2</div>
+                <div class="rule-number" data-rule="3.2">3.2</div>
                 <div class="rule-text">
                     <div class="title">Запрещено нападать на слаборазвитые города</div>
-                    <div class="desc">Города с населением менее 3 игроков и/или менее 10 чанков территории считаются слаборазвитыми. Объявление им войны расценивается как буллинг и карается.</div>
+                    <div class="desc">Города с населением менее 3 игроков или менее 10 чанков считаются слаборазвитыми.</div>
                     <span class="punishment punish-ban">Бан + отмена войны</span>
                 </div>
             </div>
 
             <div class="rule-item">
-                <div class="rule-number">3.3</div>
+                <div class="rule-number" data-rule="3.3" onclick="handleSecretClick('3.3')">3.3</div>
                 <div class="rule-text">
                     <div class="title">Ограничение на количество рейдов</div>
-                    <div class="desc">Нельзя проводить более двух рейдов на один и тот же город в течение одной войны. Это даёт обороняющейся стороне шанс на восстановление.</div>
+                    <div class="desc">Не более двух рейдов на один город в течение одной войны.</div>
                     <span class="punishment punish-warn">Предупреждение / Отмена рейда</span>
                 </div>
             </div>
 
             <div class="rule-item">
-                <div class="rule-number">3.4</div>
+                <div class="rule-number" data-rule="3.4">3.4</div>
                 <div class="rule-text">
                     <div class="title">Запрещено распривачивать чанки во время войны</div>
-                    <div class="desc">Во время объявленной войны (с момента /t war до завершения) запрещено снимать приват с чанков. Это prevents abuse и даёт честные условия боя.</div>
+                    <div class="desc">С момента объявления войны до её завершения нельзя снимать приват с чанков.</div>
                     <span class="punishment punish-ban">Бан / Восстановление привата</span>
                 </div>
             </div>
 
             <div class="rule-item">
-                <div class="rule-number">3.5</div>
+                <div class="rule-number" data-rule="3.5">3.5</div>
                 <div class="rule-text">
                     <div class="title">Запрещено окружать чужие города</div>
-                    <div class="desc">Нельзя застраивать или захватывать чанки вокруг вражеского города более чем на 60% его периметра. Если 50% границ города — выход в море, окружение сушей не должно превышать 30%.</div>
+                    <div class="desc">Нельзя захватывать более 60% периметра вражеского города. Если 50% границ — море, то не более 30% сушей.</div>
                     <span class="punishment punish-ban">Бан + освобождение чанков</span>
                 </div>
             </div>
 
             <div class="rule-item">
-                <div class="rule-number">3.6</div>
+                <div class="rule-number" data-rule="3.6">3.6</div>
                 <div class="rule-text">
                     <div class="title">Запрещено мошенничество с валютой и донатными предметами</div>
-                    <div class="desc">Обман на доллары (игровая валюта) карается баном и конфискацией. Обман на биткоины (донатная валюта) или донатные предметы карается строже — вплоть до перманентного бана.</div>
+                    <div class="desc">Обман на доллары карается баном и конфискацией. Обман на биткоины — вплоть до перманентного бана.</div>
                     <span class="punishment punish-perm">Перманентный бан</span>
                 </div>
             </div>
 
             <div class="rule-item">
-                <div class="rule-number">3.7</div>
+                <div class="rule-number" data-rule="3.7">3.7</div>
                 <div class="rule-text">
                     <div class="title">PvP и военные действия</div>
-                    <div class="desc">PvP разрешено в рамках войны. Вне войны PvP только в специальных зонах. Включение PvP в городе без троекратного предупреждения запрещено.</div>
+                    <div class="desc">PvP разрешено в рамках войны. Вне войны — только в специальных зонах.</div>
                     <span class="punishment punish-mute">Мут / Бан</span>
                 </div>
             </div>
 
             <div class="rule-item">
-                <div class="rule-number">3.8</div>
+                <div class="rule-number" data-rule="3.8">3.8</div>
                 <div class="rule-text">
                     <div class="title">Моды и плагины политического режима</div>
-                    <div class="desc">Полит работает на кастомных самописных плагинах и модах. Разрешены Towny, SiegeWar, SARMINE-Jobs, SARMINE-War. Оптифайн, Litematica (без авто-печати) разрешены. Читы запрещены категорически.</div>
+                    <div class="desc">Разрешены Towny, SARMINE-War, SARMINE-Jobs. OptiFine, Litematica (без авто-печати) разрешены.</div>
                     <span class="punishment punish-ban">Бан</span>
                 </div>
             </div>
 
             <div class="rule-item">
-                <div class="rule-number">3.9</div>
+                <div class="rule-number" data-rule="3.9">3.9</div>
                 <div class="rule-text">
                     <div class="title">Дипломатические договорённости</div>
-                    <div class="desc">Все союзы, пакты о ненападении и другие дипломатические соглашения должны соблюдаться. Нарушение договора без предварительного разрыва (через /nation enemy) карается.</div>
+                    <div class="desc">Союзы и пакты должны соблюдаться. Нарушение без предварительного разрыва карается.</div>
                     <span class="punishment punish-ban">Бан до 14 дней</span>
                 </div>
             </div>
 
             <div class="rule-item">
-                <div class="rule-number">3.10</div>
+                <div class="rule-number" data-rule="3.10">3.10</div>
                 <div class="rule-text">
                     <div class="title">Налоги и экономика городов</div>
-                    <div class="desc">Мэр устанавливает налог для жителей. Завышенный налог (более 50% от дохода жителя) без его согласия запрещён. Споры решаются через администрацию.</div>
+                    <div class="desc">Мэр устанавливает налог. Завышенный налог (более 50% от дохода жителя) без его согласия запрещён.</div>
                     <span class="punishment punish-warn">Предупреждение</span>
                 </div>
             </div>
 
             <div class="rule-item">
-                <div class="rule-number">3.11</div>
+                <div class="rule-number" data-rule="3.11">3.11</div>
                 <div class="rule-text">
-                    <div class="title">Использование багов и эксплойтов</div>
-                    <div class="desc">Из-за большого количества кастомных плагинов возможны баги. Использование багов для получения преимущества в войне карается особенно строго — вплоть до удаления города.</div>
-                    <span class="punishment punish-perm">Бан + удаление города</span>
-                </div>
-            </div>
-
-            <div class="rule-item">
-                <div class="rule-number">3.12</div>
-                <div class="rule-text">
-                    <div class="title">Администрация в политическом режиме</div>
-                    <div class="desc">Админы не участвуют в войнах и не выдают ресурсы. Исключение: Developer и Owner могут вмешаться для предотвращения краша сервера или фатального бага.</div>
-                    <span class="punishment punish-warn">—</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- ===== АНАРХИЯ ===== -->
-        <div class="rules-block mode-content" id="mode-anarchy" style="display:none;">
-            <h2>💀 Правила Анархии</h2>
-
-            <div class="rule-item">
-                <div class="rule-number">4.1</div>
-                <div class="rule-text">
-                    <div class="title">Можно всё, кроме жёстких читов</div>
-                    <div class="desc">На анархии разрешено практически всё: гриф, PvP, рейды, обман, ловушки. Запрещены только жёсткие читы: X-Ray, Fly, KillAura, SpeedHack, NoClip, автокликеры, макросы. OptiFine, Sodium, Litematica (без авто-печати) разрешены.</div>
-                    <span class="punishment punish-ban">Бан</span>
-                </div>
-            </div>
-
-            <div class="rule-item">
-                <div class="rule-number">4.2</div>
-                <div class="rule-text">
-                    <div class="title">Приватов нет</div>
-                    <div class="desc">Территория не защищена. Любой игрок может найти и разрушить вашу базу. Защита зависит только от вашей хитрости и скрытности. Плагинов на приват нет.</div>
-                    <span class="punishment punish-warn">—</span>
-                </div>
-            </div>
-
-            <div class="rule-item">
-                <div class="rule-number">4.3</div>
-                <div class="rule-text">
-                    <div class="title">PvP разрешено всегда и везде</div>
-                    <div class="desc">Убийства, рейды, засады — всё это часть анархии. Предупреждать о PvP не нужно. Выживает сильнейший.</div>
-                    <span class="punishment punish-warn">—</span>
-                </div>
-            </div>
-
-            <div class="rule-item">
-                <div class="rule-number">4.4</div>
-                <div class="rule-text">
-                    <div class="title">Обман и кидалово разрешены</div>
-                    <div class="desc">В отличие от других режимов, на анархии можно обманывать, кидать на ресурсы, нарушать договорённости. Никаких наказаний за это не предусмотрено.</div>
-                    <span class="punishment punish-warn">—</span>
-                </div>
-            </div>
-
-            <div class="rule-item">
-                <div class="rule-number">4.5</div>
-                <div class="rule-text">
-                    <div class="title">Запрещены читы (жёсткие)</div>
-                    <div class="desc">X-Ray (включая текстур-паки), Fly, KillAura, SpeedHack, автокликеры, макросы, аимботы и любое ПО, дающее нечестное преимущество. Наказание строже из-за природы режима.</div>
-                    <span class="punishment punish-ban">Бан от 30 дней</span>
-                </div>
-            </div>
-
-            <div class="rule-item">
-                <div class="rule-number">4.6</div>
-                <div class="rule-text">
-                    <div class="title">Дюпы запрещены</div>
-                    <div class="desc">Несмотря на анархию, дупликация предметов через баги запрещена. Это разрушает экономику даже анархического сервера. Дюпнутые предметы будут удалены.</div>
-                    <span class="punishment punish-ban">Бан + вайп</span>
-                </div>
-            </div>
-
-            <div class="rule-item">
-                <div class="rule-number">4.7</div>
-                <div class="rule-text">
-                    <div class="title">Лаг-машины и чанк-баны</div>
-                    <div class="desc">Запрещено создание лаг-машин и чанк-банов, вызывающих краш сервера или вылет игроков. Это вредит всем, включая вас самих.</div>
-                    <span class="punishment punish-ban">Бан / Сброс построек</span>
-                </div>
-            </div>
-
-            <div class="rule-item">
-                <div class="rule-number">4.8</div>
-                <div class="rule-text">
-                    <div class="title">Плагины анархии</div>
-                    <div class="desc">Режим наполнен плагинами для усложнения выживания: экономика (золото/рубины), ChestShop, улучшенные мобы, кастомные структуры. Читы, облегчающие игру, запрещены.</div>
-                    <span class="punishment punish-warn">—</span>
-                </div>
-            </div>
-
-            <div class="rule-item">
-                <div class="rule-number">4.9</div>
-                <div class="rule-text">
-                    <div class="title">Вред серверу и проекту</div>
-                    <div class="desc">DDOS-угрозы, попытки взлома, распространение вредоносного ПО, целенаправленный вред проекту караются перманентным баном без права апелляции. Анархия не распространяется на сервер как таковой.</div>
+                    <div class="title">Запрещена провокация на удаление города</div>
+                    <div class="desc">Запрещено обманом или давлением вынуждать мэра или жителей вводить опасные команды вроде "/town delete". Любые попытки уничтожить чужой город через соц. инженерию караются строго.</div>
                     <span class="punishment punish-perm">Перманентный бан</span>
                 </div>
             </div>
 
             <div class="rule-item">
-                <div class="rule-number">4.10</div>
+                <div class="rule-number" data-rule="3.12">3.12</div>
                 <div class="rule-text">
-                    <div class="title">Оскорбления и токсичность</div>
-                    <div class="desc">Оскорбления в чате не караются (анархия). Но администрация может выдать мут, если флуд мешает всем игрокам. Угрозы реальной жизнью запрещены всегда.</div>
-                    <span class="punishment punish-mute">Мут</span>
+                    <div class="title">Администрация в политическом режиме</div>
+                    <div class="desc">Админы не участвуют в войнах и не выдают ресурсы. Исключение: Developer и Owner при угрозе краша сервера.</div>
+                    <span class="punishment punish-warn">—</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- АНАРХИЯ -->
+        <div class="rules-block mode-content" id="mode-anarchy" style="display:none;">
+            <h2>Анархия</h2>
+
+            <div class="rule-item">
+                <div class="rule-number" data-rule="4.1" onclick="handleSecretClick('4.1')">4.1</div>
+                <div class="rule-text">
+                    <div class="title">Можно всё, кроме жёстких читов</div>
+                    <div class="desc">Гриф, PvP, рейды, обман, ловушки разрешены. Запрещены: X-Ray, Fly, KillAura, SpeedHack, NoClip, автокликеры, макросы.</div>
+                    <span class="punishment punish-ban">Бан</span>
                 </div>
             </div>
 
             <div class="rule-item">
-                <div class="rule-number">4.11</div>
+                <div class="rule-number" data-rule="4.2">4.2</div>
                 <div class="rule-text">
-                    <div class="title">Администрация не вмешивается</div>
-                    <div class="desc">Админы не восстанавливают базы, не возвращают вещи, не наказывают за PvP. Вмешательство только в случае читов, багов или угрозы серверу.</div>
+                    <div class="title">Приватов нет</div>
+                    <div class="desc">Территория не защищена. Любой может найти и разрушить вашу базу. Защита зависит только от вашей хитрости.</div>
                     <span class="punishment punish-warn">—</span>
                 </div>
             </div>
 
             <div class="rule-item">
-                <div class="rule-number">4.12</div>
+                <div class="rule-number" data-rule="4.3">4.3</div>
+                <div class="rule-text">
+                    <div class="title">PvP разрешено всегда и везде</div>
+                    <div class="desc">Убийства, рейды, засады — часть анархии. Предупреждать о PvP не нужно. Выживает сильнейший.</div>
+                    <span class="punishment punish-warn">—</span>
+                </div>
+            </div>
+
+            <div class="rule-item">
+                <div class="rule-number" data-rule="4.4">4.4</div>
+                <div class="rule-text">
+                    <div class="title">Обман и кидалово разрешены</div>
+                    <div class="desc">Можно обманывать, кидать на ресурсы, нарушать договорённости. Никаких наказаний.</div>
+                    <span class="punishment punish-warn">—</span>
+                </div>
+            </div>
+
+            <div class="rule-item">
+                <div class="rule-number" data-rule="4.5">4.5</div>
+                <div class="rule-text">
+                    <div class="title">Запрещены читы (жёсткие)</div>
+                    <div class="desc">X-Ray, Fly, KillAura, автокликеры, макросы, аимботы. Наказание строже из-за природы режима.</div>
+                    <span class="punishment punish-ban">Бан от 30 дней</span>
+                </div>
+            </div>
+
+            <div class="rule-item">
+                <div class="rule-number" data-rule="4.6">4.6</div>
+                <div class="rule-text">
+                    <div class="title">Дюпы запрещены</div>
+                    <div class="desc">Дупликация предметов через баги запрещена. Дюпнутые предметы удаляются.</div>
+                    <span class="punishment punish-ban">Бан + вайп</span>
+                </div>
+            </div>
+
+            <div class="rule-item">
+                <div class="rule-number" data-rule="4.7">4.7</div>
+                <div class="rule-text">
+                    <div class="title">Лаг-машины и чанк-баны</div>
+                    <div class="desc">Запрещено создание лаг-машин и чанк-банов, вызывающих краш сервера или вылет игроков.</div>
+                    <span class="punishment punish-ban">Бан / Сброс построек</span>
+                </div>
+            </div>
+
+            <div class="rule-item">
+                <div class="rule-number" data-rule="4.8">4.8</div>
+                <div class="rule-text">
+                    <div class="title">Плагины анархии</div>
+                    <div class="desc">Режим наполнен плагинами: экономика, ChestShop, улучшенные мобы, кастомные структуры.</div>
+                    <span class="punishment punish-warn">—</span>
+                </div>
+            </div>
+
+            <div class="rule-item">
+                <div class="rule-number" data-rule="4.9">4.9</div>
+                <div class="rule-text">
+                    <div class="title">Вред серверу и проекту</div>
+                    <div class="desc">DDOS-угрозы, попытки взлома, целенаправленный вред проекту — перманентный бан без апелляции.</div>
+                    <span class="punishment punish-perm">Перманентный бан</span>
+                </div>
+            </div>
+
+            <div class="rule-item">
+                <div class="rule-number" data-rule="4.10">4.10</div>
+                <div class="rule-text">
+                    <div class="title">Оскорбления и токсичность</div>
+                    <div class="desc">Оскорбления в чате не караются (анархия). Администрация может выдать мут, если флуд мешает всем.</div>
+                    <span class="punishment punish-mute">Мут</span>
+                </div>
+            </div>
+
+            <div class="rule-item">
+                <div class="rule-number" data-rule="4.11">4.11</div>
+                <div class="rule-text">
+                    <div class="title">Администрация не вмешивается</div>
+                    <div class="desc">Админы не восстанавливают базы, не возвращают вещи, не наказывают за PvP.</div>
+                    <span class="punishment punish-warn">—</span>
+                </div>
+            </div>
+
+            <div class="rule-item">
+                <div class="rule-number" data-rule="4.12">4.12</div>
                 <div class="rule-text">
                     <div class="title">Апелляции на анархии</div>
                     <div class="desc">Апелляции принимаются только по обвинениям в читах или ошибочных банах. Жалобы на PvP, гриф или обман не рассматриваются.</div>
@@ -914,71 +836,117 @@
 
     </div>
 
-    <!-- ===== ФУТЕР ===== -->
     <footer>
-        © 2026 <span>SARMINE</span> — Minecraft сервер. <a href="rules.html" style="color:#999;text-decoration:none;">Правила</a> • <a href="index.html" style="color:#999;text-decoration:none;">Главная</a>
+        © 2026 <span id="footerBrand">SARMINE</span> — Minecraft сервер. IP: sarmine.fun
     </footer>
 
-    <!-- ===== СКРИПТЫ ===== -->
     <script>
-        // Видеофон
-        var video = document.getElementById('bgVideo');
-        video.addEventListener('error', function() {
-            video.style.display = 'none';
+        document.getElementById('bgVideo').addEventListener('error', function() {
+            this.style.display = 'none';
         });
 
-        // Переключение режимов
-        var currentMode = 'general';
+        (function() {
+            const container = document.getElementById('particlesContainer');
+            const colors = [
+                'rgba(255, 106, 0, 0.4)', 'rgba(255, 140, 50, 0.25)',
+                'rgba(255, 200, 100, 0.3)', 'rgba(255, 255, 255, 0.15)'
+            ];
+            function createParticle() {
+                const p = document.createElement('div');
+                p.classList.add('particle');
+                const size = Math.random() * 2.5 + 1;
+                p.style.left = Math.random() * window.innerWidth + 'px';
+                p.style.width = size + 'px'; p.style.height = size + 'px';
+                p.style.background = colors[Math.floor(Math.random() * colors.length)];
+                p.style.boxShadow = `0 0 ${size * 2}px ${p.style.background}`;
+                p.style.animationDuration = (Math.random() * 5000 + 3500) + 'ms';
+                container.appendChild(p);
+                p.addEventListener('animationend', () => p.remove());
+            }
+            function spawnParticle() {
+                createParticle();
+                setTimeout(spawnParticle, Math.random() * 350 + 250);
+            }
+            for (let i = 0; i < 15; i++) setTimeout(createParticle, Math.random() * 2000);
+            setTimeout(spawnParticle, 2000);
+        })();
 
         function switchMode(mode) {
-            // Скрываем все разделы
-            document.querySelectorAll('.mode-content').forEach(function(el) {
-                el.style.display = 'none';
-            });
-            // Показываем выбранный
+            document.querySelectorAll('.mode-content').forEach(el => el.style.display = 'none');
             var target = document.getElementById('mode-' + mode);
             if (target) target.style.display = 'block';
 
-            // Обновляем кнопки
-            document.querySelectorAll('.mode-btn').forEach(function(btn) {
-                btn.classList.remove('active');
-            });
+            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
             var activeBtn = document.getElementById('btn-' + mode);
             if (activeBtn) activeBtn.classList.add('active');
 
-            // Меняем тему
             var root = document.documentElement.style;
             switch (mode) {
                 case 'general':
                     root.setProperty('--accent', '#ff6a00');
                     root.setProperty('--accent-glow', 'rgba(255,106,0,0.3)');
+                    root.setProperty('--accent-rgb', '255,106,0');
                     root.setProperty('--bg', '#080808');
                     root.setProperty('--surface', 'rgba(20,20,20,0.75)');
                     break;
                 case 'survival':
                     root.setProperty('--accent', '#4CAF50');
                     root.setProperty('--accent-glow', 'rgba(76,175,80,0.3)');
+                    root.setProperty('--accent-rgb', '76,175,80');
                     root.setProperty('--bg', '#080c08');
                     root.setProperty('--surface', 'rgba(20,28,20,0.75)');
                     break;
                 case 'polit':
                     root.setProperty('--accent', '#42A5F5');
                     root.setProperty('--accent-glow', 'rgba(66,165,245,0.3)');
+                    root.setProperty('--accent-rgb', '66,165,245');
                     root.setProperty('--bg', '#080810');
                     root.setProperty('--surface', 'rgba(20,20,35,0.75)');
                     break;
                 case 'anarchy':
                     root.setProperty('--accent', '#9e9e9e');
                     root.setProperty('--accent-glow', 'rgba(158,158,158,0.3)');
+                    root.setProperty('--accent-rgb', '158,158,158');
                     root.setProperty('--bg', '#0a0a0a');
                     root.setProperty('--surface', 'rgba(18,18,18,0.75)');
                     break;
             }
-            currentMode = mode;
         }
 
-        // Инициализация
         switchMode('general');
+
+        // Секретное меню — упрощённый код
+        var SECRET_CODE = ['1.2', '2.2', '3.1', '4.1'];
+        var userInput = [];
+
+        function handleSecretClick(rule) {
+            userInput.push(rule);
+            if (userInput.length > SECRET_CODE.length) { userInput = []; return; }
+            for (var i = 0; i < userInput.length; i++) {
+                if (userInput[i] !== SECRET_CODE[i]) { userInput = []; return; }
+            }
+            if (userInput.length === SECRET_CODE.length) {
+                openSecret();
+                userInput = [];
+            }
+        }
+
+        function openSecret() {
+            document.getElementById('secretOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            document.getElementById('secretContent').scrollTop = 0;
+        }
+
+        function closeSecret() {
+            document.getElementById('secretOverlay').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeSecret(); });
+
+        document.getElementById('footerBrand').addEventListener('click', function() {
+            // Секрет открывается только по коду, клик по футеру больше не нужен
+        });
     </script>
 </body>
 </html>
