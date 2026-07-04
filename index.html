@@ -11,7 +11,6 @@
             font-weight: normal;
             font-style: normal;
             font-display: swap;
-            unicode-range: U+0041-005A, U+0061-007A, U+0030-0039, U+0021, U+003F;
         }
 
         :root {
@@ -84,45 +83,45 @@
             background: rgba(15, 15, 20, 0.7);
             backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border);
-            padding: 0 20px;
+            padding: 0 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            height: 52px;
+            height: 46px;
             position: sticky; top: 0; z-index: 100;
             transition: all var(--transition-speed);
         }
 
         .logo {
             font-family: var(--font-game);
-            font-size: 18px; font-weight: 900; letter-spacing: 2px;
+            font-size: 16px; font-weight: 900; letter-spacing: 2px;
             color: #fff; text-transform: uppercase; cursor: pointer;
             text-decoration: none; transition: color var(--transition-speed);
-            display: flex; align-items: center; gap: 6px;
+            display: flex; align-items: center; gap: 4px;
         }
 
         .logo span { color: var(--accent); }
 
         nav {
-            display: flex; gap: 4px; align-items: center; flex-wrap: wrap;
+            display: flex; gap: 3px; align-items: center; flex-wrap: wrap;
             justify-content: flex-end; background: rgba(255,255,255,0.02);
-            border-radius: 25px; padding: 3px;
+            border-radius: 20px; padding: 2px;
         }
 
         nav a {
             background: none; border: none; color: #999;
             font-family: var(--font-ui);
-            font-size: 10px; font-weight: 600;
-            letter-spacing: 0.8px; text-transform: uppercase; cursor: pointer;
-            padding: 6px 11px; border-radius: 20px; transition: all 0.3s;
+            font-size: 9px; font-weight: 600;
+            letter-spacing: 0.6px; text-transform: uppercase; cursor: pointer;
+            padding: 5px 9px; border-radius: 16px; transition: all 0.3s;
             text-decoration: none; white-space: nowrap;
-            display: flex; align-items: center; gap: 4px;
+            display: flex; align-items: center; gap: 3px;
         }
 
         nav a:hover { color: #fff; background: rgba(255,255,255,0.05); }
         nav a.active {
             color: #fff; background: var(--accent);
-            box-shadow: 0 0 12px var(--accent-glow);
+            box-shadow: 0 0 10px var(--accent-glow);
         }
 
         .btn-donate {
@@ -140,11 +139,10 @@
         .section { display: none; position: relative; z-index: 1; }
         .section.active { display: block; }
 
-        .hero { text-align: center; padding: 40px 20px 20px; }
+        .hero { text-align: center; padding: 30px 16px 16px; }
 
         .hero h1 {
-            font-family: var(--font-game);
-            font-size: 40px; font-weight: 900; letter-spacing: 5px;
+            font-size: 38px; font-weight: 900; letter-spacing: 5px;
             background: linear-gradient(135deg, var(--accent), #fff, var(--accent));
             background-size: 200% 100%;
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
@@ -152,52 +150,50 @@
         }
 
         .hero .subtitle {
-            font-family: var(--font-ui);
-            font-size: 12px; color: #666; letter-spacing: 4px;
-            text-transform: uppercase; margin: 6px 0 18px;
+            font-size: 11px; color: #666; letter-spacing: 3px;
+            text-transform: uppercase; margin: 4px 0 16px;
         }
 
         .social-links {
-            display: flex; justify-content: center; gap: 12px;
-            margin-bottom: 25px; flex-wrap: wrap;
+            display: flex; justify-content: center; gap: 10px;
+            margin-bottom: 20px; flex-wrap: wrap;
         }
 
         .social-btn {
-            display: flex; align-items: center; gap: 6px;
+            display: flex; align-items: center; gap: 5px;
             background: var(--card-bg); backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px); border: 1px solid var(--border);
-            border-radius: 10px; padding: 10px 16px; text-decoration: none;
-            color: var(--text); font-family: var(--font-ui); font-size: 12px;
-            letter-spacing: 0.8px; transition: all 0.3s;
+            border-radius: 10px; padding: 9px 14px; text-decoration: none;
+            color: var(--text); font-size: 12px;
+            letter-spacing: 0.6px; transition: all 0.3s;
         }
 
         .social-btn:hover {
-            border-color: var(--accent); box-shadow: 0 0 18px var(--accent-glow);
+            border-color: var(--accent); box-shadow: 0 0 15px var(--accent-glow);
             color: var(--accent); transform: translateY(-2px);
         }
 
-        .social-btn img { width: 20px; height: 20px; flex-shrink: 0; }
+        .social-btn img { width: 18px; height: 18px; flex-shrink: 0; }
 
         .server-info {
-            display: flex; justify-content: center; gap: 12px;
-            flex-wrap: wrap; margin-bottom: 20px;
+            display: flex; justify-content: center; gap: 10px;
+            flex-wrap: wrap; margin-bottom: 16px;
         }
 
         .info-card {
             background: var(--card-bg); backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px); border: 1px solid var(--border);
-            border-radius: 14px; padding: 14px 20px; text-align: center;
-            min-width: 100px; transition: all 0.3s;
+            border-radius: 12px; padding: 12px 18px; text-align: center;
+            min-width: 90px; transition: all 0.3s;
         }
 
         .info-card:hover {
-            border-color: var(--accent); box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+            border-color: var(--accent); box-shadow: 0 5px 18px rgba(0,0,0,0.5);
             transform: translateY(-2px);
         }
 
         .info-card .value {
-            font-family: var(--font-game);
-            font-size: 22px; font-weight: 900; color: var(--accent); display: block;
+            font-size: 20px; font-weight: 900; color: var(--accent); display: block;
         }
 
         .info-card.ip-card .value {
@@ -207,32 +203,30 @@
 
         .info-card.ip-card .value:hover {
             color: #fff;
-            text-shadow: 0 0 10px var(--accent-glow);
+            text-shadow: 0 0 8px var(--accent-glow);
         }
 
         .info-card .label {
-            font-family: var(--font-ui);
-            font-size: 9px; letter-spacing: 2px; color: #666;
-            text-transform: uppercase; margin-top: 3px;
+            font-size: 8px; letter-spacing: 1.5px; color: #666;
+            text-transform: uppercase; margin-top: 2px;
         }
 
         .online-dot {
-            display: inline-block; width: 7px; height: 7px;
-            background: #4CAF50; border-radius: 50%; margin-right: 4px;
+            display: inline-block; width: 6px; height: 6px;
+            background: #4CAF50; border-radius: 50%; margin-right: 3px;
             animation: pulse 2s infinite;
         }
 
         @keyframes pulse {
             0%, 100% { box-shadow: 0 0 0 0 rgba(76,175,80,0.7); }
-            50% { box-shadow: 0 0 0 6px rgba(76,175,80,0); }
+            50% { box-shadow: 0 0 0 5px rgba(76,175,80,0); }
         }
 
         .btn-play {
             display: inline-block; background: var(--accent); color: #0a0a0a;
-            padding: 10px 35px; border-radius: 25px; font-weight: 700;
+            padding: 9px 30px; border-radius: 22px; font-weight: 700;
             text-transform: uppercase; letter-spacing: 1.5px; text-decoration: none;
-            transition: all 0.3s; font-size: 12px; position: relative; overflow: hidden;
-            font-family: var(--font-ui);
+            transition: all 0.3s; font-size: 11px; position: relative; overflow: hidden;
         }
 
         .btn-play::before {
@@ -243,63 +237,56 @@
         }
 
         .btn-play:hover {
-            background: #ff8533; box-shadow: 0 0 25px var(--accent-glow);
+            background: #ff8533; box-shadow: 0 0 20px var(--accent-glow);
             transform: scale(1.03);
         }
 
         .modes-section {
-            padding: 5px 20px 35px; max-width: 800px; margin: 0 auto;
+            padding: 5px 16px 30px; max-width: 750px; margin: 0 auto;
             position: relative; z-index: 1;
         }
 
         .section-title {
-            text-align: center; font-size: 20px; font-weight: 900;
-            letter-spacing: 1.5px; color: #fff; margin-bottom: 16px;
-            text-transform: uppercase; font-family: var(--font-game);
+            text-align: center; font-size: 18px; font-weight: 900;
+            letter-spacing: 1.5px; color: #fff; margin-bottom: 14px;
+            text-transform: uppercase;
         }
 
         .section-title span { color: var(--accent); }
 
-        .modes-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+        .modes-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
         @media(min-width:768px){.modes-grid{grid-template-columns:repeat(3,1fr)}}
 
         .mode-card {
             background: var(--card-bg); backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px); border: 2px solid var(--border);
-            border-radius: 16px; padding: 24px 16px; text-align: center;
+            border-radius: 14px; padding: 20px 14px; text-align: center;
             cursor: pointer; transition: all 0.4s; position: relative; overflow: hidden;
         }
 
         .mode-card:hover {
             border-color: var(--accent); transform: translateY(-3px);
-            box-shadow: 0 12px 35px rgba(0,0,0,0.6);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
         }
 
         .mode-card img.mode-img {
-            width: 60px; height: 60px; object-fit: cover; border-radius: 10px;
-            margin-bottom: 10px; border: 2px solid rgba(255,255,255,0.08);
+            width: 50px; height: 50px; object-fit: cover; border-radius: 8px;
+            margin-bottom: 8px; border: 2px solid rgba(255,255,255,0.08);
             transition: border-color 0.3s;
         }
 
         .mode-card:hover img.mode-img { border-color: var(--accent); }
-        .mode-card h3 {
-            font-family: var(--font-game);
-            font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 3px;
-        }
-        .mode-card p {
-            font-family: var(--font-ui);
-            color: #888; font-size: 11px; line-height: 1.4;
-        }
+        .mode-card h3 { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 2px; }
+        .mode-card p { color: #888; font-size: 10px; line-height: 1.3; }
 
         .top-players-section {
-            max-width: 480px; margin: 0 auto 35px; padding: 0 20px;
+            max-width: 440px; margin: 0 auto 30px; padding: 0 16px;
             position: relative; z-index: 1;
         }
 
         .top-players-section h2 {
-            font-family: var(--font-game);
-            font-size: 18px; font-weight: 900; color: #fff;
-            text-align: center; margin-bottom: 14px; text-transform: uppercase;
+            font-size: 16px; font-weight: 900; color: #fff;
+            text-align: center; margin-bottom: 12px; text-transform: uppercase;
             letter-spacing: 1.5px;
         }
 
@@ -308,43 +295,33 @@
         .top-list {
             background: var(--card-bg); backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px); border: 1px solid var(--border);
-            border-radius: 12px; overflow: hidden;
+            border-radius: 10px; overflow: hidden;
         }
 
         .top-item {
             display: flex; align-items: center; justify-content: space-between;
-            padding: 10px 16px; border-bottom: 1px solid rgba(255,255,255,0.04);
+            padding: 9px 14px; border-bottom: 1px solid rgba(255,255,255,0.04);
             transition: all 0.3s;
         }
 
         .top-item:last-child { border-bottom: none; }
 
-        .top-rank {
-            font-family: var(--font-game);
-            font-size: 16px; font-weight: 900; width: 30px; text-align: center;
-        }
+        .top-rank { font-size: 15px; font-weight: 900; width: 28px; text-align: center; }
         .rank-1st { color: #ffc107; }
         .rank-2nd { color: #9e9e9e; }
         .rank-3rd { color: #8d6e63; }
         .rank-other { color: #555; }
 
-        .top-name {
-            font-family: var(--font-game);
-            flex: 1; margin-left: 10px; font-weight: 600; color: #e0e0e0; font-size: 13px;
-        }
-        .top-score {
-            font-family: var(--font-game);
-            color: var(--accent); font-weight: 900; font-size: 13px;
-        }
+        .top-name { flex: 1; margin-left: 8px; font-weight: 600; color: #e0e0e0; font-size: 12px; }
+        .top-score { color: var(--accent); font-weight: 900; font-size: 12px; }
 
         .nick-gen-section {
-            max-width: 400px; margin: 0 auto 45px; padding: 0 20px;
+            max-width: 380px; margin: 0 auto 40px; padding: 0 16px;
             text-align: center; position: relative; z-index: 1;
         }
 
         .nick-gen-section h3 {
-            font-family: var(--font-game);
-            font-size: 16px; color: #fff; margin-bottom: 10px;
+            font-size: 15px; color: #fff; margin-bottom: 8px;
             text-transform: uppercase; letter-spacing: 1px;
         }
 
@@ -353,32 +330,30 @@
         .nick-display {
             background: var(--card-bg); backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px); border: 1px solid var(--border);
-            border-radius: 10px; padding: 12px 18px; font-size: 15px;
-            color: var(--accent); margin-bottom: 10px; letter-spacing: 1px;
-            word-break: break-all; min-height: 38px;
+            border-radius: 10px; padding: 11px 16px; font-size: 14px;
+            color: var(--accent); margin-bottom: 8px; letter-spacing: 0.8px;
+            word-break: break-all; min-height: 34px;
             display: flex; align-items: center; justify-content: center;
-            font-family: var(--font-game);
         }
 
         .btn-generate {
             background: var(--accent); color: #0a0a0a; border: none;
-            padding: 8px 24px; border-radius: 20px; font-weight: 700;
+            padding: 7px 20px; border-radius: 18px; font-weight: 700;
             text-transform: uppercase; cursor: pointer; transition: all 0.3s;
-            letter-spacing: 1px; font-size: 11px;
-            font-family: var(--font-ui);
+            letter-spacing: 0.8px; font-size: 10px;
         }
 
         .btn-generate:hover {
-            background: #ff8533; box-shadow: 0 0 18px var(--accent-glow);
+            background: #ff8533; box-shadow: 0 0 15px var(--accent-glow);
             transform: scale(1.04);
         }
 
-        .map-section { padding: 15px 20px 45px; position: relative; z-index: 1; }
+        .map-section { padding: 10px 16px 40px; position: relative; z-index: 1; }
 
         .map-wrapper {
-            position: relative; width: 100%; height: 65vh; min-height: 350px;
-            background: #0d0d0d; border-radius: 14px; overflow: hidden;
-            border: 1px solid var(--border); max-width: 800px; margin: 0 auto;
+            position: relative; width: 100%; height: 60vh; min-height: 300px;
+            background: #0d0d0d; border-radius: 12px; overflow: hidden;
+            border: 1px solid var(--border); max-width: 750px; margin: 0 auto;
         }
 
         .map-wrapper iframe { width: 100%; height: 100%; border: none; }
@@ -390,63 +365,50 @@
         }
 
         .map-fallback.visible { display: flex; }
-        .map-fallback h3 {
-            font-family: var(--font-game);
-            color: #fff; font-size: 16px; margin-bottom: 6px;
-        }
-        .map-fallback p {
-            font-family: var(--font-ui);
-            color: #666; font-size: 11px;
-        }
+        .map-fallback h3 { color: #fff; font-size: 14px; margin-bottom: 4px; }
+        .map-fallback p { color: #666; font-size: 10px; }
         .map-fallback .retry-btn {
-            margin-top: 12px; background: transparent; border: 1px solid var(--accent);
-            color: var(--accent); padding: 7px 18px; border-radius: 18px;
-            cursor: pointer; font-family: var(--font-ui); font-size: 10px;
-            text-transform: uppercase; transition: all 0.3s;
+            margin-top: 10px; background: transparent; border: 1px solid var(--accent);
+            color: var(--accent); padding: 6px 16px; border-radius: 16px;
+            cursor: pointer; font-size: 9px; text-transform: uppercase; transition: all 0.3s;
         }
         .map-fallback .retry-btn:hover { background: var(--accent); color: #0a0a0a; }
-        .map-controls { text-align: center; margin-top: 10px; }
+        .map-controls { text-align: center; margin-top: 8px; }
         .map-controls a {
-            font-family: var(--font-ui);
-            color: var(--accent); text-decoration: none; font-size: 10px;
-            padding: 6px 14px; border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 18px; transition: all 0.3s;
+            color: var(--accent); text-decoration: none; font-size: 9px;
+            padding: 5px 12px; border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px; transition: all 0.3s;
         }
         .map-controls a:hover { border-color: var(--accent); background: rgba(var(--accent-rgb), 0.05); }
 
-        .faq-section { padding: 15px 20px 45px; position: relative; z-index: 1; }
+        .faq-section { padding: 10px 16px 40px; position: relative; z-index: 1; }
 
-        .faq-container { max-width: 580px; margin: 0 auto; }
+        .faq-container { max-width: 550px; margin: 0 auto; }
 
         .faq-item {
             background: var(--card-bg); backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px); border: 1px solid var(--border);
-            border-radius: 10px; margin-bottom: 8px; overflow: hidden;
+            border-radius: 10px; margin-bottom: 6px; overflow: hidden;
             transition: all 0.3s;
         }
 
         .faq-question {
-            padding: 14px 18px; cursor: pointer; display: flex;
+            padding: 12px 16px; cursor: pointer; display: flex;
             justify-content: space-between; align-items: center;
-            font-weight: 700; color: #e0e0e0; font-size: 13px; transition: all 0.3s;
-            font-family: var(--font-game);
+            font-weight: 700; color: #e0e0e0; font-size: 12px; transition: all 0.3s;
         }
 
         .faq-question:hover { color: var(--accent); }
-        .faq-arrow {
-            font-family: var(--font-ui);
-            transition: transform 0.3s; font-size: 16px; color: var(--accent);
-        }
+        .faq-arrow { transition: transform 0.3s; font-size: 14px; color: var(--accent); }
         .faq-item.open .faq-arrow { transform: rotate(180deg); }
 
         .faq-answer {
             max-height: 0; overflow: hidden;
             transition: max-height 0.4s ease, padding 0.4s ease;
-            padding: 0 18px; color: #999; font-size: 11px; line-height: 1.6;
-            font-family: var(--font-ui);
+            padding: 0 16px; color: #999; font-size: 10px; line-height: 1.5;
         }
 
-        .faq-item.open .faq-answer { max-height: 350px; padding: 0 18px 14px; }
+        .faq-item.open .faq-answer { max-height: 300px; padding: 0 16px 12px; }
 
         .error-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -460,41 +422,31 @@
         .error-box {
             background: var(--surface); backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px); border: 1px solid var(--accent);
-            border-radius: 16px; padding: 35px; max-width: 450px;
-            box-shadow: 0 0 40px var(--accent-glow);
+            border-radius: 14px; padding: 30px; max-width: 400px;
+            box-shadow: 0 0 30px var(--accent-glow);
         }
 
-        .error-box h2 {
-            font-family: var(--font-game);
-            color: var(--accent); font-size: 20px; margin-bottom: 12px;
-        }
-        .error-box p {
-            font-family: var(--font-ui);
-            color: #ccc; font-size: 12px; margin-bottom: 8px; line-height: 1.5;
-        }
+        .error-box h2 { color: var(--accent); font-size: 18px; margin-bottom: 10px; }
+        .error-box p { color: #ccc; font-size: 11px; margin-bottom: 6px; line-height: 1.4; }
         .error-box .retry-btn {
-            margin-top: 12px; background: var(--accent); color: #0a0a0a;
-            border: none; padding: 10px 25px; border-radius: 20px;
-            font-weight: 700; cursor: pointer; font-family: var(--font-ui);
-            font-size: 12px; transition: all 0.3s;
+            margin-top: 10px; background: var(--accent); color: #0a0a0a;
+            border: none; padding: 9px 22px; border-radius: 18px;
+            font-weight: 700; cursor: pointer; font-size: 11px; transition: all 0.3s;
         }
 
         footer {
             background: rgba(13, 13, 18, 0.7); backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px); border-top: 1px solid var(--border);
-            text-align: center; padding: 15px; color: #555; font-size: 9px;
-            letter-spacing: 1.2px; position: relative; z-index: 1;
-            font-family: var(--font-ui);
+            text-align: center; padding: 12px; color: #555; font-size: 8px;
+            letter-spacing: 1px; position: relative; z-index: 1;
         }
 
         footer span { color: var(--accent); }
 
         @media (max-width: 600px) {
-            header { height: auto; padding: 8px 12px; gap: 6px; flex-wrap: wrap; }
-            nav { gap: 2px; padding: 2px; }
-            nav a { font-size: 9px; padding: 5px 8px; }
-            .hero h1 { font-size: 28px; }
-            .map-wrapper { height: 45vh; min-height: 280px; }
+            header { height: auto; padding: 6px 10px; gap: 4px; flex-wrap: wrap; }
+            .hero h1 { font-size: 26px; }
+            .map-wrapper { height: 40vh; min-height: 240px; }
         }
     </style>
 </head>
@@ -509,7 +461,6 @@
         <div class="error-box">
             <h2>Ошибка загрузки</h2>
             <p>Не удалось загрузить запрошенную страницу.</p>
-            <p>Возможные причины:</p>
             <p>- Отсутствует подключение к интернету<br>- Файл не найден на сервере<br>- Блокировка браузером или антивирусом</p>
             <p>Попробуйте обновить страницу (F5) или вернитесь на главную.</p>
             <button class="retry-btn" onclick="closeError()">На главную</button>
@@ -643,9 +594,7 @@
         </div>
     </div>
 
-    <footer>
-        © 2026 <span>SARMINE</span> — Minecraft сервер. IP: sarmine.fun
-    </footer>
+    <footer>© 2026 <span>SARMINE</span> — Minecraft сервер. IP: sarmine.fun</footer>
 
     <audio id="soundSurvival" src="survivalsound.mp3" loop preload="auto"></audio>
     <audio id="soundAnarchy" src="anarhiasound.mp3" loop preload="auto"></audio>
@@ -699,32 +648,21 @@
         }
 
         function switchMusic(theme) {
-            if (currentMusic) {
-                currentMusic.pause();
-                currentMusic.currentTime = 0;
-                currentMusic = null;
-            }
+            if (currentMusic) { currentMusic.pause(); currentMusic.currentTime = 0; currentMusic = null; }
             var musicId = null;
             if (theme === 'survival') musicId = 'soundSurvival';
             else if (theme === 'anarchy') musicId = 'soundAnarchy';
             else if (theme === 'polit') musicId = 'soundPolit';
             if (musicId) {
                 currentMusic = document.getElementById(musicId);
-                if (currentMusic) {
-                    currentMusic.volume = 0.15;
-                    currentMusic.play().catch(function(){});
-                }
+                if (currentMusic) { currentMusic.volume = 0.12; currentMusic.play().catch(function(){}); }
             }
         }
 
         function switchMode(mode) {
             if (currentTheme !== 'general' && mode !== currentTheme) {
                 var uiSound = document.getElementById('soundUI');
-                if (uiSound) {
-                    uiSound.currentTime = 0;
-                    uiSound.volume = 0.3;
-                    uiSound.play().catch(function(){});
-                }
+                if (uiSound) { uiSound.currentTime = 0; uiSound.volume = 0.25; uiSound.play().catch(function(){}); }
             }
             applyTheme(mode);
         }
@@ -741,71 +679,50 @@
         (function() {
             const container = document.getElementById('particlesContainer');
             const colors = [
-                'rgba(255, 106, 0, 0.5)', 'rgba(255, 140, 50, 0.3)',
-                'rgba(255, 200, 100, 0.4)', 'rgba(255, 255, 255, 0.2)'
+                'rgba(255, 106, 0, 0.4)', 'rgba(255, 140, 50, 0.25)',
+                'rgba(255, 200, 100, 0.3)', 'rgba(255, 255, 255, 0.15)'
             ];
             function createParticle() {
-                const p = document.createElement('div');
-                p.classList.add('particle');
-                const size = Math.random() * 3 + 1;
+                const p = document.createElement('div'); p.classList.add('particle');
+                const size = Math.random() * 2.5 + 1;
                 p.style.left = Math.random() * window.innerWidth + 'px';
                 p.style.width = size + 'px'; p.style.height = size + 'px';
                 p.style.background = colors[Math.floor(Math.random() * colors.length)];
                 p.style.boxShadow = `0 0 ${size * 2}px ${p.style.background}`;
-                p.style.animationDuration = (Math.random() * 6000 + 4000) + 'ms';
+                p.style.animationDuration = (Math.random() * 5000 + 3500) + 'ms';
                 container.appendChild(p);
                 p.addEventListener('animationend', () => p.remove());
             }
-            function spawnParticle() {
-                createParticle();
-                setTimeout(spawnParticle, Math.random() * 300 + 200);
-            }
-            for (let i = 0; i < 20; i++) setTimeout(createParticle, Math.random() * 2000);
+            function spawnParticle() { createParticle(); setTimeout(spawnParticle, Math.random() * 350 + 250); }
+            for (let i = 0; i < 15; i++) setTimeout(createParticle, Math.random() * 2000);
             setTimeout(spawnParticle, 2000);
         })();
 
-        document.getElementById('bgVideo').addEventListener('error', function() {
-            this.style.display = 'none';
-        });
+        document.getElementById('bgVideo').addEventListener('error', function() { this.style.display = 'none'; });
 
         function copyIP() {
             var ip = 'sarmine.fun';
             if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(ip).then(function() {
-                    showCopyToast('IP скопирован: ' + ip);
-                }).catch(function() {
-                    fallbackCopy(ip);
-                });
-            } else {
-                fallbackCopy(ip);
-            }
+                navigator.clipboard.writeText(ip).then(function() { showCopyToast('IP скопирован: ' + ip); })
+                .catch(function() { fallbackCopy(ip); });
+            } else { fallbackCopy(ip); }
         }
 
         function fallbackCopy(text) {
             var textarea = document.createElement('textarea');
-            textarea.value = text;
-            textarea.style.position = 'fixed';
-            textarea.style.left = '-9999px';
-            document.body.appendChild(textarea);
-            textarea.select();
-            try {
-                document.execCommand('copy');
-                showCopyToast('IP скопирован: ' + text);
-            } catch(e) {
-                showCopyToast('Не удалось скопировать IP');
-            }
+            textarea.value = text; textarea.style.position = 'fixed'; textarea.style.left = '-9999px';
+            document.body.appendChild(textarea); textarea.select();
+            try { document.execCommand('copy'); showCopyToast('IP скопирован: ' + text); }
+            catch(e) { showCopyToast('Не удалось скопировать IP'); }
             document.body.removeChild(textarea);
         }
 
         function showCopyToast(msg) {
             var toast = document.createElement('div');
             toast.textContent = msg;
-            toast.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--accent);color:#0a0a0a;padding:10px 20px;border-radius:20px;font-family:var(--font-ui);font-size:11px;font-weight:700;z-index:9999;pointer-events:none;transition:opacity 0.4s;opacity:1;';
+            toast.style.cssText = 'position:fixed;bottom:25px;left:50%;transform:translateX(-50%);background:var(--accent);color:#0a0a0a;padding:8px 16px;border-radius:18px;font-size:10px;font-weight:700;z-index:9999;pointer-events:none;transition:opacity 0.4s;opacity:1;';
             document.body.appendChild(toast);
-            setTimeout(function() {
-                toast.style.opacity = '0';
-                setTimeout(function() { document.body.removeChild(toast); }, 400);
-            }, 1500);
+            setTimeout(function() { toast.style.opacity = '0'; setTimeout(function() { document.body.removeChild(toast); }, 400); }, 1500);
         }
 
         function showSection(name) {
@@ -824,33 +741,19 @@
                 var href = link.getAttribute('href');
                 if (!href || href === '#') return;
                 fetch(href, { method: 'HEAD', cache: 'no-cache' })
-                    .then(function(response) {
-                        if (!response.ok) { e.preventDefault(); showError(href); }
-                    })
+                    .then(function(response) { if (!response.ok) { e.preventDefault(); showError(href); } })
                     .catch(function() { e.preventDefault(); showError(href); });
             });
         });
 
-        function showError(url) {
-            var overlay = document.getElementById('errorOverlay');
-            overlay.classList.add('active');
-            overlay.dataset.failedUrl = url;
-        }
-
-        function closeError() {
-            document.getElementById('errorOverlay').classList.remove('active');
-            showSection('home');
-        }
+        function showError(url) { var overlay = document.getElementById('errorOverlay'); overlay.classList.add('active'); overlay.dataset.failedUrl = url; }
+        function closeError() { document.getElementById('errorOverlay').classList.remove('active'); showSection('home'); }
 
         function reloadMap() {
-            var oldFrame = document.getElementById('mapFrame');
-            var fallback = document.getElementById('mapFallback');
-            fallback.classList.remove('visible');
-            var newFrame = document.createElement('iframe');
-            newFrame.id = 'mapFrame';
-            newFrame.src = 'http://sarmine.fun:8123';
-            newFrame.allowFullscreen = true;
-            newFrame.style.cssText = 'width:100%;height:100%;border:none;';
+            var oldFrame = document.getElementById('mapFrame'); var fallback = document.getElementById('mapFallback');
+            fallback.classList.remove('visible'); var newFrame = document.createElement('iframe');
+            newFrame.id = 'mapFrame'; newFrame.src = 'http://sarmine.fun:8123';
+            newFrame.allowFullscreen = true; newFrame.style.cssText = 'width:100%;height:100%;border:none;';
             newFrame.onload = function() { fallback.classList.remove('visible'); };
             newFrame.onerror = function() { fallback.classList.add('visible'); };
             oldFrame.replaceWith(newFrame);
